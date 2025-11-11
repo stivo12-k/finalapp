@@ -8,4 +8,5 @@ import App from './App';
 import LandingPage from './src/pages/LandingPage';
 import SignIn from './src/pages/SignIn';
 
+
 AppRegistry.registerComponent(appName, () => App);
