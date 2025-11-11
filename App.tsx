@@ -6,28 +6,22 @@ import SignUp from './src/pages/SignUp';
 import SplashScreen from './src/pages/SplashScreen';
 import LandingPage from './src/pages/LandingPage';
 
+import MainNavigation from './src/navigation/MainNavigation'; // Tambahkan ini
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="SplashScreen"
-          component={SplashScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="LandingPage"
-          component={LandingPage}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="SignIn"
-          component={SignIn}
-          options={{headerShown: false}}
-        />
-      
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+
+        <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="LandingPage" component={LandingPage} />
+        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+
+        {/* Ganti HomePage -> MainNavigation */}
+        <Stack.Screen name="MainNavigation" component={MainNavigation} />
 
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,0 +1,284 @@
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  TextInput
+} from 'react-native';
+import React, {useState} from 'react';
+import Header from '../../components/molecules/Header';
+import Gap from '../../components/atoms/Gap';
+import BottomNav from '../../components/molecules/BottomNav';
+
+const HomePage = ({navigation}) => {
+  const [searchText, setSearchText] = useState('');
+  const [activeTab, setActiveTab] = useState('home');
+
+  // Data Recommended
+  const recommendedData = [
+    {
+      id: 1,
+      title: 'MIZTA Kost',
+      location: 'Jl. Pimpinang etaas, Mindhasa Utara',
+      price: '₹150,000',
+      image: require('../../assets/LogoUK.svg'),
+    },
+    {
+      id: 2,
+      title: 'JAma Kost',
+      location: 'Jl. Pimpinang etaas, Mindhasa Utara',
+      price: '₹150,000',
+      image: require('../../assets/LogoUK.svg'),
+    },
+  ];
+
+  // Data Popular
+  const popularData = [
+    {
+      id: 1,
+      title: 'Triple J',
+      location: 'Jl. Pimpinang etaas, Mindhasa Utara',
+      price: '₹150,000',
+      image: require('../../assets/LogoUK.svg'),
+    },
+    {
+      id: 2,
+      title: 'Kost mila',
+      location: 'Jl. Pimpinang etaas, Mindhasa Utara',
+      price: '₹150,000',
+      image: require('../../assets/LogoUK.svg'),
+    },
+    {
+      id: 3,
+      title: 'KK2 Garrele',
+      location: 'Jl. Pimpinang etaas, Mindhasa Utara',
+      price: '₹150,000',
+      image: require('../../assets/LogoUK.svg'),
+    },
+    {
+      id: 4,
+      title: 'Pavillion',
+      location: 'Jl. Pimpinang etaas, Mindhasa Utara',
+      price: '₹150,000',
+      image: require('../../assets/LogoUK.svg'),
+    },
+  ];
+
+  return (
+    <View style={styles.container}>
+      {/* Header */}
+      <Header label="Find Your Kost" backButton={false} />
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
+        {/* Search Bar */}
+        <View style={styles.searchContainer}>
+          <TextInput
+            placeholder="Search Property"
+            style={styles.searchInput}
+            value={searchText}
+            onChangeText={setSearchText}
+          />
+          <TouchableOpacity style={styles.filterButton}>
+            <Text>⚙️</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Gap height={16} />
+
+        {/* Banner */}
+        <View style={styles.banner}>
+          <View style={styles.bannerContent}>
+            <Text style={styles.bannerTitle}>TINGGAL NYAMAN DEKAT UNKLAB</Text>
+            <Text style={styles.bannerSubtitle}>DAPAT JADI ANAK UNKLAB</Text>
+          </View>
+        </View>
+
+        <Gap height={24} />
+
+        {/* Recommended */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Recommended</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAll}>See all</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Gap height={12} />
+
+          <View style={styles.recommendedGrid}>
+            {recommendedData.map(item => (
+              <TouchableOpacity key={item.id} style={styles.recommendedCard}>
+                <View style={styles.cardImage} />
+                <View style={styles.cardContent}>
+                  <Text style={styles.cardTitle}>{item.title}</Text>
+                  <Text style={styles.cardLocation}>{item.location}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        <Gap height={24} />
+
+        {/* Popular */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Popular for you</Text>
+            <TouchableOpacity>
+              <Text style={styles.seeAll}>See all</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Gap height={12} />
+
+          {popularData.map(item => (
+            <TouchableOpacity key={item.id} style={styles.popularCard}>
+              <View style={styles.popularCardImage} />
+              <View style={styles.popularCardContent}>
+                <Text style={styles.popularCardTitle}>{item.title}</Text>
+                <Text style={styles.popularCardLocation}>{item.location}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <Gap height={40} />
+      </ScrollView>
+    </View>
+  );
+};
+
+export default HomePage;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F9F9F9',
+  },
+  scrollView: {
+    flex: 1,
+    paddingHorizontal: 24,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+    gap: 12,
+  },
+  searchInput: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 14,
+    color: '#020202',
+  },
+  filterButton: {
+    width: 44,
+    height: 44,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  banner: {
+    backgroundColor: '#6F3E76',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
+    marginVertical: 8,
+  },
+  bannerContent: {
+    flexDirection: 'column',
+  },
+  bannerTitle: {
+    fontSize: 18,
+    color: '#FFFFFF',
+    marginBottom: 4,
+    fontWeight: '700',
+  },
+  bannerSubtitle: {
+    fontSize: 12,
+    color: '#D2AA1A',
+  },
+  section: {
+    marginVertical: 8,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#020202',
+  },
+  seeAll: {
+    fontSize: 12,
+    color: '#6F3E76',
+  },
+  recommendedGrid: {
+    flexDirection: 'row',
+    gap: 12,
+    justifyContent: 'space-between',
+  },
+  recommendedCard: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    overflow: 'hidden',
+    elevation: 2,
+  },
+  cardImage: {
+    width: '100%',
+    height: 120,
+    backgroundColor: '#E0E0E0',
+  },
+  cardContent: {
+    padding: 12,
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#020202',
+  },
+  cardLocation: {
+    fontSize: 10,
+    color: '#666666',
+  },
+  popularCard: {
+    flexDirection: 'row',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 12,
+    elevation: 2,
+  },
+  popularCardImage: {
+    width: 100,
+    height: 100,
+    backgroundColor: '#E0E0E0',
+  },
+  popularCardContent: {
+    flex: 1,
+    padding: 12,
+    justifyContent: 'center',
+  },
+  popularCardTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#020202',
+  },
+  popularCardLocation: {
+    fontSize: 10,
+    color: '#666666',
+  },
+});
