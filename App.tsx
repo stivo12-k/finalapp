@@ -22,6 +22,11 @@ const App = () => {
           component={LandingPage}
           options={{headerShown: false}}
         />
+        <Stack.Screen
+          name="SignIn"
+          component={SignIn}
+          options={{headerShown: false}}
+        />
       
 
       </Stack.Navigator>
