@@ -29,7 +29,8 @@ const SignIn = ({ navigation }) => {
         label="Password"
         placeholder="Password" secureTextEntry={true} />
         <Gap height={32} />
-        <Button label="SIGN IN" color="#643173" textColor="#FFFFFF" />
+        <Button label="SIGN IN" color="#643173" textColor="#FFFFFF" 
+        onPress={() => navigation.navigate('HomePage')}/>
         <Gap height={16} />
 
         <View style={styles.footerTextWrapper}>
