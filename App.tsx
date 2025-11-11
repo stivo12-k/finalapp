@@ -5,6 +5,7 @@ import SignIn from './src/pages/SignIn';
 import SignUp from './src/pages/SignUp';
 import SplashScreen from './src/pages/SplashScreen';
 import LandingPage from './src/pages/LandingPage';
+import HomePage from './src/pages/HomePage';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,11 @@ const App = () => {
         <Stack.Screen
           name="SignIn"
           component={SignIn}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="HomePage"
+          component={HomePage}
           options={{headerShown: false}}
         />
       
