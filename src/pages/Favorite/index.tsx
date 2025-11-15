@@ -36,6 +36,10 @@ const Favorite = () => {
       location: 'airmadidi atas, Minahasa Utara',
       price: '$320/month',
       svg:villa,
+      type: 'Pria',
+      facilities: ['WIFI', 'AC', 'Parking Lot'],
+      description:
+        'Kost khusus wanita dengan lingkungan aman dan nyaman. Lokasi strategis.',
     },
     {
       id: 2,
@@ -43,6 +47,10 @@ const Favorite = () => {
       location: 'airmadidi atas, Minahasa Utara',
       price: '$230/night',
       svg:villa,
+      type: 'Wanita',
+      facilities: ['WIFI', 'Bathroom', 'AC', 'Parking Lot'],
+      description:
+        'Kost khusus wanita dengan lingkungan aman dan nyaman. Lokasi strategis.',
     },
   ];
 
