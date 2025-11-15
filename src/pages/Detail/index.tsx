@@ -22,28 +22,42 @@ import hotel from '../../assets/hotel.svg';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-
 const Detail = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  // Menerima data dari Favorite
-  const { item } = route.params;
+  const { item } = route.params; // DATA DARI HOMEPAGE
+
+  // === ICON MAPPING ===
+  const typeIcons = {
+    Pria: <Male width={22} height={22} />,
+    Wanita: <Female width={22} height={22} />,
+    Campur: <Mix width={22} height={22} />,
+  };
+
+  const facilityIcons = {
+    Bathroom: <Bathroom width={26} height={26} />,
+    AC: <AC width={26} height={26} />,
+    WIFI: <Wifi width={26} height={26} />,
+    'Parking Lot': <Parking width={26} height={26} />,
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <BackButton width={24} height={24} />
-               </TouchableOpacity>
         
-       
+        {/* BACK BUTTON */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 20 }}>
+          <BackButton width={24} height={24} />
+        </TouchableOpacity>
+
+        {/* IMAGE HEADER */}
         <View style={styles.imageWrapper}>
           <Image source={hotel} style={styles.headerImage} />
           <HeartRed width={32} height={32} style={styles.heartIcon} />
         </View>
 
-        {/* === TITLE === */}
+        {/* TITLE */}
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>{item.title}</Text>
 
@@ -55,34 +69,33 @@ const Detail = () => {
           <Text style={styles.price}>{item.price}</Text>
         </View>
 
-        {/* === TIPE KOST === */}
+        {/* ==== TIPE KOST (DINAMIS) ==== */}
         <Text style={styles.sectionTitle}>Tipe Kost</Text>
 
         <View style={styles.typeRow}>
-          {renderType('Pria', <Male width={22} height={22} />)}
-          {renderType('Wanita', <Female width={22} height={22} />)}
-          {renderType('Campur', <Mix width={22} height={22} />)}
+          <View style={styles.typeBox}>
+            {typeIcons[item.type]}
+            <Text style={styles.typeTxt}>{item.type}</Text>
+          </View>
         </View>
 
-        {/* === FACILITIES === */}
+        {/* ==== FACILITIES (DINAMIS) ==== */}
         <Text style={styles.sectionTitle}>Facilities</Text>
 
         <View style={styles.facilitiesRow}>
-          {renderFacility('Bathroom', <Bathroom width={26} height={26} />)}
-          {renderFacility('AC', <AC width={26} height={26} />)}
-          {renderFacility('WIFI', <Wifi width={26} height={26} />)}
-          {renderFacility('Parking Lot', <Parking width={26} height={26} />)}
+          {item.facilities.map((facility, index) => (
+            <View key={index} style={styles.facilityBox}>
+              {facilityIcons[facility]}
+              <Text style={styles.facilityTxt}>{facility}</Text>
+            </View>
+          ))}
         </View>
 
-        {/* === DESCRIPTION === */}
+        {/* ==== DESCRIPTION (DINAMIS) ==== */}
         <Text style={styles.sectionTitle}>Deskripsi</Text>
-        <Text style={styles.description}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry standard dummy text
-          ever since the 1500s.
-        </Text>
+        <Text style={styles.description}>{item.description}</Text>
 
-        {/* === OWNER === */}
+        {/* === OWNER (MASIH STATIC, BISA DIBUAT DINAMIS KALAU MAU) === */}
         <Text style={styles.sectionTitle}>Pemilik</Text>
 
         <View style={styles.ownerRow}>
@@ -101,7 +114,7 @@ const Detail = () => {
           <Text style={styles.phoneTxt}>+62-821-2345-6789</Text>
         </View>
 
-        {/* === MAP (Static Dummy Image) === */}
+        {/* === MAP DUMMY === */}
         <Text style={styles.sectionTitle}>Location</Text>
 
         <Image
@@ -109,7 +122,7 @@ const Detail = () => {
           style={styles.map}
         />
 
-        {/* === BUTTON === */}
+        {/* BUTTON */}
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Hubungi Pemilik</Text>
         </TouchableOpacity>
@@ -123,28 +136,13 @@ const Detail = () => {
 export default Detail;
 
 
-const renderType = (label, icon) => (
-  <View style={styles.typeBox}>
-    {icon}
-    <Text style={styles.typeTxt}>{label}</Text>
-  </View>
-);
-
-const renderFacility = (label, icon) => (
-  <View style={styles.facilityBox}>
-    {icon}
-    <Text style={styles.facilityTxt}>{label}</Text>
-  </View>
-);
-
-
+// REUSABLE UI
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
 
-  // IMAGE HEADER
   imageWrapper: {
     width: '100%',
     height: 250,
@@ -160,7 +158,6 @@ const styles = StyleSheet.create({
     top: 20,
   },
 
-  // TITLE & PRICE
   titleWrapper: {
     paddingHorizontal: 20,
     paddingVertical: 14,
@@ -187,7 +184,6 @@ const styles = StyleSheet.create({
     color: '#7F3DFF',
   },
 
-  // SECTION
   sectionTitle: {
     fontFamily: 'Poppins-Bold',
     fontSize: 18,
@@ -195,7 +191,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 
-  // TIPE KOST
   typeRow: {
     flexDirection: 'row',
     paddingHorizontal: 20,
@@ -217,7 +212,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
   },
 
-  // FACILITIES
   facilitiesRow: {
     flexDirection: 'row',
     paddingHorizontal: 20,
@@ -239,7 +233,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
 
-  // DESCRIPTION
   description: {
     fontFamily: 'Poppins-Regular',
     paddingHorizontal: 20,
@@ -249,7 +242,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  // OWNER
   ownerRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -279,7 +271,6 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 
-  // MAP
   map: {
     width: '90%',
     height: 160,
@@ -288,7 +279,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
 
-  // BUTTON
   button: {
     backgroundColor: '#4C1D95',
     marginHorizontal: 20,

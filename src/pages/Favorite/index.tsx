@@ -8,11 +8,12 @@ import {
   ScrollView,
 } from 'react-native';
 import BottomNav from '../../components/molecules/BottomNav';
-
+import villa from '../../assets/villa.svg';
 import { useNavigation } from '@react-navigation/native';
 
 import LocationIcon from '../../assets/location.svg';
 import HeartRed from '../../assets/heart-red.svg';
+import svg from 'react-native-svg';
 
 
 const Favorite = () => {
@@ -34,14 +35,22 @@ const Favorite = () => {
       title: 'Maharani Villa Yogyakarta',
       location: 'airmadidi atas, Minahasa Utara',
       price: '$320/month',
-      image: require('../../assets/villa.svg'),
+      svg:villa,
+      type: 'Pria',
+      facilities: ['WIFI', 'AC', 'Parking Lot'],
+      description:
+        'Kost khusus wanita dengan lingkungan aman dan nyaman. Lokasi strategis.',
     },
     {
       id: 2,
       title: 'Manhattan Hotel',
       location: 'airmadidi atas, Minahasa Utara',
       price: '$230/night',
-      image: require('../../assets/hotel.svg'),
+      svg:villa,
+      type: 'Wanita',
+      facilities: ['WIFI', 'Bathroom', 'AC', 'Parking Lot'],
+      description:
+        'Kost khusus wanita dengan lingkungan aman dan nyaman. Lokasi strategis.',
     },
   ];
 
@@ -63,7 +72,7 @@ const Favorite = () => {
 
             
           >
-            <Image source={item.image} style={styles.image} />
+            <item.svg width={120} height={85} />
 
             <View style={{ flex: 1, marginLeft: 12 }}>
               <Text style={styles.cardTitle}>{item.title}</Text>

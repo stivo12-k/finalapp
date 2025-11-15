@@ -4,77 +4,100 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Image,
   TextInput
 } from 'react-native';
 import React, {useState} from 'react';
 import Header from '../../components/molecules/Header';
 import Gap from '../../components/atoms/Gap';
 import BottomNav from '../../components/molecules/BottomNav';
+import Villa from '../../assets/villa.svg';
 
 const HomePage = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
-  const [activeTab, setActiveTab] = useState('home');
 
-  // Data Recommended
+  // =============================
+  // RECOMMENDED (SUDAH DINAMIS)
+  // =============================
   const recommendedData = [
     {
       id: 1,
       title: 'MIZTA Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
+      type: 'Pria',
+      facilities: ['WIFI', 'AC', 'Bathroom', 'Parking Lot'],
+      description:
+        'Kost nyaman khusus pria, dekat dengan UNKLAB dan area kampus. Fasilitas lengkap.',
     },
     {
       id: 2,
       title: 'JAma Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
+      type: 'Wanita',
+      facilities: ['WIFI', 'AC', 'Parking Lot'],
+      description:
+        'Kost khusus wanita dengan lingkungan aman dan nyaman. Lokasi strategis.',
     },
   ];
 
-  // Data Popular
+  // =============================
+  // POPULAR (SUDAH DINAMIS)
+  // =============================
   const popularData = [
     {
       id: 1,
       title: 'Triple J',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
+      type: 'Campur',
+      facilities: ['WIFI', 'AC'],
+      description:
+        'Kost campur dengan suasana tenang dan nyaman. Cocok untuk mahasiswa.',
     },
     {
       id: 2,
-      title: 'Kost mila',
+      title: 'Kost Mila',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
+      type: 'Wanita',
+      facilities: ['WIFI', 'Bathroom'],
+      description: 'Kost khusus wanita, bersih dan aman, dekat dengan kampus.',
     },
     {
       id: 3,
       title: 'KK2 Garrele',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
+      type: 'Pria',
+      facilities: ['Parking Lot', 'AC'],
+      description:
+        'Kost murah khusus pria dengan area parkir luas dan akses mudah.',
     },
     {
       id: 4,
       title: 'Pavillion',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
+      type: 'Campur',
+      facilities: ['WiFi', 'AC', 'Bathroom'],
+      description:
+        'Kost campur dengan fasilitas premium dan lokasi sangat strategis.',
     },
   ];
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <Header label="Find Your Kost" backButton={false} />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={styles.scrollView}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+
         {/* Search Bar */}
         <View style={styles.searchContainer}>
           <TextInput
@@ -113,8 +136,13 @@ const HomePage = ({navigation}) => {
 
           <View style={styles.recommendedGrid}>
             {recommendedData.map(item => (
-              <TouchableOpacity key={item.id} style={styles.recommendedCard}>
-                <View style={styles.cardImage} />
+              <TouchableOpacity
+                key={item.id}
+                style={styles.recommendedCard}
+                onPress={() => navigation.navigate('Detail', { item })}
+              >
+                <item.svg width={120} height={85} />
+
                 <View style={styles.cardContent}>
                   <Text style={styles.cardTitle}>{item.title}</Text>
                   <Text style={styles.cardLocation}>{item.location}</Text>
@@ -138,8 +166,13 @@ const HomePage = ({navigation}) => {
           <Gap height={12} />
 
           {popularData.map(item => (
-            <TouchableOpacity key={item.id} style={styles.popularCard}>
-              <View style={styles.popularCardImage} />
+            <TouchableOpacity
+              key={item.id}
+              style={styles.popularCard}
+              onPress={() => navigation.navigate('Detail', { item })}
+            >
+              <item.svg width={120} height={85} />
+
               <View style={styles.popularCardContent}>
                 <Text style={styles.popularCardTitle}>{item.title}</Text>
                 <Text style={styles.popularCardLocation}>{item.location}</Text>
@@ -149,6 +182,7 @@ const HomePage = ({navigation}) => {
         </View>
 
         <Gap height={40} />
+
       </ScrollView>
     </View>
   );
@@ -157,20 +191,10 @@ const HomePage = ({navigation}) => {
 export default HomePage;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9F9F9',
-  },
-  scrollView: {
-    flex: 1,
-    paddingHorizontal: 24,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 16,
-    gap: 12,
-  },
+  container: { flex: 1, backgroundColor: '#F9F9F9' },
+  scrollView: { flex: 1, paddingHorizontal: 24 },
+
+  searchContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 16, gap: 12 },
   searchInput: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -188,6 +212,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   banner: {
     backgroundColor: '#6F3E76',
     borderRadius: 12,
@@ -195,41 +220,16 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     marginVertical: 8,
   },
-  bannerContent: {
-    flexDirection: 'column',
-  },
-  bannerTitle: {
-    fontSize: 18,
-    color: '#FFFFFF',
-    marginBottom: 4,
-    fontWeight: '700',
-  },
-  bannerSubtitle: {
-    fontSize: 12,
-    color: '#D2AA1A',
-  },
-  section: {
-    marginVertical: 8,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#020202',
-  },
-  seeAll: {
-    fontSize: 12,
-    color: '#6F3E76',
-  },
-  recommendedGrid: {
-    flexDirection: 'row',
-    gap: 12,
-    justifyContent: 'space-between',
-  },
+  bannerContent: {},
+  bannerTitle: { fontSize: 18, color: '#FFFFFF', marginBottom: 4, fontWeight: '700' },
+  bannerSubtitle: { fontSize: 12, color: '#D2AA1A' },
+
+  section: { marginVertical: 8 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  sectionTitle: { fontSize: 16, fontWeight: '700', color: '#020202' },
+  seeAll: { fontSize: 12, color: '#6F3E76' },
+
+  recommendedGrid: { flexDirection: 'row', gap: 12, justifyContent: 'space-between' },
   recommendedCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -237,23 +237,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 2,
   },
-  cardImage: {
-    width: '100%',
-    height: 120,
-    backgroundColor: '#E0E0E0',
-  },
-  cardContent: {
-    padding: 12,
-  },
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#020202',
-  },
-  cardLocation: {
-    fontSize: 10,
-    color: '#666666',
-  },
+  cardContent: { padding: 12 },
+  cardTitle: { fontSize: 14, fontWeight: '700', color: '#020202' },
+  cardLocation: { fontSize: 10, color: '#666666' },
+
   popularCard: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
@@ -262,23 +249,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     elevation: 2,
   },
-  popularCardImage: {
-    width: 100,
-    height: 100,
-    backgroundColor: '#E0E0E0',
-  },
-  popularCardContent: {
-    flex: 1,
-    padding: 12,
-    justifyContent: 'center',
-  },
-  popularCardTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#020202',
-  },
-  popularCardLocation: {
-    fontSize: 10,
-    color: '#666666',
-  },
+  popularCardContent: { flex: 1, padding: 12, justifyContent: 'center' },
+  popularCardTitle: { fontSize: 14, fontWeight: '700', color: '#020202' },
+  popularCardLocation: { fontSize: 10, color: '#666666' },
 });
