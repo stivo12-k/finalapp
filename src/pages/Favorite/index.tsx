@@ -50,9 +50,6 @@ const Favorite = () => {
       
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.backArrow}>←</Text>
-        </TouchableOpacity>
         <Text style={styles.title}>Favorite</Text>
         <View style={{ width: 20 }} />
       </View>
@@ -62,6 +59,8 @@ const Favorite = () => {
           <TouchableOpacity
             key={item.id}
             style={styles.card}
+            onPress={() => navigation.navigate('Detail', { item })}
+
             
           >
             <Image source={item.image} style={styles.image} />
