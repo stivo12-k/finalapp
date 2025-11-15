@@ -11,6 +11,8 @@ import React, {useState} from 'react';
 import Header from '../../components/molecules/Header';
 import Gap from '../../components/atoms/Gap';
 import BottomNav from '../../components/molecules/BottomNav';
+import Svg from 'react-native-svg';
+import Villa from '../../assets/villa.svg';
 
 const HomePage = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
@@ -23,14 +25,14 @@ const HomePage = ({navigation}) => {
       title: 'MIZTA Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
     },
     {
       id: 2,
       title: 'JAma Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
     },
   ];
 
@@ -41,28 +43,28 @@ const HomePage = ({navigation}) => {
       title: 'Triple J',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
     },
     {
       id: 2,
       title: 'Kost mila',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
     },
     {
       id: 3,
       title: 'KK2 Garrele',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
     },
     {
       id: 4,
       title: 'Pavillion',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
-      image: require('../../assets/LogoUK.svg'),
+      svg: Villa,
     },
   ];
 
@@ -113,8 +115,12 @@ const HomePage = ({navigation}) => {
 
           <View style={styles.recommendedGrid}>
             {recommendedData.map(item => (
-              <TouchableOpacity key={item.id} style={styles.recommendedCard}>
-                <View style={styles.cardImage} />
+              <TouchableOpacity 
+                key={item.id} 
+                style={styles.recommendedCard}
+                onPress={() => navigation.navigate('Detail', { item })} // <<< DITAMBAHKAN
+              >
+                <item.svg width={120} height={85} />
                 <View style={styles.cardContent}>
                   <Text style={styles.cardTitle}>{item.title}</Text>
                   <Text style={styles.cardLocation}>{item.location}</Text>
@@ -138,8 +144,12 @@ const HomePage = ({navigation}) => {
           <Gap height={12} />
 
           {popularData.map(item => (
-            <TouchableOpacity key={item.id} style={styles.popularCard}>
-              <View style={styles.popularCardImage} />
+            <TouchableOpacity 
+              key={item.id} 
+              style={styles.popularCard}
+              onPress={() => navigation.navigate('Detail', { item })} // <<< DITAMBAHKAN
+            >
+              <item.svg width={120} height={85} />
               <View style={styles.popularCardContent}>
                 <Text style={styles.popularCardTitle}>{item.title}</Text>
                 <Text style={styles.popularCardLocation}>{item.location}</Text>
@@ -155,7 +165,6 @@ const HomePage = ({navigation}) => {
 };
 
 export default HomePage;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -225,6 +234,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#6F3E76',
   },
+
+  /* RECOMMENDED */
   recommendedGrid: {
     flexDirection: 'row',
     gap: 12,
@@ -236,11 +247,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     elevation: 2,
-  },
-  cardImage: {
-    width: '100%',
-    height: 120,
-    backgroundColor: '#E0E0E0',
   },
   cardContent: {
     padding: 12,
@@ -254,6 +260,8 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#666666',
   },
+
+  /* POPULAR */
   popularCard: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
@@ -261,11 +269,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 12,
     elevation: 2,
-  },
-  popularCardImage: {
-    width: 100,
-    height: 100,
-    backgroundColor: '#E0E0E0',
   },
   popularCardContent: {
     flex: 1,

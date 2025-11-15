@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import HomePage from '../pages/HomePage';
 import Favorite from '../pages/Favorite';
@@ -10,18 +11,20 @@ import BottomNav from '../components/molecules/BottomNav';
 const MainNavigation = () => {
   const [activeTab, setActiveTab] = useState('home');
 
+  const navigation = useNavigation(); // <<==== Ambil navigation dari stack
+
   const renderPage = () => {
     switch (activeTab) {
       case 'home':
-        return <HomePage />;
+        return <HomePage navigation={navigation} />;
       case 'explore':
-        return <Explore />;
+        return <Explore navigation={navigation} />;
       case 'favorite':
-        return <Favorite />;
+        return <Favorite navigation={navigation} />;
       case 'profile':
-        return <Profile />;
+        return <Profile navigation={navigation} />;
       default:
-        return <HomePage />;
+        return <HomePage navigation={navigation} />;
     }
   };
 
@@ -29,7 +32,6 @@ const MainNavigation = () => {
     <View style={styles.container}>
       <View style={styles.pageContainer}>{renderPage()}</View>
 
-      {/* Bottom Navigation HANYA ADA DI SINI */}
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </View>
   );
