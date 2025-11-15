@@ -6,7 +6,7 @@ import SignUp from './src/pages/SignUp';
 import SplashScreen from './src/pages/SplashScreen';
 import LandingPage from './src/pages/LandingPage';
 import HomePage from './src/pages/HomePage';
-
+import Profile from './src/pages/Profile';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -31,6 +31,11 @@ const App = () => {
         <Stack.Screen
           name="HomePage"
           component={HomePage}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
           options={{headerShown: false}}
         />
       

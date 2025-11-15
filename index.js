@@ -8,6 +8,8 @@ import App from './App';
 import LandingPage from './src/pages/LandingPage';
 import SignIn from './src/pages/SignIn';
 import HomePage from './src/pages/HomePage';
+import Profile from './src/pages/Profile';
+
 
 AppRegistry.registerComponent(appName, () => App);
 

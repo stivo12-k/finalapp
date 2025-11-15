@@ -171,7 +171,9 @@ const HomePage = ({navigation}) => {
 
         <TouchableOpacity 
           style={[styles.navItem, activeTab === 'profile' && styles.navItemActive]}
-          onPress={() => setActiveTab('profile')}
+          onPress={() => {setActiveTab('profile');
+            navigation.navigate('Profile');
+          }}
         >
           <ProfileIcon width={24} height={24} />
           <Text style={[styles.navLabel, activeTab === 'profile' && styles.navLabelActive]}>Profila</Text>
