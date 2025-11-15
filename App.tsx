@@ -5,8 +5,10 @@ import SignIn from './src/pages/SignIn';
 import SignUp from './src/pages/SignUp';
 import SplashScreen from './src/pages/SplashScreen';
 import LandingPage from './src/pages/LandingPage';
+import Detail from './src/pages/Detail';
 
 import MainNavigation from './src/navigation/MainNavigation'; // Tambahkan ini
+
 
 const Stack = createNativeStackNavigator();
 
@@ -20,13 +22,18 @@ const App = () => {
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
 
-        {/* Ganti HomePage -> MainNavigation */}
         <Stack.Screen name="MainNavigation" component={MainNavigation} />
 
+<<<<<<< HEAD
+        <Stack.Screen name="Detail" component={Detail} />
+
+
+=======
         <Stack.Screen
           name="Detail"
           component={Detail}
         />
+>>>>>>> f35e117e4adf5d551d42089903bead053906105d
       </Stack.Navigator>
     </NavigationContainer>
   );
