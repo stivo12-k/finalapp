@@ -23,6 +23,10 @@ const App = () => {
         {/* Ganti HomePage -> MainNavigation */}
         <Stack.Screen name="MainNavigation" component={MainNavigation} />
 
+        <Stack.Screen
+          name="Detail"
+          component={Detail}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
