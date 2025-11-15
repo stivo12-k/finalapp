@@ -24,9 +24,16 @@ const App = () => {
 
         <Stack.Screen name="MainNavigation" component={MainNavigation} />
 
+<<<<<<< HEAD
         <Stack.Screen name="Detail" component={Detail} />
 
 
+=======
+        <Stack.Screen
+          name="Detail"
+          component={Detail}
+        />
+>>>>>>> f35e117e4adf5d551d42089903bead053906105d
       </Stack.Navigator>
     </NavigationContainer>
   );

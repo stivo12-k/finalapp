@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import TextInput from '../../components/molecules/TextInput';
 import Button from '../../components/atoms/Button';
@@ -6,28 +6,25 @@ import Gap from '../../components/atoms/Gap';
 import Logo from '../../assets/LogoUK.svg';
 import BackButton from '../../assets/BackButton.svg';
 
-
-
-
-const SignIn = ({ navigation }) => {
+const SignIn = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate('LandingPage')}>
           <BackButton width={24} height={24} />
         </TouchableOpacity>
-        </View>
+      </View>
       <View style={styles.logoWrapper}>
         <Logo width={191} height={187} />
       </View>
       <View style={styles.formWrapper}>
-        <TextInput 
-        label="Email"
-        placeholder="Email" />
-        <Gap height={3} />      
-        <TextInput 
-        label="Password"
-        placeholder="Password" secureTextEntry={true} />
+        <TextInput label="Email" placeholder="Email" />
+        <Gap height={3} />
+        <TextInput
+          label="Password"
+          placeholder="Password"
+          secureTextEntry={true}
+        />
         <Gap height={32} />
         <Button label="SIGN IN" color="#643173" textColor="#FFFFFF" 
         onPress={() => navigation.replace('MainNavigation')}/>
@@ -50,25 +47,25 @@ export default SignIn;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',   
+    backgroundColor: '#FFFFFF',
   },
-    header: {
+  header: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     paddingHorizontal: 10,
     paddingVertical: 10,
     backgroundColor: '#FFFFFF',
-  },    
+  },
   logoWrapper: {
-    marginTop: 80,            
+    marginTop: 80,
     justifyContent: 'center',
     alignItems: 'center',
   },
-    formWrapper: {
-      width: '100%',            
-      marginTop: 60,
-      paddingHorizontal: 24,
-    },
+  formWrapper: {
+    width: '100%',
+    marginTop: 60,
+    paddingHorizontal: 24,
+  },
   footerTextWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
