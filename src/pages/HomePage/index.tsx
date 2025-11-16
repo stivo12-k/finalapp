@@ -86,10 +86,10 @@ const HomePage = ({navigation}) => {
     },
   ];
 
-  // Gabungkan semua data untuk keperluan search
+
   const allData = [...recommendedData, ...popularData];
 
-  // Filter data berdasarkan title
+
   const filteredData = allData.filter(item =>
     item.title.toLowerCase().includes(searchText.toLowerCase())
   );
