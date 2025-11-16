@@ -9,23 +9,19 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import HomeIcon from '../../assets/home.svg';
-import ExploreIcon from '../../assets/explore.svg';
-import FavoriteIcon from '../../assets/favorite.svg';
-import ProfileIcon from '../../assets/profile.svg';
-import SettingIcon from '../../assets/setting.svg';
+
 import {Button, Gap} from '../../components/atoms';
 import {Header} from '../../components/molecules';
 import ipo from '../../assets/ipo.jpg'
 
-const ProfileScreen = ({navigation}) => {
+const EditProfile = ({navigation}) => {
   const handleBackPress = () => {
     if (navigation && navigation.goBack) navigation.goBack();
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Header label="Profile" backButton={true} onPress={handleBackPress} />
+      <Header label="Edit Profile" backButton={true} onPress={handleBackPress} />
 
       <View style={styles.container}>
         <View style={styles.profileHeader}>
@@ -34,7 +30,7 @@ const ProfileScreen = ({navigation}) => {
 
             <View style={styles.avatarPlaceholder}>
               <Image source={ipo} style={styles.avatarImage} />
-              <Icon name="person" size={1} color="#5B6B73" />
+              <Icon name="person" size={1} color="#5b6b73ff" />
             </View>
 
             <TouchableOpacity style={styles.cameraButton} onPress={() => {}}>
@@ -44,14 +40,12 @@ const ProfileScreen = ({navigation}) => {
 
           <Gap height={70} />
 
-          <Text style={styles.userName}>George Kaunang</Text>
-          <Text style={styles.userEmail}>kunangkunang@gmail.com</Text>
         </View>
 
         <Gap height={36} />
 
         <View style={styles.menuContainer}>
-          <TouchableOpacity style={styles.menuItem} onPress={() => {navigation.navigate('EditProfile')}}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
             
             <Text style={styles.menuItemText}>Settings</Text>
             
@@ -70,28 +64,6 @@ const ProfileScreen = ({navigation}) => {
         </View>
       </View>
 
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem} onPress={() => {}}>
-          <HomeIcon width={24} height={24} />
-          <Text style={styles.navLabel}>Home</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.navItem} onPress={() => {}}>
-          <ExploreIcon width={24} height={24} />
-          <Text style={styles.navLabel}>Explore</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.navItem} onPress={() => {}}>
-          <FavoriteIcon width={24} height={24} />
-          <Text style={styles.navLabel}>Favorita</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.navItem, styles.navItemActive]} onPress={() => {}}>
-          <ProfileIcon width={24} height={24} />
-          <Text style={[styles.navLabel, styles.navLabelActive]}>Profila</Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 };
@@ -188,36 +160,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     alignSelf: 'center',
     width: '60%',
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    backgroundColor: '#D4C4E0',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  navItem: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  navItemActive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  navLabel: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 10,
-    color: '#999999',
-    marginTop: 4,
-  },
-  navLabelActive: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: 10,
-    color: '#6F3E76',
-  },
+  }
 });
 
-export default ProfileScreen;
+export default EditProfile;

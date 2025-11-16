@@ -7,6 +7,9 @@ import SplashScreen from './src/pages/SplashScreen';
 import LandingPage from './src/pages/LandingPage';
 import HomePage from './src/pages/HomePage';
 import Profile from './src/pages/Profile';
+import Favorite from './src/pages/Favorite';
+import EditProfile from './src/pages/EditProfile';
+import DetailPage from './src/pages/DetailPage';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -38,6 +41,22 @@ const App = () => {
           component={Profile}
           options={{headerShown: false}}
         />
+        <Stack.Screen
+          name="Favorite"
+          component={Favorite}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="DetailPage"
+          component={DetailPage}
+          options={{headerShown: false}}
+        />
+        
       
 
       </Stack.Navigator>

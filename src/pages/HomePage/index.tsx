@@ -15,16 +15,48 @@ const HomePage = ({navigation}) => {
     {
       id: 1,
       title: 'MIZTA Kost',
-      location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: '₹150,000',
+      location: 'Jl. Pimpinang Etaas, Minahasa Utara',
+      price: '₹1,500,000',
       image: require('../../assets/LogoUK.svg'),
+
+      // Detail tambahan
+      type: 'Pria',
+      facilities: ['AC', 'WiFi', 'Parking', 'Kamar Mandi Dalam'],
+      description:
+        'MIZTA Kost adalah kost strategis dekat kampus, cocok untuk mahasiswa. Lokasi nyaman, akses transportasi mudah, dan lingkungan aman.',
+      owner: {
+        name: 'Budi Santoso',
+        phone: '+62-812-3333-9999',
+        job: 'Pemilik Kost',
+        email: 'budi@example.com',
+        // use a web uri so DetailPage can load via {uri:...}
+        image: 'https://i.pravatar.cc/150?img=12'
+      },
+      map: {
+        lat: 1.123,
+        long: 124.123
+      }
     },
     {
       id: 2,
       title: 'JAma Kost',
-      location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: '₹150,000',
+      location: 'Jl. Merdeka No.4, Minahasa',
+      price: '₹900,000',
       image: require('../../assets/LogoUK.svg'),
+      type: 'Wanita',
+      facilities: ['WiFi', 'Kamar Mandi Dalam'],
+      description: 'JAma Kost cocok untuk pelajar dan karyawan, fasilitas lengkap dan aman.',
+      owner: {
+        name: 'Siti Aminah',
+        phone: '+62-812-4444-7777',
+        job: 'Pemilik Kost',
+        email: 'siti@example.com',
+        image: 'https://i.pravatar.cc/150?img=5'
+      },
+      map: {
+        lat: 1.321,
+        long: 124.321
+      }
     },
   ];
 
@@ -105,8 +137,12 @@ const HomePage = ({navigation}) => {
 
           <View style={styles.recommendedGrid}>
             {recommendedData.map((item) => (
-              <TouchableOpacity key={item.id} style={styles.recommendedCard}>
-                <View style={styles.cardImage} />
+              <TouchableOpacity
+                key={item.id}
+                style={styles.recommendedCard}
+                onPress={() => navigation.navigate('DetailPage', { kost: item })}
+              >
+                <Image source={item.image} style={styles.cardImage} />
                 <View style={styles.cardContent}>
                   <Text style={styles.cardTitle}>{item.title}</Text>
                   <Text style={styles.cardLocation}>{item.location}</Text>
@@ -130,8 +166,8 @@ const HomePage = ({navigation}) => {
           <Gap height={12} />
 
           {popularData.map((item) => (
-            <TouchableOpacity key={item.id} style={styles.popularCard}>
-              <View style={styles.popularCardImage} />
+            <TouchableOpacity key={item.id} style={styles.popularCard} onPress={() => navigation.navigate('DetailPage', { kost: item })}>
+              <Image source={item.image} style={styles.popularCardImage} />
               <View style={styles.popularCardContent}>
                 <Text style={styles.popularCardTitle}>{item.title}</Text>
                 <Text style={styles.popularCardLocation}>{item.location}</Text>
@@ -163,7 +199,9 @@ const HomePage = ({navigation}) => {
 
         <TouchableOpacity 
           style={[styles.navItem, activeTab === 'favorite' && styles.navItemActive]}
-          onPress={() => setActiveTab('favorite')}
+          onPress={() => {setActiveTab('favorite');
+             navigation.navigate('Favorite');
+          }}
         >
           <FavoriteIcon width={24} height={24} />
           <Text style={[styles.navLabel, activeTab === 'favorite' && styles.navLabelActive]}>Favorita</Text>
