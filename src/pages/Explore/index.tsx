@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView, // (MODIFIKASI 1: Tambahkan ScrollView untuk hasil)
+  ScrollView,
   TouchableOpacity,
   TextInput,
   ImageBackground,
@@ -20,15 +20,12 @@ import MapGrid from '../../assets/googlemaps.png';
 import MaleIcon from '../../assets/male.svg';
 import FemaleIcon from '../../assets/female.svg';
 import MixIcon from '../../assets/mix.svg';
-import SearchIcon from '../../assets/Hide.svg'; // Path Anda dari sebelumnya
-import FilterIcon from '../../assets/Filter.svg'; // Path Anda dari sebelumnya
-import LocationIcon from '../../assets/location.svg'; // Path Anda dari sebelumnya
-import CloseIcon from '../../assets/clear.svg'; // Path Anda dari sebelumnya
-
-// (MODIFIKASI 2: Impor ikon BARU untuk daftar hasil)
-// !! GANTI PATH INI !!
-import RecentIcon from '../../assets/clock.svg'; // <-- GANTI DENGAN PATH ANDA
-import ResultPinIcon from '../../assets/location.svg'; // <-- GANTI DENGAN PATH ANDA
+import SearchIcon from '../../assets/Hide.svg';
+import FilterIcon from '../../assets/Filter.svg';
+import LocationIcon from '../../assets/location.svg';
+import CloseIcon from '../../assets/clear.svg';
+import RecentIcon from '../../assets/clock.svg';
+import ResultPinIcon from '../../assets/location.svg';
 // --- (WAJIB) GANTI PATH ASET INI ---
 
 // --- DATA ---
@@ -73,60 +70,26 @@ const allKostData = [
     svg: Villa,
     coordinates: {top: '55%', left: '25%'},
   },
-  {
-    id: 5,
-    title: 'KK2 Garrele',
-    location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-    price: 450,
-    type: 'Pria',
-    facilities: ['Parking Lot', 'AC'],
-    svg: Villa,
-    coordinates: {top: '70%', left: '35%'},
-  },
-  {
-    id: 6,
-    title: 'Pavillion',
-    location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-    price: 750,
-    type: 'Campur',
-    facilities: ['WIFI', 'AC', 'Bathroom'],
-    svg: Villa,
-    coordinates: {top: '45%', left: '65%'},
-  },
-  {
-    id: 7, // Data contoh untuk search
-    title: 'Azalea Hall',
-    location: 'airmadidi atas, Minahasa Utara',
-    price: 250,
-    type: 'Wanita',
-    facilities: ['WIFI', 'AC'],
-    svg: Villa,
-    coordinates: {top: '60%', left: '50%'},
-  },
+  // ... data lainnya ...
 ];
 // --- DATA ---
 
 const ExplorePage = ({navigation}) => {
-  // State untuk data pin di peta
   const [visiblePins, setVisiblePins] = useState(allKostData);
-
-  // State untuk modal
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-
-  // State untuk nilai-nilai di dalam filter
   const [searchText, setSearchText] = useState('');
   const [selectedType, setSelectedType] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState(800);
   const [selectedFacilities, setSelectedFacilities] = useState([]);
-
-  // (MODIFIKASI 3: Tambah state untuk "Recent Searches")
   const [recentSearches, setRecentSearches] = useState([
     {id: 1, title: 'Azalea Hall', location: 'airmadidi atas, Minahasa Utara'},
     {id: 2, title: 'Kost Mila', location: 'Jl. Pimpinang etaas'},
   ]);
-  // (Di aplikasi nyata, Anda akan memuat ini dari AsyncStorage)
 
-  // (MODIFIKASI 4: Logika useEffect diperbarui)
+  // (MODIFIKASI 1: Tambah state baru untuk toast)
+  const [isToastVisible, setIsToastVisible] = useState(false);
+
+  // (MODIFIKASI 2: Perbarui useEffect)
   useEffect(() => {
     const applyLiveFilters = () => {
       let filtered = allKostData;
@@ -136,6 +99,8 @@ const ExplorePage = ({navigation}) => {
         filtered = filtered.filter(item =>
           item.title.toLowerCase().includes(searchText.toLowerCase()),
         );
+        // Sembunyikan toast filter jika pengguna mulai mencari
+        setIsToastVisible(false);
       }
       // KASUS 2: Search bar kosong (tampilan peta)
       else {
@@ -152,8 +117,6 @@ const ExplorePage = ({navigation}) => {
           );
         }
       }
-
-      // visiblePins sekarang digunakan oleh Peta dan Daftar Hasil
       setVisiblePins(filtered);
     };
 
@@ -173,25 +136,55 @@ const ExplorePage = ({navigation}) => {
     }
   };
 
-  // Fungsi ini dipanggil saat tombol "Apply" di modal ditekan
   const handleApplyFilters = () => {
     setIsFilterVisible(false);
-    // (MODIFIKASI 5: Saat filter diterapkan, kembali ke peta)
-    setSearchText(''); // Ini akan memicu useEffect & kembali ke peta
+    setSearchText('');
+    // (MODIFIKASI 3: Tampilkan toast saat filter dari modal diterapkan)
+    // Cek apakah ada filter yang aktif selain harga default
+    if (selectedType || selectedFacilities.length > 0 || selectedPrice < 800) {
+      setIsToastVisible(true);
+    }
   };
 
-  // Fungsi untuk mereset semua filter
   const handleResetFilters = () => {
     setSearchText('');
     setSelectedType(null);
     setSelectedPrice(800);
     setSelectedFacilities([]);
     setIsFilterVisible(false);
+    setIsToastVisible(false); // Sembunyikan toast saat reset
+  };
+
+  // (MODIFIKASI 4: Buat fungsi baru untuk menangani klik filter cepat)
+  const handleQuickFilterPress = type => {
+    const newType = selectedType === type ? null : type;
+    setSelectedType(newType);
+
+    // Tampilkan toast jika filter DIPILIH, sembunyikan jika DIBATALKAN
+    if (newType !== null) {
+      setIsToastVisible(true);
+    } else {
+      setIsToastVisible(false);
+    }
   };
 
   // --- FUNGSI RENDER ---
 
-  // (MODIFIKASI 6: Buat fungsi terpisah untuk merender peta)
+  // (MODIFIKASI 5: Buat fungsi untuk merender Toast)
+  const renderFilterToast = () => (
+    <View style={styles.toastContainer}>
+      <Text style={styles.toastText}>
+        Showing {visiblePins.length}{' '}
+        {visiblePins.length === 1 ? 'property' : 'properties'}
+      </Text>
+      <TouchableOpacity onPress={() => setIsToastVisible(false)}>
+        {/* Menggunakan ulang CloseIcon dengan warna putih */}
+        <CloseIcon width={16} height={16} fill="#FFFFFF" />
+      </TouchableOpacity>
+    </View>
+  );
+
+  // (MODIFIKASI 6: Perbarui renderMap)
   const renderMap = () => (
     <ImageBackground
       source={MapGrid}
@@ -200,30 +193,70 @@ const ExplorePage = ({navigation}) => {
       {/* === Quick Filters === */}
       <View style={styles.quickFilterContainer}>
         <TouchableOpacity
-          style={styles.quickFilterButton}
-          onPress={() =>
-            setSelectedType(selectedType === 'Pria' ? null : 'Pria')
-          }>
-          <MaleIcon width={16} height={16} fill="#333" />
-          <Text style={styles.quickFilterText}>Male</Text>
+          // Gunakan style dinamis untuk tombol yang aktif
+          style={[
+            styles.quickFilterButton,
+            selectedType === 'Pria' && styles.quickFilterButtonSelected,
+          ]}
+          onPress={() => handleQuickFilterPress('Pria')} // Panggil fungsi baru
+        >
+          <MaleIcon
+            width={16}
+            height={16}
+            fill={selectedType === 'Pria' ? '#FFFFFF' : '#333'}
+          />
+          <Text
+            style={[
+              styles.quickFilterText,
+              selectedType === 'Pria' && styles.quickFilterTextSelected,
+            ]}>
+            Male
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.quickFilterButton}
-          onPress={() =>
-            setSelectedType(selectedType === 'Wanita' ? null : 'Wanita')
-          }>
-          <FemaleIcon width={16} height={16} fill="#333" />
-          <Text style={styles.quickFilterText}>Female</Text>
+          style={[
+            styles.quickFilterButton,
+            selectedType === 'Wanita' && styles.quickFilterButtonSelected,
+          ]}
+          onPress={() => handleQuickFilterPress('Wanita')} // Panggil fungsi baru
+        >
+          <FemaleIcon
+            width={16}
+            height={16}
+            fill={selectedType === 'Wanita' ? '#FFFFFF' : '#333'}
+          />
+          <Text
+            style={[
+              styles.quickFilterText,
+              selectedType === 'Wanita' && styles.quickFilterTextSelected,
+            ]}>
+            Female
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.quickFilterButton}
-          onPress={() =>
-            setSelectedType(selectedType === 'Campur' ? null : 'Campur')
-          }>
-          <MixIcon width={16} height={16} fill="#333" />
-          <Text style={styles.quickFilterText}>Campur</Text>
+          style={[
+            styles.quickFilterButton,
+            selectedType === 'Campur' && styles.quickFilterButtonSelected,
+          ]}
+          onPress={() => handleQuickFilterPress('Campur')} // Panggil fungsi baru
+        >
+          <MixIcon
+            width={16}
+            height={16}
+            fill={selectedType === 'Campur' ? '#FFFFFF' : '#333'}
+          />
+          <Text
+            style={[
+              styles.quickFilterText,
+              selectedType === 'Campur' && styles.quickFilterTextSelected,
+            ]}>
+            Campur
+          </Text>
         </TouchableOpacity>
       </View>
+
+      {/* === (MODIFIKASI 7: Render Toast jika visible) === */}
+      {isToastVisible && renderFilterToast()}
 
       {/* === Render Pins === */}
       {visiblePins.map(item => {
@@ -236,7 +269,6 @@ const ExplorePage = ({navigation}) => {
               {top: item.coordinates.top, left: item.coordinates.left},
             ]}
             onPress={() => {
-              /* Simpan ke recent search di sini */
               navigation.navigate('Detail', {item});
             }}>
             <View style={styles.pin}>
@@ -254,7 +286,7 @@ const ExplorePage = ({navigation}) => {
     </ImageBackground>
   );
 
-  // (MODIFIKASI 7: Buat fungsi terpisah untuk merender hasil pencarian)
+  // (Fungsi renderSearchResults tidak berubah)
   const renderSearchResults = () => (
     <ScrollView style={styles.searchListContainer}>
       {/* --- Bagian Recent --- */}
@@ -285,7 +317,6 @@ const ExplorePage = ({navigation}) => {
             key={`result-${item.id}`}
             style={styles.listItem}
             onPress={() => {
-              // (Di aplikasi nyata, simpan ini ke AsyncStorage)
               navigation.navigate('Detail', {item});
             }}>
             <View style={styles.listItemIcon}>
@@ -307,7 +338,6 @@ const ExplorePage = ({navigation}) => {
   );
 
   // --- RETURN UTAMA ---
-  // (MODIFIKASI 8: Ubah struktur return utama)
   return (
     <View style={styles.container}>
       {/* === Search Bar Area (Selalu terlihat) === */}
@@ -492,24 +522,20 @@ const ExplorePage = ({navigation}) => {
 
 export default ExplorePage;
 
-// (MODIFIKASI 9: Tambahkan/Ubah styles)
+// (MODIFIKASI 8: Tambahkan/Ubah styles)
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#FFFFFF'},
-
-  // --- Area Konten Utama ---
   contentArea: {
-    flex: 1, // Ini penting agar peta atau daftar mengisi ruang
+    flex: 1,
   },
-
-  // --- Search Header (di luar Peta) ---
   searchHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 50, // Sesuaikan dengan status bar Anda
-    paddingBottom: 12, // Beri jarak
+    paddingTop: 50,
+    paddingBottom: 12,
     gap: 12,
-    backgroundColor: '#FFFFFF', // Latar belakang putih
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
   },
@@ -517,12 +543,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F3F3F3', // Warna abu-abu muda
+    backgroundColor: '#F3F3F3',
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
     gap: 10,
-    // Hapus shadow/elevation karena sekarang bagian dari header
   },
   searchInput: {
     flex: 1,
@@ -533,7 +558,7 @@ const styles = StyleSheet.create({
   filterButton: {
     width: 44,
     height: 44,
-    backgroundColor: '#F3F3F3', // Samakan dengan search bar
+    backgroundColor: '#F3F3F3',
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
@@ -541,7 +566,7 @@ const styles = StyleSheet.create({
 
   // --- Map Styles ---
   mapBackground: {
-    flex: 1, // Peta akan mengisi contentArea
+    flex: 1,
     width: '100%',
     height: '100%',
     position: 'relative',
@@ -551,7 +576,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 10,
     paddingHorizontal: 20,
-    marginTop: 16, // Jarak dari atas (karena search bar sudah pindah)
+    marginTop: 16,
   },
   quickFilterButton: {
     flexDirection: 'row',
@@ -564,10 +589,23 @@ const styles = StyleSheet.create({
     elevation: 2,
     shadowColor: '#000',
     shadowOpacity: 0.1,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  // (BARU) Style untuk tombol filter aktif
+  quickFilterButtonSelected: {
+    backgroundColor: '#6F3E76', // Warna ungu
+    borderColor: '#FFFFFF',
+    elevation: 4,
   },
   quickFilterText: {
     fontSize: 14,
     color: '#333',
+  },
+  // (BARU) Style untuk teks filter aktif
+  quickFilterTextSelected: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
   locationButton: {
     position: 'absolute',
@@ -606,12 +644,35 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 
-  // --- (BARU) Search List Styles ---
+  // --- (BARU) Toast Styles ---
+  toastContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#6F3E76', // Warna ungu
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    marginHorizontal: 20, // Samakan dengan padding halaman
+    marginTop: 12, // Jarak from filter
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  toastText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+
+  // --- Search List Styles ---
   searchListContainer: {
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 16,
-    backgroundColor: '#FFFFFF', // Pastikan latar belakang putih
+    backgroundColor: '#FFFFFF',
   },
   listSectionTitle: {
     fontSize: 16,
@@ -634,7 +695,6 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   listContent: {
-    // (BARU) untuk membungkus teks
     flex: 1,
   },
   listItemTitle: {
@@ -653,7 +713,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
-  // --- Modal Styles (Sedikit penyesuaian) ---
+  // --- Modal Styles ---
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
@@ -711,8 +771,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    flexBasis: '30%', // Untuk 3 kolom
-    minWidth: '30%', // Pastikan muat
+    flexBasis: '30%',
+    minWidth: '30%',
   },
   optionButtonSelected: {
     backgroundColor: '#6F3E76',
