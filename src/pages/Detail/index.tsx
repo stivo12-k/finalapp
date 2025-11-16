@@ -46,20 +46,21 @@ const Detail = () => {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         
-        {/* BACK BUTTON */}
+
         <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 20 }}>
           <BackButton width={24} height={24} />
         </TouchableOpacity>
 
-        {/* IMAGE HEADER */}
+
         <View style={styles.imageWrapper}>
-          <Image source={hotel} style={styles.headerImage} />
-          <HeartRed width={32} height={32} style={styles.heartIcon} />
+            <item.svg width="100%" height={250} />
+            
         </View>
 
         {/* TITLE */}
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>{item.title}</Text>
+          <HeartRed width={32} height={32} style={styles.heartIcon} />
 
           <View style={styles.row}>
             <LocationIcon width={18} height={18} />
@@ -69,7 +70,7 @@ const Detail = () => {
           <Text style={styles.price}>{item.price}</Text>
         </View>
 
-        {/* ==== TIPE KOST (DINAMIS) ==== */}
+      
         <Text style={styles.sectionTitle}>Tipe Kost</Text>
 
         <View style={styles.typeRow}>
@@ -79,7 +80,7 @@ const Detail = () => {
           </View>
         </View>
 
-        {/* ==== FACILITIES (DINAMIS) ==== */}
+      
         <Text style={styles.sectionTitle}>Facilities</Text>
 
         <View style={styles.facilitiesRow}>

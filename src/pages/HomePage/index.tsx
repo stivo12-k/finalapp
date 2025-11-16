@@ -15,9 +15,6 @@ import Villa from '../../assets/villa.svg';
 const HomePage = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
 
-  // =============================
-  // RECOMMENDED (SUDAH DINAMIS)
-  // =============================
   const recommendedData = [
     {
       id: 1,
@@ -43,9 +40,6 @@ const HomePage = ({navigation}) => {
     },
   ];
 
-  // =============================
-  // POPULAR (SUDAH DINAMIS)
-  // =============================
   const popularData = [
     {
       id: 1,
@@ -92,6 +86,14 @@ const HomePage = ({navigation}) => {
     },
   ];
 
+  // Gabungkan semua data untuk keperluan search
+  const allData = [...recommendedData, ...popularData];
+
+  // Filter data berdasarkan title
+  const filteredData = allData.filter(item =>
+    item.title.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
       <Header label="Find Your Kost" backButton={false} />
@@ -113,75 +115,105 @@ const HomePage = ({navigation}) => {
 
         <Gap height={16} />
 
-        {/* Banner */}
-        <View style={styles.banner}>
-          <View style={styles.bannerContent}>
-            <Text style={styles.bannerTitle}>TINGGAL NYAMAN DEKAT UNKLAB</Text>
-            <Text style={styles.bannerSubtitle}>DAPAT JADI ANAK UNKLAB</Text>
+    
+        {searchText.length > 0 ? (
+          <View>
+            <Text style={styles.sectionTitle}>Search Results</Text>
+            <Gap height={12} />
+
+            {filteredData.length === 0 ? (
+              <Text style={{color: '#666'}}>No results found</Text>
+            ) : (
+              filteredData.map(item => (
+                <TouchableOpacity
+                  key={item.id}
+                  style={styles.popularCard}
+                  onPress={() => navigation.navigate('Detail', { item })}
+                >
+                  <item.svg width={120} height={85} />
+                  <View style={styles.popularCardContent}>
+                    <Text style={styles.popularCardTitle}>{item.title}</Text>
+                    <Text style={styles.popularCardLocation}>{item.location}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))
+            )}
+
+            <Gap height={40} />
           </View>
-        </View>
-
-        <Gap height={24} />
-
-        {/* Recommended */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Recommended</Text>
-            <TouchableOpacity>
-              <Text style={styles.seeAll}>See all</Text>
-            </TouchableOpacity>
-          </View>
-
-          <Gap height={12} />
-
-          <View style={styles.recommendedGrid}>
-            {recommendedData.map(item => (
-              <TouchableOpacity
-                key={item.id}
-                style={styles.recommendedCard}
-                onPress={() => navigation.navigate('Detail', { item })}
-              >
-                <item.svg width={120} height={85} />
-
-                <View style={styles.cardContent}>
-                  <Text style={styles.cardTitle}>{item.title}</Text>
-                  <Text style={styles.cardLocation}>{item.location}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
-        <Gap height={24} />
-
-        {/* Popular */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Popular for you</Text>
-            <TouchableOpacity>
-              <Text style={styles.seeAll}>See all</Text>
-            </TouchableOpacity>
-          </View>
-
-          <Gap height={12} />
-
-          {popularData.map(item => (
-            <TouchableOpacity
-              key={item.id}
-              style={styles.popularCard}
-              onPress={() => navigation.navigate('Detail', { item })}
-            >
-              <item.svg width={120} height={85} />
-
-              <View style={styles.popularCardContent}>
-                <Text style={styles.popularCardTitle}>{item.title}</Text>
-                <Text style={styles.popularCardLocation}>{item.location}</Text>
+        ) : (
+          <>
+            {/* Banner */}
+            <View style={styles.banner}>
+              <View style={styles.bannerContent}>
+                <Text style={styles.bannerTitle}>TINGGAL NYAMAN DEKAT UNKLAB</Text>
+                <Text style={styles.bannerSubtitle}>DAPAT JADI ANAK UNKLAB</Text>
               </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+            </View>
 
-        <Gap height={40} />
+            <Gap height={24} />
+
+            {/* Recommended */}
+            <View style={styles.section}>
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>Recommended</Text>
+                <TouchableOpacity>
+                  <Text style={styles.seeAll}>See all</Text>
+                </TouchableOpacity>
+              </View>
+
+              <Gap height={12} />
+
+              <View style={styles.recommendedGrid}>
+                {recommendedData.map(item => (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={styles.recommendedCard}
+                    onPress={() => navigation.navigate('Detail', { item })}
+                  >
+                    <item.svg width={120} height={85} />
+
+                    <View style={styles.cardContent}>
+                      <Text style={styles.cardTitle}>{item.title}</Text>
+                      <Text style={styles.cardLocation}>{item.location}</Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+
+            <Gap height={24} />
+
+            {/* Popular */}
+            <View style={styles.section}>
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>Popular for you</Text>
+                <TouchableOpacity>
+                  <Text style={styles.seeAll}>See all</Text>
+                </TouchableOpacity>
+              </View>
+
+              <Gap height={12} />
+
+              {popularData.map(item => (
+                <TouchableOpacity
+                  key={item.id}
+                  style={styles.popularCard}
+                  onPress={() => navigation.navigate('Detail', { item })}
+                >
+                  <item.svg width={120} height={85} />
+
+                  <View style={styles.popularCardContent}>
+                    <Text style={styles.popularCardTitle}>{item.title}</Text>
+                    <Text style={styles.popularCardLocation}>{item.location}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <Gap height={40} />
+          </>
+        )}
 
       </ScrollView>
     </View>
