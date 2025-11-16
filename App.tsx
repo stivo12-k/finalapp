@@ -9,7 +9,8 @@ import HomePage from './src/pages/HomePage';
 import Profile from './src/pages/Profile';
 import Favorite from './src/pages/Favorite';
 import EditProfile from './src/pages/EditProfile';
-import DetailPage from './src/pages/DetailPage';
+import Detail from './src/pages/Detail';
+import Filter from './src/pages/Filter';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -52,8 +53,13 @@ const App = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="DetailPage"
-          component={DetailPage}
+          name="Detail"
+          component={Detail}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Filter"
+          component={Filter}
           options={{headerShown: false}}
         />
         

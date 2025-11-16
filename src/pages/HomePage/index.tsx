@@ -9,6 +9,7 @@ import ProfileIcon from '../../assets/profile.svg';
 
 const HomePage = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
+  const [appliedFilters, setAppliedFilters] = useState<any>(null);
 
   // Data untuk Recommended
   const recommendedData = [
@@ -92,6 +93,13 @@ const HomePage = ({navigation}) => {
     },
   ];
 
+  // Apply filters if any (e.g., type: 'Pria' | 'Wanita' | 'Campur')
+  const filteredRecommended = recommendedData.filter(item => {
+    if (!appliedFilters) return true;
+    if (appliedFilters.type && appliedFilters.type !== item.type) return false;
+    return true;
+  });
+
   const [activeTab, setActiveTab] = useState('home');
 
   return (
@@ -107,7 +115,15 @@ const HomePage = ({navigation}) => {
             value={searchText}
             onChangeText={setSearchText}
           />
-          <TouchableOpacity style={styles.filterButton}>
+          <TouchableOpacity
+            style={styles.filterButton}
+            onPress={() =>
+              navigation.navigate('Filter', {
+                onApply: (filters: any) => {
+                  setAppliedFilters(filters);
+                },
+              })
+            }>
             <Text>⚙️</Text>
           </TouchableOpacity>
         </View>
@@ -136,11 +152,11 @@ const HomePage = ({navigation}) => {
           <Gap height={12} />
 
           <View style={styles.recommendedGrid}>
-            {recommendedData.map((item) => (
+            {filteredRecommended.map((item) => (
               <TouchableOpacity
                 key={item.id}
                 style={styles.recommendedCard}
-                onPress={() => navigation.navigate('DetailPage', { kost: item })}
+                onPress={() => navigation.navigate('Detail', { kost: item })}
               >
                 <Image source={item.image} style={styles.cardImage} />
                 <View style={styles.cardContent}>
