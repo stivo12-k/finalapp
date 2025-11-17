@@ -10,13 +10,13 @@ const BottomNav = ({activeTab, onTabChange}) => {
   return (
     <View style={styles.bottomNav}>
       <TouchableOpacity
-        style={[styles.navItem, activeTab === 'home' && styles.navItemActive]}
-        onPress={() => onTabChange('home')}>
+        style={[styles.navItem, activeTab === 'Home' && styles.navItemActive]}
+        onPress={() => onTabChange('Home')}>
         <HomeIcon width={24} height={24} />
         <Text
           style={[
             styles.navLabel,
-            activeTab === 'home' && styles.navLabelActive,
+            activeTab === 'Home' && styles.navLabelActive,
           ]}>
           Home
         </Text>
@@ -25,14 +25,14 @@ const BottomNav = ({activeTab, onTabChange}) => {
       <TouchableOpacity
         style={[
           styles.navItem,
-          activeTab === 'explore' && styles.navItemActive,
+          activeTab === 'Explore' && styles.navItemActive,
         ]}
-        onPress={() => onTabChange('explore')}>
+        onPress={() => onTabChange('Explore')}>
         <ExploreIcon width={24} height={24} />
         <Text
           style={[
             styles.navLabel,
-            activeTab === 'explore' && styles.navLabelActive,
+            activeTab === 'Explore' && styles.navLabelActive,
           ]}>
           Explore
         </Text>
@@ -41,14 +41,14 @@ const BottomNav = ({activeTab, onTabChange}) => {
       <TouchableOpacity
         style={[
           styles.navItem,
-          activeTab === 'favorite' && styles.navItemActive,
+          activeTab === 'Favorite' && styles.navItemActive,
         ]}
-        onPress={() => onTabChange('favorite')}>
+        onPress={() => onTabChange('Favorite')}>
         <FavoriteIcon width={24} height={24} />
         <Text
           style={[
             styles.navLabel,
-            activeTab === 'favorite' && styles.navLabelActive,
+            activeTab === 'Favorite' && styles.navLabelActive,
           ]}>
           Favorite
         </Text>
@@ -57,14 +57,14 @@ const BottomNav = ({activeTab, onTabChange}) => {
       <TouchableOpacity
         style={[
           styles.navItem,
-          activeTab === 'profile' && styles.navItemActive,
+          activeTab === 'Profile' && styles.navItemActive,
         ]}
-        onPress={() => onTabChange('profile')}>
+        onPress={() => onTabChange('Profile')}>
         <ProfileIcon width={24} height={24} />
         <Text
           style={[
             styles.navLabel,
-            activeTab === 'profile' && styles.navLabelActive,
+            activeTab === 'Profile' && styles.navLabelActive,
           ]}>
           Profile
         </Text>
