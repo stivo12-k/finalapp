@@ -368,9 +368,6 @@ const ExplorePage = ({navigation}) => {
         {searchText.length > 0 ? renderSearchResults() : renderMap()}
       </View>
 
-      {/* === Bottom Navigation === */}
-      <BottomNav active="Explore" />
-
       {/* === Modal Filter (Tidak berubah) === */}
       <Modal
         visible={isFilterVisible}
