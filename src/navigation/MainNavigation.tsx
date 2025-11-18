@@ -22,7 +22,7 @@ const MainNavigation = () => {
       case 'favorite':
         return <Favorite navigation={navigation} />;
       case 'profile':
-        return <Profile navigation={navigation} />;
+        return <Profile navigation={navigation} onTabChange={setActiveTab} />;
       default:
         return <HomePage navigation={navigation} />;
     }

@@ -6,6 +6,7 @@ import SignUp from './src/pages/SignUp';
 import SplashScreen from './src/pages/SplashScreen';
 import LandingPage from './src/pages/LandingPage';
 import Detail from './src/pages/Detail';
+import EditProfile from './src/pages/EditProfile';
 
 import MainNavigation from './src/navigation/MainNavigation'; // Tambahkan ini
 
@@ -25,6 +26,7 @@ const App = () => {
         <Stack.Screen name="MainNavigation" component={MainNavigation} />
 
         <Stack.Screen name="Detail" component={Detail} />
+        <Stack.Screen name="EditProfile" component={EditProfile} />
 
 
       </Stack.Navigator>
