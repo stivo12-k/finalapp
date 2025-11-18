@@ -12,5 +12,3 @@ import Profile from './src/pages/Profile';
 
 
 AppRegistry.registerComponent(appName, () => App);
-
-
