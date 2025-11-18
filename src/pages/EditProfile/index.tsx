@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,64 +6,111 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  ScrollView,
+  TextInput as RNTextInput,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {Button, Gap} from '../../components/atoms';
-import {Header} from '../../components/molecules';
-import ipo from '../../assets/ipo.jpg'
+import {Header, TextInput} from '../../components/molecules';
+import ipo from '../../assets/ipo.jpg';
+import CalendarIcon from '../../assets/Calendar.svg';
 
 const EditProfile = ({navigation}) => {
+  const [username, setUsername] = useState('George Kaunang');
+  const [email, setEmail] = useState('kunangkunang@gmail.com');
+  const [dateOfBirth, setDateOfBirth] = useState('November/21/1992');
+
   const handleBackPress = () => {
     if (navigation && navigation.goBack) navigation.goBack();
+  };
+
+  const handleSave = () => {
+    // Handle save logic here
+    navigation.goBack();
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header label="Edit Profile" backButton={true} onPress={handleBackPress} />
 
-      <View style={styles.container}>
-        <View style={styles.profileHeader}>
-          <View style={styles.avatarContainer}>
-            <View style={styles.avatarBackground} />
+      
 
-            <View style={styles.avatarPlaceholder}>
-              <Image source={ipo} style={styles.avatarImage} />
-              <Icon name="person" size={1} color="#5b6b73ff" />
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+        <View style={styles.container}>
+          <View style={styles.profileHeader}>
+          <Gap height={40} />
+            <View style={styles.avatarContainer}>
+              <View style={styles.avatarBackground} />
+              
+
+              <View style={styles.avatarPlaceholder}>
+                <Image source={ipo} style={styles.avatarImage} />
+                <Icon name="person" size={1} color="#5b6b73ff" />
+              </View>
+
+              <TouchableOpacity style={styles.cameraButton} onPress={() => {}}>
+                <Icon name="camera" size={18} color="#FFFFFF" />
+              </TouchableOpacity>
             </View>
-
-            <TouchableOpacity style={styles.cameraButton} onPress={() => {}}>
-              <Icon name="camera" size={18} color="#FFFFFF" />
-            </TouchableOpacity>
+            <Gap height={60} />
           </View>
 
-          <Gap height={70} />
+          <Gap height={40} />
 
+          <View style={styles.formContainer}>
+            <TextInput
+              label="Username"
+              placeholder="Username"
+              value={username}
+              onChangeText={setUsername}
+            />
+
+            <Gap height={20} />
+
+            <TextInput
+              label="Email"
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+            />
+
+            <Gap height={20} />
+
+            <View>
+              <Text style={styles.label}>Date of birth</Text>
+              <View style={styles.dateInputContainer}>
+                <RNTextInput
+                  placeholder="Date of birth"
+                  value={dateOfBirth}
+                  onChangeText={setDateOfBirth}
+                  style={styles.dateInput}
+                />
+                <TouchableOpacity style={styles.calendarIcon}>
+                  <CalendarIcon width={20} height={20} />
+                  <Gap height={1} />
+                  <Text style={styles.calendarIconText}></Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          <Gap height={40} />
+
+          <View style={styles.saveButtonWrapper}>
+            <Button
+              label="Save Change"
+              color="#6F3E76"
+              textColor="#FFFFFF"
+              type={''}
+              icon={null}
+              onPress={handleSave}
+            />
+          </View>
         </View>
-
-        <Gap height={36} />
-
-        <View style={styles.menuContainer}>
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            
-            <Text style={styles.menuItemText}>Settings</Text>
-            
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.signOutWrapper}>
-          <Button
-            label="Sign Out"
-            color="transparent"
-            textColor="#FF6B6B"
-            type={''}
-            icon={null}
-            onPress={() => navigation.navigate('LandingPage')}
-          />
-        </View>
-      </View>
-
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -71,11 +118,18 @@ const EditProfile = ({navigation}) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#ffffffff',
+    backgroundColor: '#FFFFFF',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   container: {
     flex: 1,
     paddingHorizontal: 24,
+    paddingBottom: 24,
   },
   profileHeader: {
     alignItems: 'center',
@@ -94,6 +148,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8F0FF',
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
   },
   avatarBackground: {
     position: 'absolute',
@@ -122,45 +177,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 3,
     borderColor: '#FFFFFF',
+    zIndex: 1,
   },
-  userName: {
-    fontFamily: 'Poppins-Medium',
-    fontSize: 18,
-    color: '#1F2A37',
-    marginTop: 8,
+  formContainer: {
+    width: '100%',
   },
-  userEmail: {
+  label: {
     fontFamily: 'Poppins-Regular',
-    fontSize: 12,
-    color: '#9AA0A6',
-    marginTop: 4,
-  },
-  menuContainer: {
-    marginTop: 8,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 8,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    justifyContent: 'space-between',
-    elevation: 1,
-  },
-  menuItemText: {
-    flex: 1,
-    marginLeft: 12,
-    fontFamily: 'Poppins-Medium',
     fontSize: 16,
-    color: '#333333',
+    marginBottom: 10,
+    color: '#020202',
   },
-  signOutWrapper: {
+  dateInputContainer: {
+    position: 'relative',
+  },
+  dateInput: {
+    borderColor: '#020202',
+    borderRadius: 8,
+    borderWidth: 1,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    padding: 10,
+    paddingRight: 45,
+  },
+  calendarIcon: {
+    position: 'absolute',
+    right: 15,
+    top: 10,
+    zIndex: 1,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  saveButtonWrapper: {
+    width: '100%',
     marginTop: 'auto',
-    marginBottom: 24,
-    alignSelf: 'center',
-    width: '60%',
-  }
+  },
 });
 
 export default EditProfile;
