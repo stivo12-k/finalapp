@@ -9,6 +9,7 @@ import {
   TextInput as RNTextInput,
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { launchImageLibrary } from 'react-native-image-picker'; // 1. Import Library
 import Header from '../../components/molecules/Header';
 import Gap from '../../components/atoms/Gap';
 import TextInput from '../../components/molecules/TextInput';
@@ -73,6 +74,30 @@ const EditProfile = ({ navigation }: any) => {
   const [username, setUsername] = useState('George Kaunang');
   const [email, setEmail] = useState('kunangkunang@gmail.com');
   const [dateOfBirth, setDateOfBirth] = useState('November/21/1992');
+  
+  // 2. State untuk menampung foto
+  const [photo, setPhoto] = useState(NullPhoto);
+
+  // 3. Fungsi untuk membuka galeri
+  const changePhoto = async () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 0.5,
+      maxWidth: 200,
+      maxHeight: 200,
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorMessage) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+      } else if (response.assets && response.assets.length > 0) {
+        const source = { uri: response.assets[0].uri };
+        setPhoto(source); // Update state foto
+      }
+    });
+  };
 
   const handleBack = () => {
     if (navigation && navigation.canGoBack()) {
@@ -82,7 +107,7 @@ const EditProfile = ({ navigation }: any) => {
 
   const handleSave = () => {
     // Handle save logic here
-    console.log('Save pressed', { username, email, dateOfBirth });
+    console.log('Save pressed', { username, email, dateOfBirth, photo });
     // You can navigate back or show success message
     if (navigation && navigation.canGoBack()) {
       navigation.goBack();
@@ -100,8 +125,13 @@ const EditProfile = ({ navigation }: any) => {
         {/* Avatar Section */}
         <View style={styles.avatarContainer}>
           <View style={styles.avatarWrapper}>
-            <Image source={NullPhoto} style={styles.avatar} />
-            <TouchableOpacity style={styles.cameraButton}>
+            {/* 4. Ganti source menjadi state photo */}
+            <Image source={photo} style={styles.avatar} />
+            
+            {/* 5. Tambahkan onPress changePhoto */}
+            <TouchableOpacity 
+              style={styles.cameraButton} 
+              onPress={changePhoto}>
               <View style={styles.cameraIconContainer}>
                 <CameraIcon width={16} height={16} color="#FFFFFF" />
               </View>
@@ -235,4 +265,3 @@ const styles = StyleSheet.create({
     height: 20,
   },
 });
-

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'; // 1. Tambahkan useState
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Image,
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { launchImageLibrary } from 'react-native-image-picker'; // 2. Import Library Image Picker
 import Header from '../../components/molecules/Header';
 import Gap from '../../components/atoms/Gap';
 import { NullPhoto } from '../../assets';
@@ -66,6 +67,30 @@ const ArrowRightIcon = ({ width = 16, height = 16, color = '#E5E5E5' }) => (
 );
 
 const Profile = ({ navigation, onTabChange }: any) => {
+  // 3. State untuk menyimpan foto profil
+  const [photo, setPhoto] = useState(NullPhoto);
+
+  // 4. Fungsi untuk membuka galeri
+  const changePhoto = async () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 0.5,
+      maxWidth: 200,
+      maxHeight: 200,
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorMessage) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+      } else if (response.assets && response.assets.length > 0) {
+        const source = { uri: response.assets[0].uri };
+        setPhoto(source);
+      }
+    });
+  };
+
   const handleBack = () => {
     // Change tab to home
     if (onTabChange) {
@@ -97,7 +122,7 @@ const Profile = ({ navigation, onTabChange }: any) => {
 
   return (
     <View style={styles.container}>
-      <Header label="Profile" backButton={true} onPress={handleBack} />
+      <Header label="Profile" />
 
       <ScrollView
         style={styles.scrollView}
@@ -106,8 +131,12 @@ const Profile = ({ navigation, onTabChange }: any) => {
         {/* Avatar Section */}
         <View style={styles.avatarContainer}>
           <View style={styles.avatarWrapper}>
-            <Image source={NullPhoto} style={styles.avatar} />
-            <TouchableOpacity style={styles.cameraButton}>
+            {/* 5. Update Source Image untuk menggunakan state 'photo' */}
+            <Image source={photo} style={styles.avatar} />
+            {/* 6. Tambahkan onPress ke changePhoto */}
+            <TouchableOpacity
+              style={styles.cameraButton}
+              onPress={changePhoto}>
               <View style={styles.cameraIconContainer}>
                 <CameraIcon width={16} height={16} color="#FFFFFF" />
               </View>

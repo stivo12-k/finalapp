@@ -14,9 +14,7 @@ import Gap from '../../components/atoms/Gap';
 import Logo from '../../assets/LogoUK.svg';
 import BackButton from '../../assets/BackButton.svg';
 
-// Asumsi Anda memiliki ikon-ikon ini, jika tidak, gunakan placeholder
-// import FacebookIcon from '../../assets/FacebookIcon.svg';
-// import GoogleIcon from '../../assets/GoogleIcon.svg';
+
 
 const SignUp = ({navigation}) => {
   // State untuk checkbox
