@@ -8,7 +8,7 @@ import LandingPage from './src/pages/LandingPage';
 import Detail from './src/pages/Detail';
 import EditProfile from './src/pages/EditProfile';
 
-import MainNavigation from './src/navigation/MainNavigation'; // Tambahkan ini
+import MainNavigation from './src/navigation/MainNavigation'; 
 
 
 const Stack = createNativeStackNavigator();
@@ -17,6 +17,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
+
 
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LandingPage" component={LandingPage} />
