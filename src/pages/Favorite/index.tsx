@@ -1,58 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
-import BottomNav from '../../components/molecules/BottomNav';
-import villa from '../../assets/villa.svg';
 import { useNavigation } from '@react-navigation/native';
 
+// --- Assets ---
+import Villa from '../../assets/villa.svg'; // Placeholder image
 import LocationIcon from '../../assets/location.svg';
 import HeartRed from '../../assets/heart-red.svg';
-import svg from 'react-native-svg';
 
+// --- Firebase Imports ---
+import { getAuth } from 'firebase/auth';
+import { ref, onValue } from 'firebase/database';
+import { database } from '../../config/Firebase';
 
 const Favorite = () => {
   const navigation = useNavigation();
-  const [activeTab, setActiveTab] = useState('favorite');
+  
+  // State untuk data dinamis
+  const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
+  const auth = getAuth();
+  const user = auth.currentUser;
 
-    if (tab === 'home') navigation.navigate('HomePage');
-    if (tab === 'explore') navigation.navigate('Explore');
-    if (tab === 'favorite') navigation.navigate('Favorite');
-    if (tab === 'profile') navigation.navigate('Profile');
-  };
+  // --- Ambil Data dari Firebase ---
+  useEffect(() => {
+    if (user) {
+      const favRef = ref(database, `users/${user.uid}/favorites`);
+      
+      const unsubscribe = onValue(favRef, (snapshot) => {
+        const data = snapshot.val();
+        
+        if (data) {
+          // Ubah Object Firebase menjadi Array
+          const dataArray = Object.keys(data).map(key => ({
+            ...data[key],
+            id: key 
+          }));
+          setFavorites(dataArray);
+        } else {
+          setFavorites([]);
+        }
+        setLoading(false);
+      });
 
-  const data = [
-    {
-      id: 1,
-      title: 'Maharani Villa Yogyakarta',
-      location: 'airmadidi atas, Minahasa Utara',
-      price: '$320/month',
-      svg:villa,
-      type: 'Pria',
-      facilities: ['WIFI', 'AC', 'Parking Lot'],
-      description:
-        'Kost khusus wanita dengan lingkungan aman dan nyaman. Lokasi strategis.',
-    },
-    {
-      id: 2,
-      title: 'Manhattan Hotel',
-      location: 'airmadidi atas, Minahasa Utara',
-      price: '$230/night',
-      svg:villa,
-      type: 'Wanita',
-      facilities: ['WIFI', 'Bathroom', 'AC', 'Parking Lot'],
-      description:
-        'Kost khusus wanita dengan lingkungan aman dan nyaman. Lokasi strategis.',
-    },
-  ];
+      // Cleanup listener saat keluar halaman
+      return () => unsubscribe();
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -63,32 +66,47 @@ const Favorite = () => {
         <View style={{ width: 20 }} />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {data.map((item, index) => (
-          <TouchableOpacity
-            key={item.id}
-            style={styles.card}
-            onPress={() => navigation.navigate('Detail', { item })}
+      {/* Logic Loading & Empty State */}
+      {loading ? (
+        <View style={styles.centerState}>
+            <ActivityIndicator size="large" color="#6F3E76" />
+        </View>
+      ) : favorites.length === 0 ? (
+        <View style={styles.centerState}>
+            <Text style={styles.emptyText}>Belum ada kost favorit.</Text>
+        </View>
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {favorites.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              style={styles.card}
+              // Navigasi ke Detail membawa data item
+              onPress={() => navigation.navigate('Detail', { item })}
+            >
+              {/* Gambar Placeholder (Karena Database text tidak bisa simpan SVG component) */}
+              <Villa width={120} height={85} style={{borderRadius: 10}} />
 
-            
-          >
-            <item.svg width={120} height={85} />
+              <View style={{ flex: 1, marginLeft: 12 }}>
+                <Text style={styles.cardTitle}>{item.title}</Text>
 
-            <View style={{ flex: 1, marginLeft: 12 }}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
+                <View style={styles.row}>
+                  <LocationIcon width={14} height={14} />
+                  <Text style={styles.location} numberOfLines={1}>{item.location}</Text>
+                </View>
 
-              <View style={styles.row}>
-                <LocationIcon width={14} height={14} />
-                <Text style={styles.location}>{item.location}</Text>
+                <Text style={styles.price}>
+                    Rp {typeof item.price === 'number' ? item.price.toLocaleString('id-ID') : item.price}
+                    <Text style={{fontSize:10, fontWeight:'normal', color:'#888'}}>/bln</Text>
+                </Text>
               </View>
 
-              <Text style={styles.price}>{item.price}</Text>
-            </View>
-
-            <HeartRed width={26} height={26} />
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+              <HeartRed width={26} height={26} />
+            </TouchableOpacity>
+          ))}
+          <View style={{height: 20}} />
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -100,26 +118,32 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 18,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0', // Sedikit border agar header jelas
   },
-
-  backArrow: {
-    fontSize: 28,
-    marginRight: 20,
-  },
-
   title: {
     fontFamily: 'Poppins-Bold',
     fontSize: 20,
     flex: 1,
     textAlign: 'center',
+    color: '#020202',
   },
-
+  centerState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    color: '#888',
+  },
   card: {
     flexDirection: 'row',
     marginHorizontal: 20,
@@ -127,35 +151,30 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
+    alignItems: 'center',
   },
-
-  image: {
-    width: 120,
-    height: 85,
-    borderRadius: 10,
-  },
-
   cardTitle: {
     fontFamily: 'Poppins-Bold',
     fontSize: 14,
     marginBottom: 4,
+    color: '#020202',
   },
-
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
+    paddingRight: 10, 
   },
-
   location: {
     fontFamily: 'Poppins-Regular',
     fontSize: 12,
     marginLeft: 4,
     color: '#6F6F6F',
+    flex: 1, 
   },
-
   price: {
     fontFamily: 'Poppins-Bold',
-    fontSize: 12,
+    fontSize: 14, // Ukuran font disesuaikan
+    color: '#6F3E76',
   },
 });

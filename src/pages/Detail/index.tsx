@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,10 @@ import {
   ScrollView,
 } from 'react-native';
 
+// --- ASSETS ---
 import LocationIcon from '../../assets/location.svg';
-import HeartRed from '../../assets/heart-red.svg';
+import HeartRed from '../../assets/heart-red.svg'; // Icon Merah (Aktif)
+import HeartOutline from '../../assets/heart.svg'; // Icon Outline (Tidak Aktif - Pastikan ada atau ganti Text)
 import Bathroom from '../../assets/bathroom.svg';
 import AC from '../../assets/ac.svg';
 import Wifi from '../../assets/wifi.svg';
@@ -18,15 +20,69 @@ import Male from '../../assets/male.svg';
 import Female from '../../assets/female.svg';
 import Mix from '../../assets/mix.svg';
 import BackButton from '../../assets/BackButton.svg';
-import hotel from '../../assets/hotel.svg';
+import Villa from '../../assets/villa.svg'; // Default image
+
+// --- FIREBASE IMPORTS ---
+import { getAuth } from 'firebase/auth';
+import { ref, set, remove, onValue } from 'firebase/database';
+import { database } from '../../config/Firebase';
+import { showMessage } from 'react-native-flash-message';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Detail = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const { item } = route.params; // Menerima data dari Home/Explore
 
-  const { item } = route.params; // DATA DARI HOMEPAGE
+  // State untuk Favorit
+  const [isFavorite, setIsFavorite] = useState(false);
+  
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  // --- 1. CEK STATUS FAVORIT SAAT HALAMAN DIBUKA ---
+  useEffect(() => {
+    if (user && item) {
+      const favRef = ref(database, `users/${user.uid}/favorites/${item.id}`);
+      const unsubscribe = onValue(favRef, (snapshot) => {
+        setIsFavorite(snapshot.exists());
+      });
+      return () => unsubscribe();
+    }
+  }, [item, user]);
+
+  // --- 2. FUNGSI KLIK TOMBOL LOVE ---
+  const handleToggleFavorite = () => {
+    if (!user) {
+      showMessage({ message: "Silakan login terlebih dahulu", type: "danger" });
+      return;
+    }
+
+    const favRef = ref(database, `users/${user.uid}/favorites/${item.id}`);
+
+    if (isFavorite) {
+      // Hapus
+      remove(favRef)
+        .then(() => showMessage({ message: "Dihapus dari favorit", type: "default" }))
+        .catch(err => console.log(err));
+    } else {
+      // Simpan (Tanpa SVG Component agar DB aman)
+      const itemToSave = {
+        id: item.id,
+        title: item.title,
+        location: item.location,
+        price: item.price,
+        type: item.type,
+        description: item.description,
+        facilities: item.facilities || []
+      };
+
+      set(favRef, itemToSave)
+        .then(() => showMessage({ message: "Tersimpan di favorit", type: "success" }))
+        .catch(err => console.log(err));
+    }
+  };
 
   // === ICON MAPPING ===
   const typeIcons = {
@@ -42,37 +98,55 @@ const Detail = () => {
     'Parking Lot': <Parking width={26} height={26} />,
   };
 
+  // Handle Gambar (Jika SVG component dikirim, pakai itu. Jika tidak, pakai default)
+  const MainImage = item.svg || Villa;
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         
-
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 20 }}>
+        {/* Header Back Button */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <BackButton width={24} height={24} />
         </TouchableOpacity>
 
-
+        {/* Image Header */}
         <View style={styles.imageWrapper}>
-            <item.svg width="100%" height={250} />
-            
+            {/* Render SVG Component */}
+            <MainImage width="100%" height={250} />
         </View>
 
-        {/* TITLE */}
+        {/* TITLE & FAVORITE */}
         <View style={styles.titleWrapper}>
-          <Text style={styles.title}>{item.title}</Text>
-          <HeartRed width={32} height={32} style={styles.heartIcon} />
+          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}}>
+             <View style={{flex:1}}>
+                <Text style={styles.title}>{item.title}</Text>
+             </View>
+             
+             {/* Tombol Love */}
+             <TouchableOpacity onPress={handleToggleFavorite}>
+                {isFavorite ? (
+                    <HeartRed width={32} height={32} />
+                ) : (
+                    // Ganti dengan Icon Outline jika ada, atau pakai Text sementara
+                    <Text style={{fontSize:28}}>🤍</Text> 
+                )}
+             </TouchableOpacity>
+          </View>
 
           <View style={styles.row}>
             <LocationIcon width={18} height={18} />
             <Text style={styles.locationTxt}>{item.location}</Text>
           </View>
 
-          <Text style={styles.price}>{item.price}</Text>
+          <Text style={styles.price}>
+             Rp {typeof item.price === 'number' ? item.price.toLocaleString('id-ID') : item.price}
+             <Text style={{fontSize:12, fontWeight:'normal', color:'#888'}}>/bln</Text>
+          </Text>
         </View>
 
-      
+        {/* TIPE KOST */}
         <Text style={styles.sectionTitle}>Tipe Kost</Text>
-
         <View style={styles.typeRow}>
           <View style={styles.typeBox}>
             {typeIcons[item.type]}
@@ -80,11 +154,10 @@ const Detail = () => {
           </View>
         </View>
 
-      
+        {/* FACILITIES */}
         <Text style={styles.sectionTitle}>Facilities</Text>
-
         <View style={styles.facilitiesRow}>
-          {item.facilities.map((facility, index) => (
+          {item.facilities && item.facilities.map((facility, index) => (
             <View key={index} style={styles.facilityBox}>
               {facilityIcons[facility]}
               <Text style={styles.facilityTxt}>{facility}</Text>
@@ -92,36 +165,26 @@ const Detail = () => {
           ))}
         </View>
 
-        {/* ==== DESCRIPTION (DINAMIS) ==== */}
+        {/* DESCRIPTION */}
         <Text style={styles.sectionTitle}>Deskripsi</Text>
         <Text style={styles.description}>{item.description}</Text>
 
-        {/* === OWNER (MASIH STATIC, BISA DIBUAT DINAMIS KALAU MAU) === */}
+        {/* OWNER */}
         <Text style={styles.sectionTitle}>Pemilik</Text>
-
         <View style={styles.ownerRow}>
           <Image
-            source={{ uri: 'https://i.pravatar.cc/200?img=5' }}
+            source={{ uri: 'https://i.pravatar.cc/200?img=12' }}
             style={styles.ownerImg}
           />
-
           <View>
-            <Text style={styles.ownerName}>Joh Doe</Text>
-            <Text style={styles.ownerJob}>Real Estate Agent</Text>
+            <Text style={styles.ownerName}>John Doe</Text>
+            <Text style={styles.ownerJob}>Pemilik Kost</Text>
           </View>
         </View>
 
         <View style={styles.contactRow}>
           <Text style={styles.phoneTxt}>+62-821-2345-6789</Text>
         </View>
-
-        {/* === MAP DUMMY === */}
-        <Text style={styles.sectionTitle}>Location</Text>
-
-        <Image
-          source={require('../../assets/map.png')}
-          style={styles.map}
-        />
 
         {/* BUTTON */}
         <TouchableOpacity style={styles.button}>
@@ -135,9 +198,6 @@ const Detail = () => {
 };
 
 export default Detail;
-
-
-// REUSABLE UI
 const styles = StyleSheet.create({
   container: {
     flex: 1,

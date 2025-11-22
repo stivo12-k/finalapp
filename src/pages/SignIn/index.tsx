@@ -1,12 +1,35 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import TextInput from '../../components/molecules/TextInput';
 import Button from '../../components/atoms/Button';
 import Gap from '../../components/atoms/Gap';
 import Logo from '../../assets/LogoUK.svg';
 import BackButton from '../../assets/BackButton.svg';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { showMessage } from 'react-native-flash-message';
 
 const SignIn = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onSubmit = () => {
+    const auth = getAuth();
+signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    navigation.navigate('MainNavigation', {userId: user.uid});
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    showMessage({
+      message: errorMessage,
+      type: "danger",
+    });
+  });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -18,16 +41,20 @@ const SignIn = ({navigation}) => {
         <Logo width={191} height={187} />
       </View>
       <View style={styles.formWrapper}>
-        <TextInput label="Email" placeholder="Email" />
+        <TextInput label="Email" placeholder="Email" 
+        value={email} 
+        onChangeText={value => setEmail(value)} />
         <Gap height={3} />
         <TextInput
           label="Password"
           placeholder="Password"
+          value={password} 
+          onChangeText={value => setPassword(value)}
           secureTextEntry={true}
         />
         <Gap height={32} />
         <Button label="SIGN IN" color="#643173" textColor="#FFFFFF" 
-        onPress={() => navigation.replace('MainNavigation')}/>
+        onPress={onSubmit}/>
 
         <Gap height={16} />
 

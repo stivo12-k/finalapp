@@ -66,16 +66,16 @@ const HomePage = ({navigation}) => {
       description: '...',
     },
     {
-      id: 4, // ID diubah agar unik
+      id: 4, 
       title: 'Kost Mila',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 150000, // Berupa Angka
+      price: 150000, 
       svg: Villa,
       type: 'Wanita',
       facilities: ['WIFI', 'Bathroom'],
       description: '...',
     },
-    // ... data lainnya ...
+    
   ];
 
   // (MODIFIKASI 7: Logika Helper untuk Filter)
