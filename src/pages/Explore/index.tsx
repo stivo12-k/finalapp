@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   TextInput,
   ImageBackground,
-  Modal,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Slider from '@react-native-community/slider';
@@ -15,9 +14,6 @@ import Gap from '../../components/atoms/Gap';
 // --- ASSETS ---
 import Villa from '../../assets/villa.svg';
 import MapGrid from '../../assets/googlemaps.png';
-import MaleIcon from '../../assets/male.svg';
-import FemaleIcon from '../../assets/female.svg';
-import MixIcon from '../../assets/mix.svg';
 import SearchIcon from '../../assets/Hide.svg';
 import FilterIcon from '../../assets/Filter.svg';
 import LocationIcon from '../../assets/location.svg';
@@ -72,14 +68,14 @@ const allKostData = [
   },
 ];
 
-const ExplorePage = ({navigation}) => {
+const ExplorePage = ({navigation}: any) => {
   const [visiblePins, setVisiblePins] = useState(allKostData);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [selectedType, setSelectedType] = useState(null);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedPrice, setSelectedPrice] = useState(800);
-  const [selectedFacilities, setSelectedFacilities] = useState([]);
-  const [recentSearches, setRecentSearches] = useState([
+  const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
+  const [recentSearches] = useState([
     {id: 1, title: 'Azalea Hall', location: 'airmadidi atas, Minahasa Utara'},
     {id: 2, title: 'Kost Mila', location: 'Jl. Pimpinang etaas'},
   ]);
@@ -116,16 +112,6 @@ const ExplorePage = ({navigation}) => {
   }, [searchText, selectedType, selectedPrice, selectedFacilities]);
 
   const toggleFilterModal = () => setIsFilterVisible(!isFilterVisible);
-
-  const toggleFacility = facility => {
-    if (selectedFacilities.includes(facility)) {
-      setSelectedFacilities(
-        selectedFacilities.filter(item => item !== facility),
-      );
-    } else {
-      setSelectedFacilities([...selectedFacilities, facility]);
-    }
-  };
 
   const handleApplyFilters = () => {
     setIsFilterVisible(false);
@@ -376,9 +362,7 @@ export default ExplorePage;
 
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#FFFFFF'},
-  contentArea: {
-    flex: 1,
-  },
+  contentArea: {flex: 1},
   searchHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -400,12 +384,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     gap: 10,
   },
-  searchInput: {
-    flex: 1,
-    fontSize: 15,
-    color: '#020202',
-    padding: 0,
-  },
+  searchInput: {flex: 1, fontSize: 15, color: '#020202', padding: 0},
   filterButton: {
     width: 44,
     height: 44,
@@ -414,14 +393,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  // --- Map Styles ---
-  mapBackground: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    position: 'relative',
-  },
+  mapBackground: {flex: 1, width: '100%', height: '100%', position: 'relative'},
   quickFilterContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -432,32 +404,45 @@ const styles = StyleSheet.create({
   quickFilterButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    elevation: 2,
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
+    elevation: 3,
     shadowColor: '#000',
-    shadowOpacity: 0.1,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: '#E8E8E8',
   },
-  // (BARU) Style untuk tombol filter aktif
   quickFilterButtonSelected: {
-    backgroundColor: '#6F3E76', // Warna ungu
-    borderColor: '#FFFFFF',
-    elevation: 4,
+    backgroundColor: '#6F3E76',
+    borderColor: '#6F3E76',
+    elevation: 5,
+    shadowOpacity: 0.25,
   },
-  quickFilterText: {
-    fontSize: 14,
-    color: '#333',
+  quickFilterText: {fontSize: 13, color: '#333', fontWeight: '500'},
+  quickFilterTextSelected: {color: '#FFFFFF', fontWeight: '600'},
+  toastContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#6F3E76',
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    marginHorizontal: 20,
+    marginTop: 12,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
-  // (BARU) Style untuk teks filter aktif
-  quickFilterTextSelected: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
+  toastText: {color: '#FFFFFF', fontSize: 14, fontWeight: '600'},
   locationButton: {
     position: 'absolute',
     bottom: 40,
@@ -470,10 +455,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 4,
   },
-  pinContainer: {
-    position: 'absolute',
-    alignItems: 'center',
-  },
+  pinContainer: {position: 'absolute', alignItems: 'center'},
   pin: {
     backgroundColor: '#6F3E76',
     borderRadius: 15,
@@ -494,31 +476,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginTop: 2,
   },
-
-  // --- (BARU) Toast Styles ---
-  toastContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#6F3E76', // Warna ungu
-    borderRadius: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    marginHorizontal: 20, // Samakan dengan padding halaman
-    marginTop: 12, // Jarak from filter
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-  },
-  toastText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-
-  // --- Search List Styles ---
   searchListContainer: {
     flex: 1,
     paddingHorizontal: 20,
@@ -531,11 +488,7 @@ const styles = StyleSheet.create({
     color: '#020202',
     marginBottom: 12,
   },
-  listItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
+  listItem: {flexDirection: 'row', alignItems: 'center', marginBottom: 16},
   listItemIcon: {
     width: 40,
     height: 40,
@@ -545,122 +498,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  listContent: {
-    flex: 1,
-  },
-  listItemTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#020202',
-  },
-  listItemSubtitle: {
-    fontSize: 12,
-    color: '#666666',
-  },
+  listContent: {flex: 1},
+  listItemTitle: {fontSize: 14, fontWeight: 'bold', color: '#020202'},
+  listItemSubtitle: {fontSize: 12, color: '#666666'},
   noResultsText: {
     fontSize: 14,
     color: '#666666',
     textAlign: 'center',
     marginTop: 20,
-  },
-
-  // --- Modal Styles ---
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    justifyContent: 'flex-end',
-  },
-  modalContainer: {
-    height: '85%',
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    paddingHorizontal: 20,
-    paddingTop: 12,
-  },
-  modalHandle: {
-    width: 50,
-    height: 5,
-    backgroundColor: '#E0E0E0',
-    borderRadius: 3,
-    alignSelf: 'center',
-    marginBottom: 16,
-  },
-  modalTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#020202',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  modalSearchBar: {
-    elevation: 0,
-    backgroundColor: '#F3F3F3',
-    borderColor: '#E0E0E0',
-    borderWidth: 1,
-  },
-  filterSectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#020202',
-    marginTop: 24,
-    marginBottom: 12,
-  },
-  optionContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-  },
-  optionButton: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: '#F3F3F3',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    flexBasis: '30%',
-    minWidth: '30%',
-  },
-  optionButtonSelected: {
-    backgroundColor: '#6F3E76',
-    borderColor: '#6F3E76',
-  },
-  optionText: {
-    fontSize: 14,
-    color: '#020202',
-  },
-  optionTextSelected: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-  resetLink: {
-    fontSize: 12,
-    color: '#6F3E76',
-    textDecorationLine: 'underline',
-  },
-  priceContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  priceText: {
-    fontSize: 12,
-    color: '#666666',
-  },
-  applyButton: {
-    backgroundColor: '#6F3E76',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 24,
-    marginBottom: 24,
-  },
-  applyButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
   },
 });
