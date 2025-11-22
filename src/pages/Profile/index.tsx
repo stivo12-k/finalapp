@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'; // 1. Tambahkan useState
 import {
   View,
   Text,

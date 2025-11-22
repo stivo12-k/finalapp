@@ -21,6 +21,30 @@ const EditProfile = ({navigation}) => {
   const [username, setUsername] = useState('George Kaunang');
   const [email, setEmail] = useState('kunangkunang@gmail.com');
   const [dateOfBirth, setDateOfBirth] = useState('November/21/1992');
+  
+  // 2. State untuk menampung foto
+  const [photo, setPhoto] = useState(NullPhoto);
+
+  // 3. Fungsi untuk membuka galeri
+  const changePhoto = async () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 0.5,
+      maxWidth: 200,
+      maxHeight: 200,
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorMessage) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+      } else if (response.assets && response.assets.length > 0) {
+        const source = { uri: response.assets[0].uri };
+        setPhoto(source); // Update state foto
+      }
+    });
+  };
 
   const handleBackPress = () => {
     if (navigation && navigation.goBack) navigation.goBack();

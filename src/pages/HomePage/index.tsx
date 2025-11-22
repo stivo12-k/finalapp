@@ -14,7 +14,7 @@ const HomePage = ({navigation}) => {
   // Data untuk Recommended
   const recommendedData = [
     {
-      id: 1,
+      id: 1, // Unik
       title: 'MIZTA Kost',
       location: 'Jl. Pimpinang Etaas, Minahasa Utara',
       price: '₹1,500,000',
@@ -39,7 +39,7 @@ const HomePage = ({navigation}) => {
       }
     },
     {
-      id: 2,
+      id: 2, // Unik
       title: 'JAma Kost',
       location: 'Jl. Merdeka No.4, Minahasa',
       price: '₹900,000',
@@ -64,7 +64,7 @@ const HomePage = ({navigation}) => {
   // Data untuk Popular for you
   const popularData = [
     {
-      id: 1,
+      id: 3, // ID diubah agar unik
       title: 'Triple J',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: '₹150,000',
@@ -91,6 +91,7 @@ const HomePage = ({navigation}) => {
       price: '₹150,000',
       image: require('../../assets/LogoUK.svg'),
     },
+    // ... data lainnya ...
   ];
 
   // Apply filters if any (e.g., type: 'Pria' | 'Wanita' | 'Campur')
@@ -101,6 +102,66 @@ const HomePage = ({navigation}) => {
   });
 
   const [activeTab, setActiveTab] = useState('home');
+
+  // --- List 1: Untuk "Search Results" (Menggunakan SEMUA filter + searchText) ---
+  const filteredData = useMemo(() => {
+    // Hanya filter jika ada searchText.
+    if (searchText.length === 0) return [];
+
+    return allData.filter(item => {
+      const matchesSearch = item.title
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
+      const matchesType = !selectedType || item.type === selectedType;
+      const matchesPrice = item.price <= selectedPrice;
+      const matchesFacilities =
+        selectedFacilities.length === 0 ||
+        selectedFacilities.every(selectedFac =>
+          item.facilities.some(
+            itemFac => itemFac.toLowerCase() === selectedFac,
+          ),
+        );
+      return matchesSearch && matchesType && matchesPrice && matchesFacilities;
+    });
+  }, [allData, searchText, selectedType, selectedPrice, selectedFacilities]);
+
+  // --- List 2: Untuk "Recommended" (HANYA menggunakan filter modal) ---
+  const filteredRecommendedData = useMemo(() => {
+    return recommendedData.filter(item => {
+      const matchesType = !selectedType || item.type === selectedType;
+      const matchesPrice = item.price <= selectedPrice;
+      const matchesFacilities =
+        selectedFacilities.length === 0 ||
+        selectedFacilities.every(selectedFac =>
+          item.facilities.some(
+            itemFac => itemFac.toLowerCase() === selectedFac,
+          ),
+        );
+      return matchesType && matchesPrice && matchesFacilities;
+    });
+  }, [recommendedData, selectedType, selectedPrice, selectedFacilities]);
+
+  // --- List 3: Untuk "Popular" (HANYA menggunakan filter modal) ---
+  const filteredPopularData = useMemo(() => {
+    return popularData.filter(item => {
+      const matchesType = !selectedType || item.type === selectedType;
+      const matchesPrice = item.price <= selectedPrice;
+      const matchesFacilities =
+        selectedFacilities.length === 0 ||
+        selectedFacilities.every(selectedFac =>
+          item.facilities.some(
+            itemFac => itemFac.toLowerCase() === selectedFac,
+          ),
+        );
+      return matchesType && matchesPrice && matchesFacilities;
+    });
+  }, [popularData, selectedType, selectedPrice, selectedFacilities]);
+
+  // (MODIFIKASI 9: Cek apakah ada filter yang aktif)
+  const filtersAreActive =
+    selectedType !== null ||
+    selectedPrice < MAX_PRICE || // Cek jika slider digeser dari maks
+    selectedFacilities.length > 0;
 
   return (
     <View style={styles.container}>
