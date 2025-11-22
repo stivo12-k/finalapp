@@ -10,4 +10,4 @@ import SignIn from './src/pages/SignIn';
 import HomePage from './src/pages/HomePage';
 import Explore from './src/pages/Explore';
 
-AppRegistry.registerComponent(appName, () => Explore);
+AppRegistry.registerComponent(appName, () => App);

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   ImageBackground,
+  Modal,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Slider from '@react-native-community/slider';
@@ -20,6 +21,9 @@ import LocationIcon from '../../assets/location.svg';
 import CloseIcon from '../../assets/clear.svg';
 import RecentIcon from '../../assets/clock.svg';
 import ResultPinIcon from '../../assets/location.svg';
+import MaleIcon from '../../assets/male.svg';
+import FemaleIcon from '../../assets/female.svg';
+import MixIcon from '../../assets/mix.svg';
 
 const allKostData = [
   {
