@@ -5,7 +5,8 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Modal, // (MODIFIKASI 1: Impor Modal)
+  Modal,
+  ImageBackground, // (MODIFIKASI 1: Impor Modal)
 } from 'react-native';
 import React, {useState, useMemo} from 'react'; // (MODIFIKASI 2: Impor useMemo)
 import Slider from '@react-native-community/slider'; // (MODIFIKASI 3: Impor Slider)
@@ -36,7 +37,7 @@ const HomePage = ({navigation}) => {
       id: 1, // Unik
       title: 'MIZTA Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 150000, // Berupa Angka
+      price: 150.000, // Berupa Angka
       svg: Villa,
       type: 'Pria',
       facilities: ['WIFI', 'AC', 'Bathroom', 'Parking Lot'],
@@ -46,7 +47,7 @@ const HomePage = ({navigation}) => {
       id: 2, // Unik
       title: 'JAma Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 150000, // Berupa Angka
+      price: 200.000, // Berupa Angka
       svg: Villa,
       type: 'Wanita',
       facilities: ['WIFI', 'AC', 'Parking Lot'],
@@ -59,7 +60,7 @@ const HomePage = ({navigation}) => {
       id: 3, // ID diubah agar unik
       title: 'Triple J',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 150000, // Berupa Angka
+      price: 250.000, // Berupa Angka
       svg: Villa,
       type: 'Campur',
       facilities: ['WIFI', 'AC'],
@@ -69,7 +70,7 @@ const HomePage = ({navigation}) => {
       id: 4, 
       title: 'Kost Mila',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 150000, 
+      price: 300.000, 
       svg: Villa,
       type: 'Wanita',
       facilities: ['WIFI', 'Bathroom'],
@@ -233,7 +234,10 @@ const HomePage = ({navigation}) => {
           // --- TAMPILAN 2: DEFAULT HOME (Banner, Recommended, Popular) ---
           <>
             {/* Banner */}
-            <View style={styles.banner}>
+            <ImageBackground
+              source={require('../../assets/unklb.png')}
+              resizeMode="cover"
+              style={styles.banner}>
               <View style={styles.bannerContent}>
                 <Text style={styles.bannerTitle}>
                   TINGGAL NYAMAN DEKAT UNKLAB
@@ -242,7 +246,7 @@ const HomePage = ({navigation}) => {
                   DAPAT JADI ANAK UNKLAB
                 </Text>
               </View>
-            </View>
+            </ImageBackground>
 
             <Gap height={24} />
 
@@ -566,7 +570,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     height: '85%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#ffffffff',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 20,
@@ -575,7 +579,7 @@ const styles = StyleSheet.create({
   modalHandle: {
     width: 50,
     height: 5,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#d4cfcfff',
     borderRadius: 3,
     alignSelf: 'center',
     marginBottom: 16,

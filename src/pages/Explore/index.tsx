@@ -30,7 +30,7 @@ const allKostData = [
     id: 1,
     title: 'MIZTA Kost',
     location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-    price: 150,
+    price: 150.000,
     type: 'Pria',
     facilities: ['WIFI', 'AC', 'Bathroom', 'Parking Lot'],
     description: 'Kost nyaman dengan fasilitas lengkap dan keamanan 24 jam.',
@@ -41,7 +41,7 @@ const allKostData = [
     id: 2,
     title: 'JAma Kost',
     location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-    price: 160,
+    price: 200.000,
     type: 'Wanita',
     facilities: ['WIFI', 'AC', 'Parking Lot'],
     description: 'Lingkungan asri dan tenang, cocok untuk mahasiswi.',
@@ -52,7 +52,7 @@ const allKostData = [
     id: 3,
     title: 'Triple J',
     location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-    price: 200,
+    price: 250.000,
     type: 'Campur',
     facilities: ['WIFI', 'AC'],
     description: 'Akses mudah ke jalan raya.',
@@ -63,7 +63,7 @@ const allKostData = [
     id: 4,
     title: 'Kost Mila',
     location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-    price: 300,
+    price: 300.000,
     type: 'Wanita',
     facilities: ['WIFI', 'Bathroom'],
     description: 'Harga terjangkau dengan fasilitas memadai.',
@@ -143,6 +143,14 @@ const ExplorePage = ({navigation}: any) => {
     } else {
       setIsToastVisible(false);
     }
+  };
+
+  const toggleFacility = (facility: string) => {
+    setSelectedFacilities(prev =>
+      prev.includes(facility)
+        ? prev.filter(f => f !== facility)
+        : [...prev, facility]
+    );
   };
 
   // --- RENDER ---
@@ -296,65 +304,136 @@ const ExplorePage = ({navigation}: any) => {
             <View style={styles.modalHandle} />
             <Text style={styles.modalTitle}>Filter</Text>
 
-            <View style={[styles.searchBar, styles.modalSearchBar]}>
-              <SearchIcon width={18} height={18} fill="#666" />
-              <TextInput
-                placeholder="Cari nama kost..."
-                style={styles.searchInput}
-                value={searchText}
-                onChangeText={setSearchText}
-              />
-            </View>
-
             <ScrollView showsVerticalScrollIndicator={false}>
+              {/* --- Kost Type --- */}
               <Text style={styles.filterSectionTitle}>Kost Type</Text>
               <View style={styles.optionContainer}>
-                {['Pria', 'Wanita', 'Campur'].map((type) => (
-                   <TouchableOpacity
-                    key={type}
-                    style={[styles.optionButton, selectedType === type && styles.optionButtonSelected]}
-                    onPress={() => setSelectedType(type)}>
-                      {type === 'Pria' && <MaleIcon width={16} height={16} fill={selectedType === type ? '#FFFFFF' : '#020202'} />}
-                      {type === 'Wanita' && <FemaleIcon width={16} height={16} fill={selectedType === type ? '#FFFFFF' : '#020202'} />}
-                      {type === 'Campur' && <MixIcon width={16} height={16} fill={selectedType === type ? '#FFFFFF' : '#020202'} />}
-                    <Text style={[styles.optionText, selectedType === type && styles.optionTextSelected]}>{type}</Text>
-                  </TouchableOpacity>
-                ))}
+                <TouchableOpacity
+                  style={[
+                    styles.optionButton,
+                    selectedType === 'Pria' && styles.optionButtonSelected,
+                  ]}
+                  onPress={() => setSelectedType('Pria')}>
+                  <MaleIcon
+                    width={16}
+                    height={16}
+                    fill={selectedType === 'Pria' ? '#FFFFFF' : '#020202'}
+                  />
+                  <Text
+                    style={[
+                      styles.optionText,
+                      selectedType === 'Pria' && styles.optionTextSelected,
+                    ]}>
+                    Pria
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.optionButton,
+                    selectedType === 'Wanita' && styles.optionButtonSelected,
+                  ]}
+                  onPress={() => setSelectedType('Wanita')}>
+                  <FemaleIcon
+                    width={16}
+                    height={16}
+                    fill={selectedType === 'Wanita' ? '#FFFFFF' : '#020202'}
+                  />
+                  <Text
+                    style={[
+                      styles.optionText,
+                      selectedType === 'Wanita' && styles.optionTextSelected,
+                    ]}>
+                    Wanita
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.optionButton,
+                    selectedType === 'Campur' && styles.optionButtonSelected,
+                  ]}
+                  onPress={() => setSelectedType('Campur')}>
+                  <MixIcon
+                    width={16}
+                    height={16}
+                    fill={selectedType === 'Campur' ? '#FFFFFF' : '#020202'}
+                  />
+                  <Text
+                    style={[
+                      styles.optionText,
+                      selectedType === 'Campur' && styles.optionTextSelected,
+                    ]}>
+                    Campur
+                  </Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity style={{alignSelf: 'flex-start', marginVertical: 4}} onPress={() => setSelectedType(null)}>
+              <TouchableOpacity
+                style={{alignSelf: 'flex-start', marginVertical: 4}}
+                onPress={() => setSelectedType(null)}>
                 <Text style={styles.resetLink}>Reset Tipe</Text>
               </TouchableOpacity>
 
+              {/* --- Harga per bulan --- */}
               <Text style={styles.filterSectionTitle}>Harga per bulan</Text>
               <View style={styles.priceContainer}>
-                <Text style={styles.priceText}>$10</Text>
-                <Text style={styles.priceText}>${selectedPrice}</Text>
-                <Text style={styles.priceText}>$800</Text>
+                <Text style={styles.priceText}>Rp 10.000</Text>
+                <Text style={styles.priceTextBold}>
+                  Rp {selectedPrice.toLocaleString('id-ID')}
+                </Text>
+                <Text style={styles.priceText}>Rp 800.000</Text>
               </View>
               <Slider
                 style={{width: '100%', height: 40}}
-                minimumValue={10} maximumValue={800} step={10}
-                value={selectedPrice} onValueChange={setSelectedPrice}
-                minimumTrackTintColor="#6F3E76" maximumTrackTintColor="#E0E0E0" thumbTintColor="#6F3E76"
+                minimumValue={10}
+                maximumValue={800}
+                step={10}
+                value={selectedPrice}
+                onValueChange={setSelectedPrice}
+                minimumTrackTintColor="#6F3E76"
+                maximumTrackTintColor="#E0E0E0"
+                thumbTintColor="#6F3E76"
               />
 
+              {/* --- Facilities --- */}
               <Text style={styles.filterSectionTitle}>Facilities</Text>
               <View style={styles.optionContainer}>
-                {['Bathroom', 'AC', 'WIFI', 'Parking Lot'].map(fac => (
-                  <TouchableOpacity
-                    key={fac}
-                    style={[styles.optionButton, {flexBasis: '48%'}, selectedFacilities.includes(fac) && styles.optionButtonSelected]}
-                    onPress={() => toggleFacility(fac)}>
-                    <Text style={[styles.optionText, selectedFacilities.includes(fac) && styles.optionTextSelected]}>{fac}</Text>
-                  </TouchableOpacity>
-                ))}
+                {['Bathroom', 'AC', 'WIFI', 'Parking Lot'].map(fac => {
+                  const isSelected = selectedFacilities.includes(fac);
+                  return (
+                    <TouchableOpacity
+                      key={fac}
+                      style={[
+                        styles.optionButton,
+                        {flexBasis: '48%'},
+                        isSelected && styles.optionButtonSelected,
+                      ]}
+                      onPress={() => toggleFacility(fac)}>
+                      <Text
+                        style={[
+                          styles.optionText,
+                          isSelected && styles.optionTextSelected,
+                        ]}>
+                        {fac}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
               <Gap height={20} />
             </ScrollView>
 
-            <TouchableOpacity style={styles.applyButton} onPress={handleApplyFilters}>
-              <Text style={styles.applyButtonText}>Apply</Text>
-            </TouchableOpacity>
+            {/* --- Tombol Apply & Reset --- */}
+            <View style={styles.modalButtonContainer}>
+              <TouchableOpacity
+                style={styles.resetButton}
+                onPress={handleResetFilters}>
+                <Text style={styles.resetButtonText}>Reset</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.applyButton}
+                onPress={handleApplyFilters}>
+                <Text style={styles.applyButtonText}>Apply</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -510,5 +589,122 @@ const styles = StyleSheet.create({
     color: '#666666',
     textAlign: 'center',
     marginTop: 20,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'flex-end',
+  },
+  modalContainer: {
+    height: '85%',
+    backgroundColor: '#ffffffff',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingHorizontal: 20,
+    paddingTop: 12,
+  },
+  modalHandle: {
+    width: 50,
+    height: 5,
+    backgroundColor: '#d4cfcfff',
+    borderRadius: 3,
+    alignSelf: 'center',
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#020202',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  filterSectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#020202',
+    marginTop: 24,
+    marginBottom: 12,
+  },
+  optionContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  optionButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#F3F3F3',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    flexBasis: '30%',
+    minWidth: '30%',
+  },
+  optionButtonSelected: {
+    backgroundColor: '#6F3E76',
+    borderColor: '#6F3E76',
+  },
+  optionText: {
+    fontSize: 14,
+    color: '#020202',
+  },
+  optionTextSelected: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  priceContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 8,
+  },
+  priceText: {
+    fontSize: 12,
+    color: '#666666',
+  },
+  priceTextBold: {
+    fontSize: 14,
+    color: '#020202',
+    fontWeight: 'bold',
+  },
+  resetLink: {
+    fontSize: 12,
+    color: '#6F3E76',
+    textDecorationLine: 'underline',
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 24,
+    marginBottom: 24,
+  },
+  resetButton: {
+    flex: 1,
+    backgroundColor: '#F3F3F3',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderColor: '#E0E0E0',
+    borderWidth: 1,
+  },
+  resetButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#6F3E76',
+  },
+  applyButton: {
+    flex: 2,
+    backgroundColor: '#6F3E76',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  applyButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
 });
