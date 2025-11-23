@@ -11,7 +11,6 @@ import React, {useState, useEffect} from 'react';
 import Gap from '../../components/atoms/Gap';
 import Filter from '../../components/molecules/Filter';
 
-// --- ASSETS ---
 import Villa from '../../assets/villa.svg';
 import MapGrid from '../../assets/googlemaps.png';
 import SearchIcon from '../../assets/Hide.svg';
@@ -202,7 +201,7 @@ const ExplorePage = ({navigation}: any) => {
     }
   };
 
-  // --- RENDER ---
+
   const renderFilterToast = () => (
     <View style={styles.toastContainer}>
       <Text style={styles.toastText}>
@@ -221,7 +220,7 @@ const ExplorePage = ({navigation}: any) => {
       resizeMode="cover"
       style={styles.mapBackground}>
       
-      {/* Quick Filters */}
+   
       <View style={styles.quickFilterContainer}>
         <TouchableOpacity
           style={[styles.quickFilterButton, selectedType === 'Pria' && styles.quickFilterButtonSelected]}
@@ -248,14 +247,14 @@ const ExplorePage = ({navigation}: any) => {
 
       {isToastVisible && renderFilterToast()}
 
-      {/* Pins */}
+ 
       {visiblePins.map(item => {
         const PinSvg = item.svg || Villa;
         return (
           <TouchableOpacity
             key={item.id}
             style={[styles.pinContainer, {top: item.coordinates.top, left: item.coordinates.left}]}
-            // 👇 NAVIGASI KE DETAIL
+            
             onPress={() => navigation.navigate('Detail', {item})}
           >
             <View style={styles.pin}>
@@ -299,7 +298,7 @@ const ExplorePage = ({navigation}: any) => {
           <TouchableOpacity
             key={`result-${item.id}`}
             style={styles.listItem}
-            // 👇 NAVIGASI KE DETAIL
+            
             onPress={() => navigation.navigate('Detail', {item})}
           >
             <View style={styles.listItemIcon}>
@@ -346,7 +345,7 @@ const ExplorePage = ({navigation}: any) => {
         {searchText.length > 0 ? renderSearchResults() : renderMap()}
       </View>
 
-      {/* Modal Filter Component */}
+     
       <Filter
         visible={isFilterVisible}
         onClose={toggleFilterModal}

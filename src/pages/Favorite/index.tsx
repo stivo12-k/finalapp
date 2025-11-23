@@ -9,12 +9,11 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-// --- Assets ---
-import Villa from '../../assets/villa.svg'; // Placeholder image
+import Villa from '../../assets/villa.svg'; 
 import LocationIcon from '../../assets/location.svg';
 import HeartRed from '../../assets/heart-red.svg';
 
-// --- Firebase Imports ---
+
 import { getAuth } from 'firebase/auth';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../config/Firebase';
@@ -22,14 +21,14 @@ import { database } from '../../config/Firebase';
 const Favorite = () => {
   const navigation = useNavigation();
   
-  // State untuk data dinamis
+  
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const auth = getAuth();
   const user = auth.currentUser;
 
-  // --- Ambil Data dari Firebase ---
+  
   useEffect(() => {
     if (user) {
       const favRef = ref(database, `users/${user.uid}/favorites`);
@@ -38,7 +37,7 @@ const Favorite = () => {
         const data = snapshot.val();
         
         if (data) {
-          // Ubah Object Firebase menjadi Array
+          
           const dataArray = Object.keys(data).map(key => ({
             ...data[key],
             id: key 
@@ -50,7 +49,7 @@ const Favorite = () => {
         setLoading(false);
       });
 
-      // Cleanup listener saat keluar halaman
+     
       return () => unsubscribe();
     } else {
       setLoading(false);
@@ -60,13 +59,13 @@ const Favorite = () => {
   return (
     <View style={styles.container}>
       
-      {/* Header */}
+  
       <View style={styles.header}>
         <Text style={styles.title}>Favorite</Text>
         <View style={{ width: 20 }} />
       </View>
 
-      {/* Logic Loading & Empty State */}
+      
       {loading ? (
         <View style={styles.centerState}>
             <ActivityIndicator size="large" color="#6F3E76" />
@@ -81,10 +80,10 @@ const Favorite = () => {
             <TouchableOpacity
               key={item.id}
               style={styles.card}
-              // Navigasi ke Detail membawa data item
+          
               onPress={() => navigation.navigate('Detail', { item })}
             >
-              {/* Gambar Placeholder (Karena Database text tidak bisa simpan SVG component) */}
+             
               <Villa width={120} height={85} style={{borderRadius: 10}} />
 
               <View style={{ flex: 1, marginLeft: 12 }}>
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0', // Sedikit border agar header jelas
+    borderBottomColor: '#F0F0F0', 
   },
   title: {
     fontFamily: 'Poppins-Bold',
@@ -174,7 +173,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: 'Poppins-Bold',
-    fontSize: 14, // Ukuran font disesuaikan
+    fontSize: 14, 
     color: '#6F3E76',
   },
 });

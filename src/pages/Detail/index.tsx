@@ -9,10 +9,10 @@ import {
   Linking,
 } from 'react-native';
 
-// --- ASSETS ---
+
 import LocationIcon from '../../assets/location.svg';
-import HeartRed from '../../assets/heart-red.svg'; // Icon Merah (Aktif)
-import HeartOutline from '../../assets/heart.svg'; // Icon Outline (Tidak Aktif - Pastikan ada atau ganti Text)
+import HeartRed from '../../assets/heart-red.svg';
+import HeartOutline from '../../assets/heart.svg';
 import Bathroom from '../../assets/bathroom.svg';
 import AC from '../../assets/ac.svg';
 import Wifi from '../../assets/wifi.svg';
@@ -21,9 +21,9 @@ import Male from '../../assets/male.svg';
 import Female from '../../assets/female.svg';
 import Mix from '../../assets/mix.svg';
 import BackButton from '../../assets/BackButton.svg';
-import Villa from '../../assets/villa.svg'; // Default image
+import Villa from '../../assets/villa.svg'; 
 
-// --- FIREBASE IMPORTS ---
+
 import { getAuth } from 'firebase/auth';
 import { ref, set, remove, onValue } from 'firebase/database';
 import { database } from '../../config/Firebase';
@@ -34,15 +34,15 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 const Detail = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { item } = route.params; // Menerima data dari Home/Explore
+  const { item } = route.params; 
 
-  // State untuk Favorit
+
   const [isFavorite, setIsFavorite] = useState(false);
   
   const auth = getAuth();
   const user = auth.currentUser;
 
-  // --- 1. CEK STATUS FAVORIT SAAT HALAMAN DIBUKA ---
+
   useEffect(() => {
     if (user && item) {
       const favRef = ref(database, `users/${user.uid}/favorites/${item.id}`);
@@ -53,7 +53,7 @@ const Detail = () => {
     }
   }, [item, user]);
 
-  // --- 2. FUNGSI KLIK TOMBOL LOVE ---
+  
   const handleToggleFavorite = () => {
     if (!user) {
       showMessage({ message: "Silakan login terlebih dahulu", type: "danger" });
@@ -68,7 +68,7 @@ const Detail = () => {
         .then(() => showMessage({ message: "Dihapus dari favorit", type: "default" }))
         .catch(err => console.log(err));
     } else {
-      // Simpan (Tanpa SVG Component agar DB aman)
+     
       const itemToSave = {
         id: item.id,
         title: item.title,
@@ -85,7 +85,7 @@ const Detail = () => {
     }
   };
 
-  // === ICON MAPPING ===
+  
   const typeIcons = {
     Pria: <Male width={22} height={22} />,
     Wanita: <Female width={22} height={22} />,
@@ -99,37 +99,37 @@ const Detail = () => {
     'Parking Lot': <Parking width={26} height={26} />,
   };
 
-  // Handle Gambar (Jika SVG component dikirim, pakai itu. Jika tidak, pakai default)
+
   const MainImage = item.svg || Villa;
 
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         
-        {/* Header Back Button */}
+       
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <BackButton width={24} height={24} />
         </TouchableOpacity>
 
-        {/* Image Header */}
+       
         <View style={styles.imageWrapper}>
-            {/* Render SVG Component */}
+            
             <MainImage width="100%" height={250} />
         </View>
 
-        {/* TITLE & FAVORITE */}
+      
         <View style={styles.titleWrapper}>
           <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}}>
              <View style={{flex:1}}>
                 <Text style={styles.title}>{item.title}</Text>
              </View>
              
-             {/* Tombol Love */}
+            
              <TouchableOpacity onPress={handleToggleFavorite}>
                 {isFavorite ? (
                     <HeartRed width={32} height={32} />
                 ) : (
-                    // Ganti dengan Icon Outline jika ada, atau pakai Text sementara
+                
                     <Text style={{fontSize:28}}>🤍</Text> 
                 )}
              </TouchableOpacity>
@@ -146,7 +146,7 @@ const Detail = () => {
           </Text>
         </View>
 
-        {/* TIPE KOST */}
+    
         <Text style={styles.sectionTitle}>Tipe Kost</Text>
         <View style={styles.typeRow}>
           <View style={styles.typeBox}>
@@ -155,7 +155,7 @@ const Detail = () => {
           </View>
         </View>
 
-        {/* FACILITIES */}
+     
         <Text style={styles.sectionTitle}>Facilities</Text>
         <View style={styles.facilitiesRow}>
           {item.facilities && item.facilities.map((facility, index) => (
@@ -166,11 +166,11 @@ const Detail = () => {
           ))}
         </View>
 
-        {/* DESCRIPTION */}
+      
         <Text style={styles.sectionTitle}>Deskripsi</Text>
         <Text style={styles.description}>{item.description}</Text>
 
-        {/* OWNER */}
+       
         <Text style={styles.sectionTitle}>Pemilik</Text>
         <View style={styles.ownerRow}>
           <Image
@@ -187,11 +187,11 @@ const Detail = () => {
           <Text style={styles.phoneTxt}>{item.owner?.phone || '+62-8XX-XXXX-XXXX'}</Text>
         </View>
 
-        {/* BUTTON */}
+      
         <TouchableOpacity 
           style={styles.button}
           onPress={() => {
-            // Fungsi untuk menghubungi pemilik
+           
             const phoneNumber = item.owner?.phone.replace(/[^0-9]/g, '');
             Linking.openURL(`tel:${phoneNumber}`);
           }}>

@@ -15,18 +15,18 @@ import Svg, { Path } from 'react-native-svg';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { showMessage } from "react-native-flash-message";
 
-// Import Component Sendiri
+
 import Header from '../../components/molecules/Header';
 import Gap from '../../components/atoms/Gap';
 import TextInput from '../../components/molecules/TextInput';
 import Button from '../../components/atoms/Button';
 
-// Import Firebase
+
 import { getAuth } from "firebase/auth";
 import { ref, update, onValue } from "firebase/database";
 import { database } from '../../config/Firebase';
 
-// --- ICON COMPONENTS (Ditaruh disini agar tidak error import) ---
+
 const CameraIcon = ({ width = 16, height = 16, color = '#FFFFFF' }) => (
   <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
     <Path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -54,7 +54,6 @@ const EditProfile = ({ navigation }) => {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  // === REQUEST PERMISSION GALERI ===
   const requestGalleryPermission = async () => {
     try {
       if (Platform.OS === 'android' && Platform.Version >= 33) {
@@ -64,7 +63,7 @@ const EditProfile = ({ navigation }) => {
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       }
 
-      // Android 12 ke bawah
+     
       if (Platform.OS === 'android') {
         const grantedLegacy = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
@@ -79,7 +78,7 @@ const EditProfile = ({ navigation }) => {
     }
   };
 
-  // 1. Ambil Data Awal dari Firebase
+ 
   useEffect(() => {
     if (user) {
       const userRef = ref(database, 'users/' + user.uid);
@@ -98,7 +97,7 @@ const EditProfile = ({ navigation }) => {
     }
   }, []);
 
-  // === CHANGE PHOTO DENGAN PERMISSION ===
+
   const changePhoto = async () => {
     const hasPermission = await requestGalleryPermission();
 
@@ -139,7 +138,7 @@ const EditProfile = ({ navigation }) => {
     });
   };
 
-  // 3. Fungsi Simpan Data
+
   const handleSave = () => {
     if(user) {
         const data = {
