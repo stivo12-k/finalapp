@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Linking,
 } from 'react-native';
 
 // --- ASSETS ---
@@ -140,7 +141,7 @@ const Detail = () => {
           </View>
 
           <Text style={styles.price}>
-             Rp {typeof item.price === 'number' ? item.price.toLocaleString('id-ID') : item.price}
+             Rp {typeof item.price === 'number' ? (item.price * 1000).toLocaleString('id-ID') : item.price}
              <Text style={{fontSize:12, fontWeight:'normal', color:'#888'}}>/bln</Text>
           </Text>
         </View>
@@ -173,21 +174,27 @@ const Detail = () => {
         <Text style={styles.sectionTitle}>Pemilik</Text>
         <View style={styles.ownerRow}>
           <Image
-            source={{ uri: 'https://i.pravatar.cc/200?img=12' }}
+            source={{ uri: item.owner?.avatar || 'https://i.pravatar.cc/200?img=12' }}
             style={styles.ownerImg}
           />
           <View>
-            <Text style={styles.ownerName}>John Doe</Text>
+            <Text style={styles.ownerName}>{item.owner?.name || 'Nama Pemilik'}</Text>
             <Text style={styles.ownerJob}>Pemilik Kost</Text>
           </View>
         </View>
 
         <View style={styles.contactRow}>
-          <Text style={styles.phoneTxt}>+62-821-2345-6789</Text>
+          <Text style={styles.phoneTxt}>{item.owner?.phone || '+62-8XX-XXXX-XXXX'}</Text>
         </View>
 
         {/* BUTTON */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => {
+            // Fungsi untuk menghubungi pemilik
+            const phoneNumber = item.owner?.phone.replace(/[^0-9]/g, '');
+            Linking.openURL(`tel:${phoneNumber}`);
+          }}>
           <Text style={styles.buttonText}>Hubungi Pemilik</Text>
         </TouchableOpacity>
 

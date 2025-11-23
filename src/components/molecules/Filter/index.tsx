@@ -43,7 +43,7 @@ const ACIconCustom = ({fill = '#020202'}: {fill?: string}) => (
 );
 
 // Wrapper component untuk MaleIcon dengan dynamic color (exact replica dari male.svg)
-const MaleIcon = ({fill = '#020202'}: {fill?: string}) => (
+const FemaleIcon = ({fill = '#020202'}: {fill?: string}) => (
   <Svg width={24} height={24} viewBox="0 0 20 29" fill="none">
     <Path
       d="M20 9.99988C20 8.06471 19.4385 6.17111 18.3835 4.54875C17.3286 2.92639 15.8257 1.64497 14.0569 0.85989C12.2881 0.0748133 10.3295 -0.180185 8.41872 0.12582C6.50789 0.431825 4.7269 1.28569 3.29175 2.58385C1.8566 3.88201 0.828936 5.5687 0.333405 7.43935C-0.162125 9.31001 -0.104236 11.2843 0.500051 13.1227C1.10434 14.9611 2.22906 16.5846 3.73781 17.7965C5.24657 19.0083 7.07453 19.7564 9 19.9499V22.9999H5C4.73478 22.9999 4.48043 23.1052 4.29289 23.2928C4.10536 23.4803 4 23.7347 4 23.9999C4 24.2651 4.10536 24.5195 4.29289 24.707C4.48043 24.8945 4.73478 24.9999 5 24.9999H9V27.9999C9 28.2651 9.10536 28.5195 9.29289 28.707C9.48043 28.8945 9.73478 28.9999 10 28.9999C10.2652 28.9999 10.5196 28.8945 10.7071 28.707C10.8946 28.5195 11 28.2651 11 27.9999V24.9999H15C15.2652 24.9999 15.5196 24.8945 15.7071 24.707C15.8946 24.5195 16 24.2651 16 23.9999C16 23.7347 15.8946 23.4803 15.7071 23.2928C15.5196 23.1052 15.2652 22.9999 15 22.9999H11V19.9499C13.4654 19.699 15.7503 18.5428 17.4127 16.705C19.0751 14.8671 19.997 12.4781 20 9.99988ZM2 9.99988C2 8.41763 2.46919 6.87091 3.34824 5.55532C4.22729 4.23973 5.47672 3.21434 6.93853 2.60884C8.40034 2.00334 10.0089 1.84492 11.5607 2.1536C13.1126 2.46228 14.538 3.22421 15.6569 4.34303C16.7757 5.46185 17.5376 6.88731 17.8463 8.43916C18.155 9.99101 17.9965 11.5995 17.391 13.0613C16.7855 14.5232 15.7602 15.7726 14.4446 16.6516C13.129 17.5307 11.5823 17.9999 10 17.9999C7.87898 17.9976 5.84549 17.154 4.3457 15.6542C2.84592 14.1544 2.00232 12.1209 2 9.99988Z"
@@ -53,7 +53,7 @@ const MaleIcon = ({fill = '#020202'}: {fill?: string}) => (
 );
 
 // Wrapper component untuk FemaleIcon dengan dynamic color (exact replica dari female.svg)
-const FemaleIcon = ({fill = '#020202'}: {fill?: string}) => (
+const MaleIcon = ({fill = '#020202'}: {fill?: string}) => (
   <Svg width={24} height={24} viewBox="0 0 25 25" fill="none">
     <Path
       d="M24.0013 0H18.0013C17.7361 0 17.4817 0.105357 17.2942 0.292893C17.1066 0.48043 17.0013 0.734784 17.0013 1C17.0013 1.26522 17.1066 1.51957 17.2942 1.70711C17.4817 1.89464 17.7361 2 18.0013 2H21.5875L16.3288 7.25875C14.3424 5.63509 11.808 4.83697 9.2497 5.02946C6.69141 5.22195 4.30495 6.39033 2.58392 8.29295C0.862878 10.1956 -0.0610811 12.6869 0.00313652 15.2516C0.0673542 17.8163 1.11484 20.2582 2.92894 22.0723C4.74304 23.8864 7.18497 24.9339 9.74969 24.9981C12.3144 25.0624 14.8057 24.1384 16.7083 22.4174C18.6109 20.6963 19.7793 18.3099 19.9718 15.7516C20.1643 13.1933 19.3662 10.6589 17.7425 8.6725L23.0013 3.415V7C23.0013 7.26522 23.1066 7.51957 23.2942 7.70711C23.4817 7.89464 23.7361 8 24.0013 8C24.2665 8 24.5208 7.89464 24.7084 7.70711C24.8959 7.51957 25.0013 7.26522 25.0013 7V1C25.0013 0.734784 24.8959 0.48043 24.7084 0.292893C24.5208 0.105357 24.2665 0 24.0013 0ZM15.6563 20.6612C14.5373 21.7797 13.1118 22.5413 11.5601 22.8497C10.0083 23.1581 8.39999 22.9994 6.93839 22.3938C5.4768 21.7882 4.22758 20.7628 3.34869 19.4473C2.46979 18.1318 2.00069 16.5852 2.00069 15.0031C2.00069 13.421 2.46979 11.8745 3.34869 10.5589C4.22758 9.24342 5.4768 8.21804 6.93839 7.61243C8.39999 7.00683 10.0083 6.84819 11.5601 7.15658C13.1118 7.46497 14.5373 8.22654 15.6563 9.345C17.1543 10.847 17.9955 12.8818 17.9955 15.0031C17.9955 17.1245 17.1543 19.1592 15.6563 20.6612Z"
@@ -152,20 +152,12 @@ const Filter = ({
           <View style={styles.modalHandle} />
           <Text style={styles.modalTitle}>Filter</Text>
 
-          {/* Search Bar di dalam Modal */}
-          <View style={[styles.searchBar, styles.modalSearchBar]}>
-            <SearchIcon width={18} height={18} fill="#666" />
-            <TextInput
-              placeholder="Cari nama kost..."
-              style={styles.searchInput}
-              value={searchText}
-              onChangeText={onSearchChange}
-            />
-          </View>
+
 
           <ScrollView showsVerticalScrollIndicator={false}>
             {/* --- Kost Type --- */}
             <Text style={styles.filterSectionTitle}>Kost Type</Text>
+            <Gap height={30} />
             <View style={styles.optionContainer}>
               <TouchableOpacity
                 style={[
@@ -174,7 +166,7 @@ const Filter = ({
                 ]}
                 onPress={() => onTypeChange('Pria')}>
                 <MaleIcon
-                  fill={selectedType === 'Pria' ? '#FFFFFF' : '#020202'}
+                  fill={selectedType === 'Pria' ? '#6d31bbff' : '#6457F3'}
                 />
                 <Text
                   style={[
@@ -191,7 +183,7 @@ const Filter = ({
                 ]}
                 onPress={() => onTypeChange('Wanita')}>
                 <FemaleIcon
-                  fill={selectedType === 'Wanita' ? '#FFFFFF' : '#020202'}
+                  fill={selectedType === 'Wanita' ? '#6d31bbff' : '#6457F3'}
                 />
                 <Text
                   style={[
@@ -208,7 +200,7 @@ const Filter = ({
                 ]}
                 onPress={() => onTypeChange('Campur')}>
                 <MixIcon
-                  fill={selectedType === 'Campur' ? '#FFFFFF' : '#020202'}
+                  fill={selectedType === 'Campur' ? '#6d31bbff' : '#6457F3'}
                 />
                 <Text
                   style={[
@@ -256,7 +248,7 @@ const Filter = ({
                     onPress={() => toggleFacility(facility.name)}>
                     <View style={styles.iconContainer}>
                       <IconComponent
-                        fill={isSelected ? '#FFFFFF' : '#020202'}
+                        fill={isSelected ? '#6d31bbff' : '#6457F3'}
                       />
                     </View>
                     <Text
@@ -275,9 +267,9 @@ const Filter = ({
 
           {/* --- Tombol Action --- */}
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+            {/* <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
               <Text style={styles.resetButtonText}>Reset</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.applyButton} onPress={onApply}>
               <Text style={styles.applyButtonText}>Apply</Text>
             </TouchableOpacity>
@@ -342,7 +334,7 @@ const styles = StyleSheet.create({
   filterSectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#020202',
+    color: '#000000ff',
     marginTop: 24,
     marginBottom: 12,
   },
@@ -358,7 +350,7 @@ const styles = StyleSheet.create({
     height: 28,
   },
   optionButton: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
@@ -367,7 +359,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F3F3',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#6457F3',
     flexBasis: '30%',
     minWidth: '30%',
   },
@@ -376,7 +368,7 @@ const styles = StyleSheet.create({
     minWidth: '48%',
   },
   optionButtonSelected: {
-    backgroundColor: '#6F3E76',
+    backgroundColor: '#E9D7FE',
     borderColor: '#6F3E76',
   },
   optionText: {
@@ -384,7 +376,7 @@ const styles = StyleSheet.create({
     color: '#020202',
   },
   optionTextSelected: {
-    color: '#FFFFFF',
+    color: '#9357f3ff',
     fontWeight: 'bold',
   },
   resetLink: {

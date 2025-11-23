@@ -14,9 +14,14 @@ import BottomNav from '../../components/molecules/BottomNav'; // Pastikan ini di
 import Filter from '../../components/molecules/Filter';
 
 // (MODIFIKASI 4: Impor Ikon)
-// --- GANTI DENGAN PATH ASET ANDA ---
+// Import gambar untuk setiap kost
+import mizta from '../../assets/mizta.svg';
 import Villa from '../../assets/villa.svg';
-// --- GANTI DENGAN PATH ASET ANDA ---
+import tripleJ from '../../assets/tripleJ.svg';
+import kostMila from '../../assets/kostMila.svg';
+import skost from '../../assets/skost.svg';
+import kostMawarIndah from '../../assets/kostMawarIndah.svg';
+import harmoni from '../../assets/harmoni.svg';
 
 const HomePage = ({navigation}: any) => {
   const [searchText, setSearchText] = useState('');
@@ -34,20 +39,30 @@ const HomePage = ({navigation}: any) => {
       title: 'MIZTA Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: 150.000, // Berupa Angka
-      svg: Villa,
+      svg: mizta,
       type: 'Pria',
       facilities: ['WIFI', 'AC', 'Bathroom', 'Parking Lot'],
       description: '...',
+      owner: {
+        name: 'Budi Santoso',
+        phone: '+62 812-3456-7890',
+        avatar: 'https://i.pravatar.cc/200?img=12'
+      },
     },
     {
       id: 2, // Unik
       title: 'JAma Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: 200.000, // Berupa Angka
-      svg: Villa,
+      svg: harmoni,
       type: 'Wanita',
       facilities: ['WIFI', 'AC', 'Parking Lot'],
       description: '...',
+      owner: {
+        name: 'Dewi Lestari',
+        phone: '+62 823-4567-8901',
+        avatar: 'https://i.pravatar.cc/200?img=13'
+      },
     },
   ];
 
@@ -57,10 +72,15 @@ const HomePage = ({navigation}: any) => {
       title: 'Triple J',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: 250.000, // Berupa Angka
-      svg: Villa,
+      svg: tripleJ,
       type: 'Campur',
       facilities: ['WIFI', 'AC'],
-      description: '...',
+      description: 'Kost nyaman dengan fasilitas lengkap di lokasi strategis',
+      owner: {
+        name: 'Joko Widodo',
+        phone: '+62 811-2233-4455',
+        avatar: 'https://i.pravatar.cc/200?img=14'
+      },
     },
     {
       id: 4, 
@@ -70,9 +90,43 @@ const HomePage = ({navigation}: any) => {
       svg: Villa,
       type: 'Wanita',
       facilities: ['WIFI', 'Bathroom'],
-      description: '...',
+      description: 'Kost eksklusif untuk wanita dengan keamanan 24 jam',
+      owner: {
+        name: 'Siti Rahayu',
+        phone: '+62 812-9988-7766',
+        avatar: 'https://i.pravatar.cc/200?img=15'
+      },
     },
-    
+    {
+      id: 5,
+      title: 'Kost Sejahtera',
+      location: 'Jl. Melati No. 15, Bandung',
+      price: 350.000,
+      svg: skost,
+      type: 'Pria',
+      facilities: ['WIFI', 'AC', 'Laundry', 'Parking Lot'],
+      description: 'Kost nyaman untuk mahasiswa dan pekerja',
+      owner: {
+        name: 'Agus Setiawan',
+        phone: '+62 813-4455-6677',
+        avatar: 'https://i.pravatar.cc/200?img=16'
+      },
+    },
+    {
+      id: 6,
+      title: 'Kost Mawar Indah',
+      location: 'Jl. Anggrek No. 22, Bandung',
+      price: 400.000,
+      svg: kostMawarIndah,
+      type: 'Wanita',
+      facilities: ['WIFI', 'AC', 'Kitchen', 'Bathroom', 'Parking Lot'],
+      description: 'Kost eksklusif dengan fasilitas lengkap dan dapur bersama',
+      owner: {
+        name: 'Rina Wijaya',
+        phone: '+62 814-5566-7788',
+        avatar: 'https://i.pravatar.cc/200?img=17'
+      },
+    }
   ];
 
   // (MODIFIKASI 7: Logika Helper untuk Filter)
