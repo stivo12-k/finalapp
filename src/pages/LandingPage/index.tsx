@@ -20,6 +20,8 @@ const LandingPage = ({navigation}) => {
         <Button label="Sign In"
             color="#6F3E76"
             textColor="#FFFFFF"
+            onPress={() => navigation.navigate('SignIn')}
+
          />
         <Gap height={12} />
         <Button
