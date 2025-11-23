@@ -5,31 +5,27 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Modal,
-  ImageBackground, // (MODIFIKASI 1: Impor Modal)
+  ImageBackground,
 } from 'react-native';
-import React, {useState, useMemo} from 'react'; // (MODIFIKASI 2: Impor useMemo)
-import Slider from '@react-native-community/slider'; // (MODIFIKASI 3: Impor Slider)
+import React, {useState, useMemo} from 'react';
 import Header from '../../components/molecules/Header';
 import Gap from '../../components/atoms/Gap';
 import BottomNav from '../../components/molecules/BottomNav'; // Pastikan ini dirender jika perlu
+import Filter from '../../components/molecules/Filter';
 
 // (MODIFIKASI 4: Impor Ikon)
 // --- GANTI DENGAN PATH ASET ANDA ---
 import Villa from '../../assets/villa.svg';
-import MaleIcon from '../../assets/male.svg'; // Ganti path
-import FemaleIcon from '../../assets/female.svg'; // Ganti path
-import MixIcon from '../../assets/mix.svg'; // Ganti path
 // --- GANTI DENGAN PATH ASET ANDA ---
 
-const HomePage = ({navigation}) => {
+const HomePage = ({navigation}: any) => {
   const [searchText, setSearchText] = useState('');
 
   // (MODIFIKASI 5: Tambahkan state untuk Modal dan Filter)
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-  const [selectedType, setSelectedType] = useState(null);
-  const [selectedPrice, setSelectedPrice] = useState(500000);
-  const [selectedFacilities, setSelectedFacilities] = useState([]);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedPrice, setSelectedPrice] = useState<number>(500.000);
+  const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
 
   // (MODIFIKASI 6: Perbaikan Data)
   const recommendedData = [
@@ -82,24 +78,14 @@ const HomePage = ({navigation}) => {
   // (MODIFIKASI 7: Logika Helper untuk Filter)
   const toggleFilterModal = () => setIsFilterVisible(!isFilterVisible);
 
-  const toggleFacility = facility => {
-    const lowerCaseFacility = facility.toLowerCase();
-
-    if (selectedFacilities.includes(lowerCaseFacility)) {
-      setSelectedFacilities(
-        selectedFacilities.filter(item => item !== lowerCaseFacility),
-      );
-    } else {
-      setSelectedFacilities([...selectedFacilities, lowerCaseFacility]);
-    }
-  };
+  // Facilities state is managed by passing setters into the shared `Filter` component
 
   const handleApplyFilters = () => {
     setIsFilterVisible(false);
   };
 
-  // Tentukan harga maksimum untuk slider
-  const MAX_PRICE = 500000;
+  // Tentukan harga maksimum untuk slider (samakan dengan Explore)
+  const MAX_PRICE = 500.000;
 
   const handleResetFilters = () => {
     setSelectedType(null);
@@ -177,7 +163,7 @@ const HomePage = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Header label="Find Your Kost" backButton={false} />
+      <Header label="Find Your Kost" backButton={false} onPress={() => {}} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -325,157 +311,20 @@ const HomePage = ({navigation}) => {
         )}
       </ScrollView>
 
-      {/* (MODIFIKASI 12: Tambahkan JSX Modal Filter di sini) */}
-      <Modal
+      {/* Gunakan komponen Filter yang sama seperti di Explore */}
+      <Filter
         visible={isFilterVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={toggleFilterModal}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalHandle} />
-            <Text style={styles.modalTitle}>Filter</Text>
-
-            <ScrollView showsVerticalScrollIndicator={false}>
-              {/* --- Kost Type --- */}
-              <Text style={styles.filterSectionTitle}>Kost Type</Text>
-              <View style={styles.optionContainer}>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    selectedType === 'Pria' && styles.optionButtonSelected,
-                  ]}
-                  onPress={() => setSelectedType('Pria')}>
-                  <MaleIcon
-                    width={16}
-                    height={16}
-                    fill={selectedType === 'Pria' ? '#FFFFFF' : '#020202'}
-                  />
-                  <Text
-                    style={[
-                      styles.optionText,
-                      selectedType === 'Pria' && styles.optionTextSelected,
-                    ]}>
-                    Pria
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    selectedType === 'Wanita' && styles.optionButtonSelected,
-                  ]}
-                  onPress={() => setSelectedType('Wanita')}>
-                  <FemaleIcon
-                    width={16}
-                    height={16}
-                    fill={selectedType === 'Wanita' ? '#FFFFFF' : '#020202'}
-                  />
-                  <Text
-                    style={[
-                      styles.optionText,
-                      selectedType === 'Wanita' && styles.optionTextSelected,
-                    ]}>
-                    Wanita
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    selectedType === 'Campur' && styles.optionButtonSelected,
-                  ]}
-                  onPress={() => setSelectedType('Campur')}>
-                  <MixIcon
-                    width={16}
-                    height={16}
-                    fill={selectedType === 'Campur' ? '#FFFFFF' : '#020202'}
-                  />
-                  <Text
-                    style={[
-                      styles.optionText,
-                      selectedType === 'Campur' && styles.optionTextSelected,
-                    ]}>
-                    Campur
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity
-                style={{alignSelf: 'flex-start', marginVertical: 4}}
-                onPress={() => setSelectedType(null)}>
-                <Text style={styles.resetLink}>Reset Tipe</Text>
-              </TouchableOpacity>
-
-              {/* --- Harga per bulan --- */}
-              <Text style={styles.filterSectionTitle}>Harga per bulan</Text>
-              <View style={styles.priceContainer}>
-                <Text style={styles.priceText}>Rp 50.000</Text>
-                <Text style={styles.priceTextBold}>
-                  Rp {selectedPrice.toLocaleString('id-ID')}
-                </Text>
-                <Text style={styles.priceText}>
-                  Rp {MAX_PRICE.toLocaleString('id-ID')}
-                </Text>
-              </View>
-              <Slider
-                style={{width: '100%', height: 40}}
-                minimumValue={50000}
-                maximumValue={MAX_PRICE}
-                step={10000}
-                value={selectedPrice}
-                onValueChange={value => setSelectedPrice(value)}
-                minimumTrackTintColor="#6F3E76"
-                maximumTrackTintColor="#E0E0E0"
-                thumbTintColor="#6F3E76"
-              />
-
-              {/* --- Facilities --- */}
-              <Text style={styles.filterSectionTitle}>Facilities</Text>
-              <View style={styles.optionContainer}>
-                {/* PENTING: String di array ini ('Parking Lot')
-                  harus konsisten dengan data di 'allKostData'
-                */}
-                {['Bathroom', 'AC', 'WIFI', 'Parking Lot'].map(fac => {
-                  const isSelected = selectedFacilities.includes(
-                    fac.toLowerCase(),
-                  );
-                  return (
-                    <TouchableOpacity
-                      key={fac}
-                      style={[
-                        styles.optionButton,
-                        {flexBasis: '48%'},
-                        isSelected && styles.optionButtonSelected,
-                      ]}
-                      onPress={() => toggleFacility(fac)}>
-                      <Text
-                        style={[
-                          styles.optionText,
-                          isSelected && styles.optionTextSelected,
-                        ]}>
-                        {fac}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-              <Gap height={20} />
-            </ScrollView>
-
-            {/* --- Tombol Apply & Reset --- */}
-            <View style={styles.modalButtonContainer}>
-              <TouchableOpacity
-                style={styles.resetButton}
-                onPress={handleResetFilters}>
-                <Text style={styles.resetButtonText}>Reset</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.applyButton}
-                onPress={handleApplyFilters}>
-                <Text style={styles.applyButtonText}>Apply</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+        onClose={toggleFilterModal}
+        onApply={handleApplyFilters}
+        searchText={searchText}
+        onSearchChange={setSearchText}
+        selectedType={selectedType}
+        onTypeChange={setSelectedType}
+        selectedPrice={selectedPrice}
+        onPriceChange={setSelectedPrice}
+        selectedFacilities={selectedFacilities}
+        onFacilitiesChange={setSelectedFacilities}
+      />
 
       {/* <BottomNav navigation={navigation} /> */}
       {/* Jangan lupa render BottomNav jika Anda membutuhkannya di sini */}

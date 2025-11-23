@@ -138,7 +138,7 @@ const Filter = ({
     {name: 'Bathroom', icon: BathroomIconWrapper},
     {name: 'AC', icon: ACIconCustom},
     {name: 'WIFI', icon: WifiIconWrapper},
-    {name: 'PARKING LOT', icon: ParkingIconWrapper},
+    {name: 'Parking Lot', icon: ParkingIconWrapper},
   ];
 
   return (
@@ -223,15 +223,15 @@ const Filter = ({
             {/* --- Harga per bulan --- */}
             <Text style={styles.filterSectionTitle}>Harga per bulan</Text>
             <View style={styles.priceContainer}>
-              <Text style={styles.priceText}>$10</Text>
-              <Text style={styles.priceText}>${selectedPrice}</Text>
-              <Text style={styles.priceText}>$800</Text>
+              <Text style={styles.priceText}>${(100 * 1000).toLocaleString('id-ID')}</Text>
+              <Text style={styles.priceText}>${(selectedPrice * 1000).toLocaleString('id-ID')}</Text>
+              <Text style={styles.priceText}>${(500 * 1000).toLocaleString('id-ID')}</Text>
             </View>
             <Slider
               style={{width: '100%', height: 40}}
-              minimumValue={10}
-              maximumValue={800}
-              step={10}
+              minimumValue={100.000}
+              maximumValue={500.000}
+              step={50.000}
               value={selectedPrice}
               onValueChange={value => onPriceChange(value)}
               minimumTrackTintColor="#6F3E76"

@@ -6,11 +6,10 @@ import {
   TouchableOpacity,
   TextInput,
   ImageBackground,
-  Modal,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Slider from '@react-native-community/slider';
 import Gap from '../../components/atoms/Gap';
+import Filter from '../../components/molecules/Filter';
 
 // --- ASSETS ---
 import Villa from '../../assets/villa.svg';
@@ -134,7 +133,7 @@ const ExplorePage = ({navigation}: any) => {
     setIsToastVisible(false);
   };
 
-  const handleQuickFilterPress = type => {
+  const handleQuickFilterPress = (type: string) => {
     const newType = selectedType === type ? null : type;
     setSelectedType(newType);
 
@@ -143,14 +142,6 @@ const ExplorePage = ({navigation}: any) => {
     } else {
       setIsToastVisible(false);
     }
-  };
-
-  const toggleFacility = (facility: string) => {
-    setSelectedFacilities(prev =>
-      prev.includes(facility)
-        ? prev.filter(f => f !== facility)
-        : [...prev, facility]
-    );
   };
 
   // --- RENDER ---
@@ -297,146 +288,20 @@ const ExplorePage = ({navigation}: any) => {
         {searchText.length > 0 ? renderSearchResults() : renderMap()}
       </View>
 
-      {/* Modal Filter */}
-      <Modal visible={isFilterVisible} transparent={true} animationType="slide" onRequestClose={toggleFilterModal}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalHandle} />
-            <Text style={styles.modalTitle}>Filter</Text>
-
-            <ScrollView showsVerticalScrollIndicator={false}>
-              {/* --- Kost Type --- */}
-              <Text style={styles.filterSectionTitle}>Kost Type</Text>
-              <View style={styles.optionContainer}>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    selectedType === 'Pria' && styles.optionButtonSelected,
-                  ]}
-                  onPress={() => setSelectedType('Pria')}>
-                  <MaleIcon
-                    width={16}
-                    height={16}
-                    fill={selectedType === 'Pria' ? '#FFFFFF' : '#020202'}
-                  />
-                  <Text
-                    style={[
-                      styles.optionText,
-                      selectedType === 'Pria' && styles.optionTextSelected,
-                    ]}>
-                    Pria
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    selectedType === 'Wanita' && styles.optionButtonSelected,
-                  ]}
-                  onPress={() => setSelectedType('Wanita')}>
-                  <FemaleIcon
-                    width={16}
-                    height={16}
-                    fill={selectedType === 'Wanita' ? '#FFFFFF' : '#020202'}
-                  />
-                  <Text
-                    style={[
-                      styles.optionText,
-                      selectedType === 'Wanita' && styles.optionTextSelected,
-                    ]}>
-                    Wanita
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    selectedType === 'Campur' && styles.optionButtonSelected,
-                  ]}
-                  onPress={() => setSelectedType('Campur')}>
-                  <MixIcon
-                    width={16}
-                    height={16}
-                    fill={selectedType === 'Campur' ? '#FFFFFF' : '#020202'}
-                  />
-                  <Text
-                    style={[
-                      styles.optionText,
-                      selectedType === 'Campur' && styles.optionTextSelected,
-                    ]}>
-                    Campur
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity
-                style={{alignSelf: 'flex-start', marginVertical: 4}}
-                onPress={() => setSelectedType(null)}>
-                <Text style={styles.resetLink}>Reset Tipe</Text>
-              </TouchableOpacity>
-
-              {/* --- Harga per bulan --- */}
-              <Text style={styles.filterSectionTitle}>Harga per bulan</Text>
-              <View style={styles.priceContainer}>
-                <Text style={styles.priceText}>Rp 10.000</Text>
-                <Text style={styles.priceTextBold}>
-                  Rp {selectedPrice.toLocaleString('id-ID')}
-                </Text>
-                <Text style={styles.priceText}>Rp 800.000</Text>
-              </View>
-              <Slider
-                style={{width: '100%', height: 40}}
-                minimumValue={10}
-                maximumValue={800}
-                step={10}
-                value={selectedPrice}
-                onValueChange={setSelectedPrice}
-                minimumTrackTintColor="#6F3E76"
-                maximumTrackTintColor="#E0E0E0"
-                thumbTintColor="#6F3E76"
-              />
-
-              {/* --- Facilities --- */}
-              <Text style={styles.filterSectionTitle}>Facilities</Text>
-              <View style={styles.optionContainer}>
-                {['Bathroom', 'AC', 'WIFI', 'Parking Lot'].map(fac => {
-                  const isSelected = selectedFacilities.includes(fac);
-                  return (
-                    <TouchableOpacity
-                      key={fac}
-                      style={[
-                        styles.optionButton,
-                        {flexBasis: '48%'},
-                        isSelected && styles.optionButtonSelected,
-                      ]}
-                      onPress={() => toggleFacility(fac)}>
-                      <Text
-                        style={[
-                          styles.optionText,
-                          isSelected && styles.optionTextSelected,
-                        ]}>
-                        {fac}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-              <Gap height={20} />
-            </ScrollView>
-
-            {/* --- Tombol Apply & Reset --- */}
-            <View style={styles.modalButtonContainer}>
-              <TouchableOpacity
-                style={styles.resetButton}
-                onPress={handleResetFilters}>
-                <Text style={styles.resetButtonText}>Reset</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.applyButton}
-                onPress={handleApplyFilters}>
-                <Text style={styles.applyButtonText}>Apply</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      {/* Modal Filter Component */}
+      <Filter
+        visible={isFilterVisible}
+        onClose={toggleFilterModal}
+        onApply={handleApplyFilters}
+        searchText={searchText}
+        onSearchChange={setSearchText}
+        selectedType={selectedType}
+        onTypeChange={setSelectedType}
+        selectedPrice={selectedPrice}
+        onPriceChange={setSelectedPrice}
+        selectedFacilities={selectedFacilities}
+        onFacilitiesChange={setSelectedFacilities}
+      />
     </View>
   );
 };
