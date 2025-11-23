@@ -8,10 +8,9 @@ import {
   ImageBackground,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Slider from '@react-native-community/slider';
 import Gap from '../../components/atoms/Gap';
+import Filter from '../../components/molecules/Filter';
 
-// --- ASSETS ---
 import Villa from '../../assets/villa.svg';
 import MapGrid from '../../assets/googlemaps.png';
 import SearchIcon from '../../assets/Hide.svg';
@@ -20,52 +19,113 @@ import LocationIcon from '../../assets/location.svg';
 import CloseIcon from '../../assets/clear.svg';
 import RecentIcon from '../../assets/clock.svg';
 import ResultPinIcon from '../../assets/location.svg';
+import MaleIcon from '../../assets/male.svg';
+import FemaleIcon from '../../assets/female.svg';
+import MixIcon from '../../assets/mix.svg';
+import mizta from '../../assets/mizta.svg';
+import tripleJ from '../../assets/tripleJ.svg';
+import skost from '../../assets/skost.svg';
+import kostMawarIndah from '../../assets/kostMawarIndah.svg';
+import harmoni from '../../assets/harmoni.svg';
 
 const allKostData = [
   {
     id: 1,
     title: 'MIZTA Kost',
     location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-    price: 150,
+    price: 150.000,
     type: 'Pria',
     facilities: ['WIFI', 'AC', 'Bathroom', 'Parking Lot'],
     description: 'Kost nyaman dengan fasilitas lengkap dan keamanan 24 jam.',
-    svg: Villa,
+    svg: mizta,
+    owner: {
+      name: 'Budi Santoso',
+      phone: '+62 812-3456-7890',
+      avatar: 'https://i.pravatar.cc/200?img=12'
+    },
     coordinates: {top: '20%', left: '15%'},
   },
   {
     id: 2,
     title: 'JAma Kost',
     location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-    price: 160,
+    price: 200.000,
     type: 'Wanita',
     facilities: ['WIFI', 'AC', 'Parking Lot'],
     description: 'Lingkungan asri dan tenang, cocok untuk mahasiswi.',
-    svg: Villa,
+    svg: harmoni,
+    owner: {
+      name: 'Dewi Lestari',
+      phone: '+62 823-4567-8901',
+      avatar: 'https://i.pravatar.cc/200?img=13'
+    },
     coordinates: {top: '25%', left: '40%'},
   },
   {
     id: 3,
     title: 'Triple J',
     location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-    price: 200,
+    price: 250.000,
     type: 'Campur',
     facilities: ['WIFI', 'AC'],
     description: 'Akses mudah ke jalan raya.',
-    svg: Villa,
+    svg: tripleJ,
+    owner: {
+      name: 'Joko Widodo',
+      phone: '+62 811-2233-4455',
+      avatar: 'https://i.pravatar.cc/200?img=14'
+    },
     coordinates: {top: '40%', left: '30%'},
   },
   {
     id: 4,
     title: 'Kost Mila',
     location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-    price: 300,
+    price: 300.000,
     type: 'Wanita',
     facilities: ['WIFI', 'Bathroom'],
     description: 'Harga terjangkau dengan fasilitas memadai.',
     svg: Villa,
+    owner: {
+      name: 'Siti Rahayu',
+      phone: '+62 812-9988-7766',
+      avatar: 'https://i.pravatar.cc/200?img=15'
+    },
     coordinates: {top: '55%', left: '25%'},
   },
+  {
+    id: 5,
+    title: 'Kost Sejahtera',
+    location: 'Jl. Melati No. 15, Bandung',
+    price: 350.000,
+    type: 'Pria',
+    facilities: ['WIFI', 'AC', 'Laundry', 'Parking Lot'],
+    description: 'Kost nyaman untuk mahasiswa dan pekerja',
+    svg: skost,
+    owner: {
+      name: 'Agus Setiawan',
+      phone: '+62 813-4455-6677',
+      avatar: 'https://i.pravatar.cc/200?img=16'
+    },
+    coordinates: {top: '30%', left: '60%'},
+  },
+  {
+    id: 6,
+    title: 'Kost Mawar Indah',
+    location: 'Jl. Anggrek No. 22, Bandung',
+    price: 400.000,
+    type: 'Wanita',
+    facilities: ['WIFI', 'AC', 'Kitchen', 'Bathroom', 'Parking Lot'],
+    description: 'Kost eksklusif dengan fasilitas lengkap dan dapur bersama',
+    svg: kostMawarIndah,
+    owner: {
+      name: 'Rina Wijaya',
+      phone: '+62 814-5566-7788',
+      avatar: 'https://i.pravatar.cc/200?img=17'
+    },
+    coordinates: {top: '45%', left: '70%'},
+  },
+
 ];
 
 const ExplorePage = ({navigation}: any) => {
@@ -130,7 +190,7 @@ const ExplorePage = ({navigation}: any) => {
     setIsToastVisible(false);
   };
 
-  const handleQuickFilterPress = type => {
+  const handleQuickFilterPress = (type: string) => {
     const newType = selectedType === type ? null : type;
     setSelectedType(newType);
 
@@ -141,7 +201,7 @@ const ExplorePage = ({navigation}: any) => {
     }
   };
 
-  // --- RENDER ---
+
   const renderFilterToast = () => (
     <View style={styles.toastContainer}>
       <Text style={styles.toastText}>
@@ -160,7 +220,7 @@ const ExplorePage = ({navigation}: any) => {
       resizeMode="cover"
       style={styles.mapBackground}>
       
-      {/* Quick Filters */}
+   
       <View style={styles.quickFilterContainer}>
         <TouchableOpacity
           style={[styles.quickFilterButton, selectedType === 'Pria' && styles.quickFilterButtonSelected]}
@@ -187,14 +247,14 @@ const ExplorePage = ({navigation}: any) => {
 
       {isToastVisible && renderFilterToast()}
 
-      {/* Pins */}
+ 
       {visiblePins.map(item => {
         const PinSvg = item.svg || Villa;
         return (
           <TouchableOpacity
             key={item.id}
             style={[styles.pinContainer, {top: item.coordinates.top, left: item.coordinates.left}]}
-            // 👇 NAVIGASI KE DETAIL
+            
             onPress={() => navigation.navigate('Detail', {item})}
           >
             <View style={styles.pin}>
@@ -238,7 +298,7 @@ const ExplorePage = ({navigation}: any) => {
           <TouchableOpacity
             key={`result-${item.id}`}
             style={styles.listItem}
-            // 👇 NAVIGASI KE DETAIL
+            
             onPress={() => navigation.navigate('Detail', {item})}
           >
             <View style={styles.listItemIcon}>
@@ -285,75 +345,20 @@ const ExplorePage = ({navigation}: any) => {
         {searchText.length > 0 ? renderSearchResults() : renderMap()}
       </View>
 
-      {/* Modal Filter */}
-      <Modal visible={isFilterVisible} transparent={true} animationType="slide" onRequestClose={toggleFilterModal}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalHandle} />
-            <Text style={styles.modalTitle}>Filter</Text>
-
-            <View style={[styles.searchBar, styles.modalSearchBar]}>
-              <SearchIcon width={18} height={18} fill="#666" />
-              <TextInput
-                placeholder="Cari nama kost..."
-                style={styles.searchInput}
-                value={searchText}
-                onChangeText={setSearchText}
-              />
-            </View>
-
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <Text style={styles.filterSectionTitle}>Kost Type</Text>
-              <View style={styles.optionContainer}>
-                {['Pria', 'Wanita', 'Campur'].map((type) => (
-                   <TouchableOpacity
-                    key={type}
-                    style={[styles.optionButton, selectedType === type && styles.optionButtonSelected]}
-                    onPress={() => setSelectedType(type)}>
-                      {type === 'Pria' && <MaleIcon width={16} height={16} fill={selectedType === type ? '#FFFFFF' : '#020202'} />}
-                      {type === 'Wanita' && <FemaleIcon width={16} height={16} fill={selectedType === type ? '#FFFFFF' : '#020202'} />}
-                      {type === 'Campur' && <MixIcon width={16} height={16} fill={selectedType === type ? '#FFFFFF' : '#020202'} />}
-                    <Text style={[styles.optionText, selectedType === type && styles.optionTextSelected]}>{type}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-              <TouchableOpacity style={{alignSelf: 'flex-start', marginVertical: 4}} onPress={() => setSelectedType(null)}>
-                <Text style={styles.resetLink}>Reset Tipe</Text>
-              </TouchableOpacity>
-
-              <Text style={styles.filterSectionTitle}>Harga per bulan</Text>
-              <View style={styles.priceContainer}>
-                <Text style={styles.priceText}>$10</Text>
-                <Text style={styles.priceText}>${selectedPrice}</Text>
-                <Text style={styles.priceText}>$800</Text>
-              </View>
-              <Slider
-                style={{width: '100%', height: 40}}
-                minimumValue={10} maximumValue={800} step={10}
-                value={selectedPrice} onValueChange={setSelectedPrice}
-                minimumTrackTintColor="#6F3E76" maximumTrackTintColor="#E0E0E0" thumbTintColor="#6F3E76"
-              />
-
-              <Text style={styles.filterSectionTitle}>Facilities</Text>
-              <View style={styles.optionContainer}>
-                {['Bathroom', 'AC', 'WIFI', 'Parking Lot'].map(fac => (
-                  <TouchableOpacity
-                    key={fac}
-                    style={[styles.optionButton, {flexBasis: '48%'}, selectedFacilities.includes(fac) && styles.optionButtonSelected]}
-                    onPress={() => toggleFacility(fac)}>
-                    <Text style={[styles.optionText, selectedFacilities.includes(fac) && styles.optionTextSelected]}>{fac}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-              <Gap height={20} />
-            </ScrollView>
-
-            <TouchableOpacity style={styles.applyButton} onPress={handleApplyFilters}>
-              <Text style={styles.applyButtonText}>Apply</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+     
+      <Filter
+        visible={isFilterVisible}
+        onClose={toggleFilterModal}
+        onApply={handleApplyFilters}
+        searchText={searchText}
+        onSearchChange={setSearchText}
+        selectedType={selectedType}
+        onTypeChange={setSelectedType}
+        selectedPrice={selectedPrice}
+        onPriceChange={setSelectedPrice}
+        selectedFacilities={selectedFacilities}
+        onFacilitiesChange={setSelectedFacilities}
+      />
     </View>
   );
 };
@@ -506,5 +511,122 @@ const styles = StyleSheet.create({
     color: '#666666',
     textAlign: 'center',
     marginTop: 20,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'flex-end',
+  },
+  modalContainer: {
+    height: '85%',
+    backgroundColor: '#ffffffff',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingHorizontal: 20,
+    paddingTop: 12,
+  },
+  modalHandle: {
+    width: 50,
+    height: 5,
+    backgroundColor: '#d4cfcfff',
+    borderRadius: 3,
+    alignSelf: 'center',
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#020202',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  filterSectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#020202',
+    marginTop: 24,
+    marginBottom: 12,
+  },
+  optionContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  optionButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#F3F3F3',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    flexBasis: '30%',
+    minWidth: '30%',
+  },
+  optionButtonSelected: {
+    backgroundColor: '#6F3E76',
+    borderColor: '#6F3E76',
+  },
+  optionText: {
+    fontSize: 14,
+    color: '#020202',
+  },
+  optionTextSelected: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  priceContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 8,
+  },
+  priceText: {
+    fontSize: 12,
+    color: '#666666',
+  },
+  priceTextBold: {
+    fontSize: 14,
+    color: '#020202',
+    fontWeight: 'bold',
+  },
+  resetLink: {
+    fontSize: 12,
+    color: '#6F3E76',
+    textDecorationLine: 'underline',
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 24,
+    marginBottom: 24,
+  },
+  resetButton: {
+    flex: 1,
+    backgroundColor: '#F3F3F3',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderColor: '#E0E0E0',
+    borderWidth: 1,
+  },
+  resetButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#6F3E76',
+  },
+  applyButton: {
+    flex: 2,
+    backgroundColor: '#6F3E76',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  applyButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
 });

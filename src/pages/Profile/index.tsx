@@ -6,21 +6,20 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-  Alert // Tambahkan Alert untuk debug
+  Alert 
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import Header from '../../components/molecules/Header';
 import Gap from '../../components/atoms/Gap';
-// Hapus dulu NullPhoto untuk memastikan dia bukan penyebab error
-// import { NullPhoto } from '../../assets'; 
 
-// Import Firebase
+
+
 import { getAuth, signOut } from "firebase/auth";
 import { ref, onValue } from "firebase/database";
-// Pastikan path ini benar. Jika salah, aplikasi akan crash.
+
 import { database } from '../../config/Firebase'; 
 
-// --- ICON COMPONENTS (Sudah benar) ---
+
 const SettingsIcon = ({ width = 24, height = 24, color = '#6F3E76' }) => (
   <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
     <Path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -42,7 +41,7 @@ const Profile = ({ navigation, onTabChange }) => {
   });
 
   useEffect(() => {
-    console.log("1. Masuk useEffect Profile"); // Cek Log ini di Chrome
+    console.log("1. Masuk useEffect Profile"); 
     const auth = getAuth();
     const user = auth.currentUser;
 

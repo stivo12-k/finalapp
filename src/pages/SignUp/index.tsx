@@ -189,21 +189,107 @@ const SignUp = ({navigation}) => {
 export default SignUp;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFFFFF' },
-  header: { flexDirection: 'row', alignItems: 'flex-start', paddingHorizontal: 24, paddingTop: 20 },
-  logoWrapper: { marginTop: 20, marginBottom: 30, justifyContent: 'center', alignItems: 'center' },
-  formWrapper: { width: '100%', paddingHorizontal: 24 },
-  checkboxContainer: { flexDirection: 'row', alignItems: 'center', marginLeft: -8 },
-  checkbox: { transform: [{scale: 0.9}] },
-  checkboxLabel: { marginLeft: 4, fontSize: 14, color: '#000000' },
-  linkText: { fontWeight: 'bold' },
-  orContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
-  orLine: { flex: 1, height: 1, backgroundColor: '#E0E0E0' },
-  orText: { marginHorizontal: 16, fontSize: 14, color: '#828282' },
-  socialContainer: { flexDirection: 'row', justifyContent: 'center' },
-  socialButton: { width: 50, height: 50, borderRadius: 25, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center', marginHorizontal: 16, elevation: 3, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: 0.22, shadowRadius: 2.22 },
-  socialIconText: { fontSize: 24, fontWeight: 'bold', color: '#3b5998' },
-  footerTextWrapper: { flexDirection: 'row', justifyContent: 'center' },
-  footerText: { color: '#000000', fontSize: 14 },
-  signUpText: { color: '#6F3E76', fontSize: 14, fontWeight: 'bold' },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    paddingHorizontal: 24,
+    paddingTop: 20,
+  },
+
+  logoWrapper: {
+    marginTop: 20,
+    marginBottom: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  formWrapper: {
+    width: '100%',
+    paddingHorizontal: 24,
+  },
+
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: -8,
+  },
+
+  checkbox: {
+    transform: [{ scale: 0.9 }],
+  },
+
+  checkboxLabel: {
+    marginLeft: 4,
+    fontSize: 14,
+    color: '#000000',
+  },
+
+  linkText: {
+    fontWeight: 'bold',
+  },
+
+  orContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  orLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#E0E0E0',
+  },
+
+  orText: {
+    marginHorizontal: 16,
+    fontSize: 14,
+    color: '#828282',
+  },
+
+  socialContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+
+  socialButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+  },
+
+  socialIconText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#3b5998',
+  },
+
+  footerTextWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+
+  footerText: {
+    color: '#000000',
+    fontSize: 14,
+  },
+
+  signUpText: {
+    color: '#6F3E76',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
 });
