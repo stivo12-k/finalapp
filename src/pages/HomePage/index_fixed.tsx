@@ -102,7 +102,7 @@ const HomePage = ({navigation}: any) => {
       price: 350.000,
       svg: skost,
       type: 'Pria',
-      facilities: ['WIFI', 'AC', 'Laundry', 'Parking Lot'],
+      facilities: ['WIFI', 'AC',  'Parking Lot'],
       description: 'Kost nyaman untuk mahasiswa dan pekerja',
       owner: {
         name: 'Agus Setiawan',
@@ -117,7 +117,7 @@ const HomePage = ({navigation}: any) => {
       price: 400.000,
       svg: kostMawarIndah,
       type: 'Wanita',
-      facilities: ['WIFI', 'AC', 'Kitchen', 'Bathroom', 'Parking Lot'],
+      facilities: ['WIFI', 'AC', 'Bathroom', 'Parking Lot'],
       description: 'Kost eksklusif dengan fasilitas lengkap dan dapur bersama',
       owner: {
         name: 'Rina Wijaya',

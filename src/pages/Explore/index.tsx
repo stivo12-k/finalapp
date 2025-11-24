@@ -35,7 +35,7 @@ const allKostData = [
     location: 'Jl. Pimpinang etaas, Mindhasa Utara',
     price: 150.000,
     type: 'Pria',
-    facilities: ['WIFI', 'AC', 'Bathroom', 'Parking Lot'],
+    facilities: ['WIFI', 'AC', 'Parking Lot'],
     description: 'Kost nyaman dengan fasilitas lengkap dan keamanan 24 jam.',
     svg: mizta,
     owner: {
@@ -83,7 +83,7 @@ const allKostData = [
     location: 'Jl. Pimpinang etaas, Mindhasa Utara',
     price: 300.000,
     type: 'Wanita',
-    facilities: ['WIFI', 'Bathroom'],
+    facilities: ['WIFI', 'AC' ],
     description: 'Harga terjangkau dengan fasilitas memadai.',
     svg: Villa,
     owner: {
@@ -99,7 +99,7 @@ const allKostData = [
     location: 'Jl. Melati No. 15, Bandung',
     price: 350.000,
     type: 'Pria',
-    facilities: ['WIFI', 'AC', 'Laundry', 'Parking Lot'],
+    facilities: ['WIFI', 'AC', 'Parking Lot'],
     description: 'Kost nyaman untuk mahasiswa dan pekerja',
     svg: skost,
     owner: {
@@ -115,7 +115,7 @@ const allKostData = [
     location: 'Jl. Anggrek No. 22, Bandung',
     price: 400.000,
     type: 'Wanita',
-    facilities: ['WIFI', 'AC', 'Kitchen', 'Bathroom', 'Parking Lot'],
+    facilities: ['WIFI', 'AC',  'Parking Lot'],
     description: 'Kost eksklusif dengan fasilitas lengkap dan dapur bersama',
     svg: kostMawarIndah,
     owner: {
