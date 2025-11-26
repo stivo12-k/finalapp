@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-// 1. Import FlashMessage
+
 import FlashMessage from "react-native-flash-message"; 
 
 import SignIn from './src/pages/SignIn';
@@ -31,7 +31,6 @@ const App = () => {
         </Stack.Navigator>
       </NavigationContainer>
 
-      {/* 3. Tambahkan FlashMessage di sini (Paling Bawah) */}
       <FlashMessage position="top" /> 
     </>
   );

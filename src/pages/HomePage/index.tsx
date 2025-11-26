@@ -7,7 +7,7 @@ import {
   TextInput,
   ImageBackground,
 } from 'react-native';
-import React, {useState, useMemo} from 'react';
+import React, { useState, useMemo } from 'react';
 import Header from '../../components/molecules/Header';
 import Gap from '../../components/atoms/Gap';
 import BottomNav from '../../components/molecules/BottomNav'; // Pastikan ini dirender jika perlu
@@ -23,7 +23,7 @@ import skost from '../../assets/skost.svg';
 import kostMawarIndah from '../../assets/kostMawarIndah.svg';
 import harmoni from '../../assets/harmoni.svg';
 
-const HomePage = ({navigation}: any) => {
+const HomePage = ({ navigation }: any) => {
   const [searchText, setSearchText] = useState('');
 
   // (MODIFIKASI 5: Tambahkan state untuk Modal dan Filter)
@@ -83,10 +83,10 @@ const HomePage = ({navigation}: any) => {
       },
     },
     {
-      id: 4, 
+      id: 4,
       title: 'Kost Mila',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 300.000, 
+      price: 300.000,
       svg: Villa,
       type: 'Wanita',
       facilities: ['WIFI', 'Bathroom'],
@@ -132,7 +132,7 @@ const HomePage = ({navigation}: any) => {
   // (MODIFIKASI 7: Logika Helper untuk Filter)
   const toggleFilterModal = () => setIsFilterVisible(!isFilterVisible);
 
-  // Facilities state is managed by passing setters into the shared `Filter` component
+  // Facilities state is managed by passing setters into the shared Filter component
 
   const handleApplyFilters = () => {
     setIsFilterVisible(false);
@@ -211,7 +211,7 @@ const HomePage = ({navigation}: any) => {
 
   return (
     <View style={styles.container}>
-      <Header label="Find Your Kost" backButton={false} onPress={() => {}} />
+      <Header label="Find Your Kost" backButton={false} onPress={() => { }} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -244,14 +244,14 @@ const HomePage = ({navigation}: any) => {
             <Gap height={12} />
 
             {filteredData.length === 0 ? (
-              <Text style={{color: '#666'}}>No results found</Text>
+              <Text style={{ color: '#666' }}>No results found</Text>
             ) : (
               // Tampilkan hasil filter dari 'filteredData'
               filteredData.map(item => (
                 <TouchableOpacity
                   key={item.id}
                   style={styles.popularCard}
-                  onPress={() => navigation.navigate('Detail', {item})}>
+                  onPress={() => navigation.navigate('Detail', { item })}>
                   <item.svg width={120} height={85} />
                   <View style={styles.popularCardContent}>
                     <Text style={styles.popularCardTitle}>{item.title}</Text>
@@ -300,11 +300,16 @@ const HomePage = ({navigation}: any) => {
                   <TouchableOpacity
                     key={item.id}
                     style={styles.recommendedCard}
-                    onPress={() => navigation.navigate('Detail', {item})}>
-                    <item.svg width={120} height={85} />
-                    <View style={styles.cardContent}>
-                      <Text style={styles.cardTitle}>{item.title}</Text>
-                      <Text style={styles.cardLocation}>{item.location}</Text>
+                    onPress={() => navigation.navigate('Detail', { item })}>
+                    <item.svg width="100%" height="100%" style={styles.cardBackground} />
+                    <View style={styles.cardOverlay}>
+                      <View style={styles.cardContent}>
+                        <Text style={styles.cardTitle}>{item.title}</Text>
+                        <View style={styles.locationContainer}>
+                          <Text style={styles.locationIcon}>📍</Text>
+                          <Text style={styles.cardLocation}>{item.location}</Text>
+                        </View>
+                      </View>
                     </View>
                   </TouchableOpacity>
                 ))}
@@ -312,7 +317,7 @@ const HomePage = ({navigation}: any) => {
 
               {/* Pesan jika filter tidak menemukan apa-apa */}
               {filteredRecommendedData.length === 0 && filtersAreActive && (
-                <Text style={{color: '#666', marginTop: 10}}>
+                <Text style={{ color: '#666', marginTop: 10 }}>
                   No recommended items match your filter.
                 </Text>
               )}
@@ -335,7 +340,7 @@ const HomePage = ({navigation}: any) => {
                 <TouchableOpacity
                   key={item.id}
                   style={styles.popularCard}
-                  onPress={() => navigation.navigate('Detail', {item})}>
+                  onPress={() => navigation.navigate('Detail', { item })}>
                   <item.svg width={120} height={85} />
                   <View style={styles.popularCardContent}>
                     <Text style={styles.popularCardTitle}>{item.title}</Text>
@@ -348,7 +353,7 @@ const HomePage = ({navigation}: any) => {
 
               {/* Pesan jika filter tidak menemukan apa-apa */}
               {filteredPopularData.length === 0 && filtersAreActive && (
-                <Text style={{color: '#666', marginTop: 10}}>
+                <Text style={{ color: '#666', marginTop: 10 }}>
                   No popular items match your filter.
                 </Text>
               )}
@@ -384,8 +389,8 @@ export default HomePage;
 
 const styles = StyleSheet.create({
   // ... (Semua styles 'HomePage' Anda yang lama tetap di sini)
-  container: {flex: 1, backgroundColor: '#F9F9F9'},
-  scrollView: {paddingHorizontal: 24},
+  container: { flex: 1, backgroundColor: '#F9F9F9' },
+  scrollView: { paddingHorizontal: 24 },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -423,15 +428,15 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     fontWeight: '700',
   },
-  bannerSubtitle: {fontSize: 12, color: '#D2AA1A'},
-  section: {marginVertical: 8},
+  bannerSubtitle: { fontSize: 12, color: '#D2AA1A' },
+  section: { marginVertical: 8 },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  sectionTitle: {fontSize: 16, fontWeight: '700', color: '#020202'},
-  seeAll: {fontSize: 12, color: '#6F3E76'},
+  sectionTitle: { fontSize: 16, fontWeight: '700', color: '#020202' },
+  seeAll: { fontSize: 12, color: '#6F3E76' },
   recommendedGrid: {
     flexDirection: 'row',
     gap: 12,
@@ -440,13 +445,57 @@ const styles = StyleSheet.create({
   recommendedCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    borderRadius: 20,
     overflow: 'hidden',
-    elevation: 2,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    height: 140,
+    position: 'relative',
   },
-  cardContent: {padding: 12},
-  cardTitle: {fontSize: 14, fontWeight: '700', color: '#020202'},
-  cardLocation: {fontSize: 10, color: '#666666'},
+  cardBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  cardOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingTop: 60,
+    paddingBottom: 16,
+    paddingHorizontal: 16,
+  },
+  cardContent: {
+    padding: 0,
+    gap: 4,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  locationIcon: {
+    fontSize: 12,
+    color: '#FF6B6B',
+  },
+  cardLocation: {
+    fontSize: 11,
+    color: '#FFFFFF',
+    flex: 1,
+    opacity: 0.95,
+  },
   popularCard: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
@@ -455,9 +504,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     elevation: 2,
   },
-  popularCardContent: {flex: 1, padding: 12, justifyContent: 'center'},
-  popularCardTitle: {fontSize: 14, fontWeight: '700', color: '#020202'},
-  popularCardLocation: {fontSize: 10, color: '#666666'},
+  popularCardContent: { flex: 1, padding: 12, justifyContent: 'center' },
+  popularCardTitle: { fontSize: 14, fontWeight: '700', color: '#020202' },
+  popularCardLocation: { fontSize: 10, color: '#666666' },
 
   // (MODIFIKASI 13: Tambahkan Styles Modal dari ExplorePage)
   modalOverlay: {

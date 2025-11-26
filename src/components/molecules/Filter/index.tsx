@@ -12,7 +12,6 @@ import Slider from '@react-native-community/slider';
 import Svg, {Path} from 'react-native-svg';
 import Gap from '../../atoms/Gap';
 
-// Icons
 import SearchIcon from '../../../assets/Hide.svg';
 
 interface FilterProps {
@@ -29,7 +28,6 @@ interface FilterProps {
   onFacilitiesChange: (facilities: string[]) => void;
 }
 
-// Wrapper component untuk ACIcon dengan dynamic color (exact replica dari ac.svg)
 const ACIconCustom = ({fill = '#020202'}: {fill?: string}) => (
   <Svg width={24} height={24} viewBox="0 0 14 15" fill="none">
     <Path
@@ -42,7 +40,6 @@ const ACIconCustom = ({fill = '#020202'}: {fill?: string}) => (
   </Svg>
 );
 
-// Wrapper component untuk MaleIcon dengan dynamic color (exact replica dari male.svg)
 const FemaleIcon = ({fill = '#020202'}: {fill?: string}) => (
   <Svg width={24} height={24} viewBox="0 0 20 29" fill="none">
     <Path
@@ -52,7 +49,6 @@ const FemaleIcon = ({fill = '#020202'}: {fill?: string}) => (
   </Svg>
 );
 
-// Wrapper component untuk FemaleIcon dengan dynamic color (exact replica dari female.svg)
 const MaleIcon = ({fill = '#020202'}: {fill?: string}) => (
   <Svg width={24} height={24} viewBox="0 0 25 25" fill="none">
     <Path
@@ -62,7 +58,6 @@ const MaleIcon = ({fill = '#020202'}: {fill?: string}) => (
   </Svg>
 );
 
-// Wrapper component untuk MixIcon dengan dynamic color (exact replica dari mix.svg)
 const MixIcon = ({fill = '#020202'}: {fill?: string}) => (
   <Svg width={24} height={24} viewBox="0 0 21 27" fill="none">
     <Path
@@ -72,7 +67,6 @@ const MixIcon = ({fill = '#020202'}: {fill?: string}) => (
   </Svg>
 );
 
-// Wrapper component untuk WifiIcon dengan dynamic color
 const WifiIconWrapper = ({fill = '#020202'}: {fill?: string}) => (
   <Svg width={24} height={24} viewBox="0 0 22 11" fill="none">
     <Path
@@ -85,7 +79,6 @@ const WifiIconWrapper = ({fill = '#020202'}: {fill?: string}) => (
   </Svg>
 );
 
-// Wrapper component untuk BathroomIcon dengan dynamic color (exact replica dari bathroom.svg)
 const BathroomIconWrapper = ({fill = '#020202'}: {fill?: string}) => (
   <Svg width={24} height={24} viewBox="0 0 20 19" fill="none">
     <Path
@@ -95,7 +88,6 @@ const BathroomIconWrapper = ({fill = '#020202'}: {fill?: string}) => (
   </Svg>
 );
 
-// Wrapper component untuk ParkingIcon dengan dynamic color (exact replica dari parking.svg)
 const ParkingIconWrapper = ({fill = '#020202'}: {fill?: string}) => (
   <Svg width={24} height={24} viewBox="0 0 24 16" fill="none">
     <Path
@@ -133,7 +125,6 @@ const Filter = ({
     onSearchChange('');
   };
 
-  // Mapping facilities dengan icons
   const facilitiesWithIcons = [
     {name: 'Bathroom', icon: BathroomIconWrapper},
     {name: 'AC', icon: ACIconCustom},

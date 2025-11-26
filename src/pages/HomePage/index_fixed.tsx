@@ -7,7 +7,7 @@ import {
   TextInput,
   ImageBackground,
 } from 'react-native';
-import React, {useState, useMemo} from 'react';
+import React, { useState, useMemo } from 'react';
 import Header from '../../components/molecules/Header';
 import Gap from '../../components/atoms/Gap';
 import BottomNav from '../../components/molecules/BottomNav'; 
@@ -21,19 +21,17 @@ import skost from '../../assets/skost.svg';
 import kostMawarIndah from '../../assets/kostMawarIndah.svg';
 import harmoni from '../../assets/harmoni.svg';
 
-const HomePage = ({navigation}: any) => {
+const HomePage = ({ navigation }: any) => {
   const [searchText, setSearchText] = useState('');
 
-  
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedPrice, setSelectedPrice] = useState<number>(500.000);
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
 
- 
   const recommendedData = [
     {
-      id: 1,
+      id: 1, 
       title: 'MIZTA Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
       price: 150.000, 
@@ -51,7 +49,7 @@ const HomePage = ({navigation}: any) => {
       id: 2,
       title: 'JAma Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 200.000, 
+      price: 200.000,
       svg: harmoni,
       type: 'Wanita',
       facilities: ['WIFI', 'AC', 'Parking Lot'],
@@ -66,10 +64,10 @@ const HomePage = ({navigation}: any) => {
 
   const popularData = [
     {
-      id: 3, 
+      id: 3, // ID diubah agar unik
       title: 'Triple J',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 250.000, 
+      price: 250.000, // Berupa Angka
       svg: tripleJ,
       type: 'Campur',
       facilities: ['WIFI', 'AC'],
@@ -81,10 +79,10 @@ const HomePage = ({navigation}: any) => {
       },
     },
     {
-      id: 4, 
+      id: 4,
       title: 'Kost Mila',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 300.000, 
+      price: 300.000,
       svg: Villa,
       type: 'Wanita',
       facilities: ['WIFI', 'Bathroom'],
@@ -102,7 +100,7 @@ const HomePage = ({navigation}: any) => {
       price: 350.000,
       svg: skost,
       type: 'Pria',
-      facilities: ['WIFI', 'AC',  'Parking Lot'],
+      facilities: ['WIFI', 'AC', 'Parking Lot'],
       description: 'Kost nyaman untuk mahasiswa dan pekerja',
       owner: {
         name: 'Agus Setiawan',
@@ -127,10 +125,9 @@ const HomePage = ({navigation}: any) => {
     }
   ];
 
- 
   const toggleFilterModal = () => setIsFilterVisible(!isFilterVisible);
 
- 
+
   const handleApplyFilters = () => {
     setIsFilterVisible(false);
   };
@@ -139,21 +136,16 @@ const HomePage = ({navigation}: any) => {
 
   const handleResetFilters = () => {
     setSelectedType(null);
-    setSelectedPrice(MAX_PRICE); 
+    setSelectedPrice(MAX_PRICE);
     setSelectedFacilities([]);
   };
 
- 
-
-
   const allData = useMemo(
     () => [...recommendedData, ...popularData],
-    [], 
+    [],
   );
 
-  
   const filteredData = useMemo(() => {
-
     if (searchText.length === 0) return [];
 
     return allData.filter(item => {
@@ -171,7 +163,6 @@ const HomePage = ({navigation}: any) => {
     });
   }, [allData, searchText, selectedType, selectedPrice, selectedFacilities]);
 
- 
   const filteredRecommendedData = useMemo(() => {
     return recommendedData.filter(item => {
       const matchesType = !selectedType || item.type === selectedType;
@@ -185,7 +176,6 @@ const HomePage = ({navigation}: any) => {
     });
   }, [recommendedData, selectedType, selectedPrice, selectedFacilities]);
 
- 
   const filteredPopularData = useMemo(() => {
     return popularData.filter(item => {
       const matchesType = !selectedType || item.type === selectedType;
@@ -199,15 +189,14 @@ const HomePage = ({navigation}: any) => {
     });
   }, [popularData, selectedType, selectedPrice, selectedFacilities]);
 
- 
   const filtersAreActive =
     selectedType !== null ||
-    selectedPrice < MAX_PRICE || 
+    selectedPrice < MAX_PRICE ||
     selectedFacilities.length > 0;
 
   return (
     <View style={styles.container}>
-      <Header label="Find Your Kost" backButton={false} onPress={() => {}} />
+      <Header label="Find Your Kost" backButton={false} onPress={() => { }} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -220,7 +209,6 @@ const HomePage = ({navigation}: any) => {
             value={searchText}
             onChangeText={setSearchText}
           />
- 
           <TouchableOpacity
             style={styles.filterButton}
             onPress={toggleFilterModal}>
@@ -230,9 +218,6 @@ const HomePage = ({navigation}: any) => {
 
         <Gap height={16} />
 
- 
-        {searchText.length > 0 ? (
-
           <View>
             <Text style={styles.sectionTitle}>
               {filteredData.length} Results Found
@@ -240,14 +225,13 @@ const HomePage = ({navigation}: any) => {
             <Gap height={12} />
 
             {filteredData.length === 0 ? (
-              <Text style={{color: '#666'}}>No results found</Text>
+              <Text style={{ color: '#666' }}>No results found</Text>
             ) : (
-          
               filteredData.map(item => (
                 <TouchableOpacity
                   key={item.id}
                   style={styles.popularCard}
-                  onPress={() => navigation.navigate('Detail', {item})}>
+                  onPress={() => navigation.navigate('Detail', { item })}>
                   <item.svg width={120} height={85} />
                   <View style={styles.popularCardContent}>
                     <Text style={styles.popularCardTitle}>{item.title}</Text>
@@ -263,7 +247,6 @@ const HomePage = ({navigation}: any) => {
         ) : (
 
           <>
-   
             <ImageBackground
               source={require('../../assets/unklb.png')}
               resizeMode="cover"
@@ -280,7 +263,7 @@ const HomePage = ({navigation}: any) => {
 
             <Gap height={24} />
 
-   
+            {/* Recommended */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>Recommended</Text>
@@ -290,25 +273,28 @@ const HomePage = ({navigation}: any) => {
               </View>
               <Gap height={12} />
 
-        
               <View style={styles.recommendedGrid}>
                 {filteredRecommendedData.map(item => (
                   <TouchableOpacity
                     key={item.id}
                     style={styles.recommendedCard}
-                    onPress={() => navigation.navigate('Detail', {item})}>
-                    <item.svg width={120} height={85} />
-                    <View style={styles.cardContent}>
-                      <Text style={styles.cardTitle}>{item.title}</Text>
-                      <Text style={styles.cardLocation}>{item.location}</Text>
+                    onPress={() => navigation.navigate('Detail', { item })}>
+                    <item.svg width="100%" height="100%" style={styles.cardBackground} />
+                    <View style={styles.cardOverlay}>
+                      <View style={styles.cardContent}>
+                        <Text style={styles.cardTitle}>{item.title}</Text>
+                        <View style={styles.locationContainer}>
+                          <Text style={styles.locationIcon}>📍</Text>
+                          <Text style={styles.cardLocation}>{item.location}</Text>
+                        </View>
+                      </View>
                     </View>
                   </TouchableOpacity>
                 ))}
               </View>
 
-      
               {filteredRecommendedData.length === 0 && filtersAreActive && (
-                <Text style={{color: '#666', marginTop: 10}}>
+                <Text style={{ color: '#666', marginTop: 10 }}>
                   No recommended items match your filter.
                 </Text>
               )}
@@ -326,12 +312,11 @@ const HomePage = ({navigation}: any) => {
               </View>
               <Gap height={12} />
 
-        
               {filteredPopularData.map(item => (
                 <TouchableOpacity
                   key={item.id}
                   style={styles.popularCard}
-                  onPress={() => navigation.navigate('Detail', {item})}>
+                  onPress={() => navigation.navigate('Detail', { item })}>
                   <item.svg width={120} height={85} />
                   <View style={styles.popularCardContent}>
                     <Text style={styles.popularCardTitle}>{item.title}</Text>
@@ -342,9 +327,8 @@ const HomePage = ({navigation}: any) => {
                 </TouchableOpacity>
               ))}
 
-         
               {filteredPopularData.length === 0 && filtersAreActive && (
-                <Text style={{color: '#666', marginTop: 10}}>
+                <Text style={{ color: '#666', marginTop: 10 }}>
                   No popular items match your filter.
                 </Text>
               )}
@@ -378,9 +362,9 @@ const HomePage = ({navigation}: any) => {
 export default HomePage;
 
 const styles = StyleSheet.create({
-
-  container: {flex: 1, backgroundColor: '#F9F9F9'},
-  scrollView: {paddingHorizontal: 24},
+ 
+  container: { flex: 1, backgroundColor: '#F9F9F9' },
+  scrollView: { paddingHorizontal: 24 },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -418,15 +402,15 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     fontWeight: '700',
   },
-  bannerSubtitle: {fontSize: 12, color: '#D2AA1A'},
-  section: {marginVertical: 8},
+  bannerSubtitle: { fontSize: 12, color: '#D2AA1A' },
+  section: { marginVertical: 8 },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  sectionTitle: {fontSize: 16, fontWeight: '700', color: '#020202'},
-  seeAll: {fontSize: 12, color: '#6F3E76'},
+  sectionTitle: { fontSize: 16, fontWeight: '700', color: '#020202' },
+  seeAll: { fontSize: 12, color: '#6F3E76' },
   recommendedGrid: {
     flexDirection: 'row',
     gap: 12,
@@ -435,13 +419,57 @@ const styles = StyleSheet.create({
   recommendedCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    borderRadius: 20,
     overflow: 'hidden',
-    elevation: 2,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    height: 140,
+    position: 'relative',
   },
-  cardContent: {padding: 12},
-  cardTitle: {fontSize: 14, fontWeight: '700', color: '#020202'},
-  cardLocation: {fontSize: 10, color: '#666666'},
+  cardBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  cardOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingTop: 60,
+    paddingBottom: 16,
+    paddingHorizontal: 16,
+  },
+  cardContent: {
+    padding: 0,
+    gap: 4,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  locationIcon: {
+    fontSize: 12,
+    color: '#FF6B6B',
+  },
+  cardLocation: {
+    fontSize: 11,
+    color: '#FFFFFF',
+    flex: 1,
+    opacity: 0.95,
+  },
   popularCard: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
@@ -450,9 +478,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     elevation: 2,
   },
-  popularCardContent: {flex: 1, padding: 12, justifyContent: 'center'},
-  popularCardTitle: {fontSize: 14, fontWeight: '700', color: '#020202'},
-  popularCardLocation: {fontSize: 10, color: '#666666'},
+  popularCardContent: { flex: 1, padding: 12, justifyContent: 'center' },
+  popularCardTitle: { fontSize: 14, fontWeight: '700', color: '#020202' },
+  popularCardLocation: { fontSize: 10, color: '#666666' },
 
  
   modalOverlay: {
@@ -529,7 +557,7 @@ const styles = StyleSheet.create({
   priceContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 8, 
+    paddingHorizontal: 8,
   },
   priceText: {
     fontSize: 12,

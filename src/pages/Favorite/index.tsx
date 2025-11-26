@@ -95,8 +95,8 @@ const Favorite = () => {
                 </View>
 
                 <Text style={styles.price}>
-                    Rp {typeof item.price === 'number' ? item.price.toLocaleString('id-ID') : item.price}
-                    <Text style={{fontSize:10, fontWeight:'normal', color:'#888'}}>/bln</Text>
+                  Rp {typeof item.price === 'number' ? (item.price * 1000).toLocaleString('id-ID') : item.price}
+                  <Text style={{fontSize:12, fontWeight:'normal', color:'#888'}}>/bln</Text>
                 </Text>
               </View>
 

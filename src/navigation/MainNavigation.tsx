@@ -11,7 +11,7 @@ import BottomNav from '../components/molecules/BottomNav';
 const MainNavigation = () => {
   const [activeTab, setActiveTab] = useState('home');
 
-  const navigation = useNavigation(); // <<==== Ambil navigation dari stack
+  const navigation = useNavigation();
 
   const renderPage = () => {
     switch (activeTab) {
