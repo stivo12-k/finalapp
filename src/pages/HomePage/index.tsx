@@ -10,11 +10,9 @@ import {
 import React, { useState, useMemo } from 'react';
 import Header from '../../components/molecules/Header';
 import Gap from '../../components/atoms/Gap';
-import BottomNav from '../../components/molecules/BottomNav'; // Pastikan ini dirender jika perlu
+import BottomNav from '../../components/molecules/BottomNav';
 import Filter from '../../components/molecules/Filter';
 
-// (MODIFIKASI 4: Impor Ikon)
-// Import gambar untuk setiap kost
 import mizta from '../../assets/mizta.svg';
 import Villa from '../../assets/villa.svg';
 import tripleJ from '../../assets/tripleJ.svg';
@@ -26,19 +24,17 @@ import harmoni from '../../assets/harmoni.svg';
 const HomePage = ({ navigation }: any) => {
   const [searchText, setSearchText] = useState('');
 
-  // (MODIFIKASI 5: Tambahkan state untuk Modal dan Filter)
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedPrice, setSelectedPrice] = useState<number>(500.000);
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
 
-  // (MODIFIKASI 6: Perbaikan Data)
   const recommendedData = [
     {
-      id: 1, // Unik
+      id: 1, 
       title: 'MIZTA Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 150.000, // Berupa Angka
+      price: 150.000, 
       svg: mizta,
       type: 'Pria',
       facilities: ['WIFI', 'AC', 'Bathroom', 'Parking Lot'],
@@ -50,10 +46,10 @@ const HomePage = ({ navigation }: any) => {
       },
     },
     {
-      id: 2, // Unik
+      id: 2, 
       title: 'JAma Kost',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 200.000, // Berupa Angka
+      price: 200.000, 
       svg: harmoni,
       type: 'Wanita',
       facilities: ['WIFI', 'AC', 'Parking Lot'],
@@ -68,10 +64,10 @@ const HomePage = ({ navigation }: any) => {
 
   const popularData = [
     {
-      id: 3, // ID diubah agar unik
+      id: 3,
       title: 'Triple J',
       location: 'Jl. Pimpinang etaas, Mindhasa Utara',
-      price: 250.000, // Berupa Angka
+      price: 250.000, 
       svg: tripleJ,
       type: 'Campur',
       facilities: ['WIFI', 'AC'],
@@ -129,35 +125,30 @@ const HomePage = ({ navigation }: any) => {
     }
   ];
 
-  // (MODIFIKASI 7: Logika Helper untuk Filter)
   const toggleFilterModal = () => setIsFilterVisible(!isFilterVisible);
 
-  // Facilities state is managed by passing setters into the shared Filter component
 
   const handleApplyFilters = () => {
     setIsFilterVisible(false);
   };
 
-  // Tentukan harga maksimum untuk slider (samakan dengan Explore)
   const MAX_PRICE = 500.000;
 
   const handleResetFilters = () => {
     setSelectedType(null);
-    setSelectedPrice(MAX_PRICE); // Reset ke MAX_PRICE
+    setSelectedPrice(MAX_PRICE); 
     setSelectedFacilities([]);
   };
 
-  // (MODIFIKASI 8: DIPERBARUI - Kita butuh 3 list filter)
-
-  // Gabungkan data hanya sekali
   const allData = useMemo(
     () => [...recommendedData, ...popularData],
-    [], // Data statis, jadi array dependensi kosong
+    [], 
   );
 
-  // --- List 1: Untuk "Search Results" (Menggunakan SEMUA filter + searchText) ---
+  
+
   const filteredData = useMemo(() => {
-    // Hanya filter jika ada searchText.
+  
     if (searchText.length === 0) return [];
 
     return allData.filter(item => {
@@ -175,7 +166,7 @@ const HomePage = ({ navigation }: any) => {
     });
   }, [allData, searchText, selectedType, selectedPrice, selectedFacilities]);
 
-  // --- List 2: Untuk "Recommended" (HANYA menggunakan filter modal) ---
+
   const filteredRecommendedData = useMemo(() => {
     return recommendedData.filter(item => {
       const matchesType = !selectedType || item.type === selectedType;
@@ -189,7 +180,6 @@ const HomePage = ({ navigation }: any) => {
     });
   }, [recommendedData, selectedType, selectedPrice, selectedFacilities]);
 
-  // --- List 3: Untuk "Popular" (HANYA menggunakan filter modal) ---
   const filteredPopularData = useMemo(() => {
     return popularData.filter(item => {
       const matchesType = !selectedType || item.type === selectedType;
@@ -203,10 +193,9 @@ const HomePage = ({ navigation }: any) => {
     });
   }, [popularData, selectedType, selectedPrice, selectedFacilities]);
 
-  // (MODIFIKASI 9: Cek apakah ada filter yang aktif)
   const filtersAreActive =
     selectedType !== null ||
-    selectedPrice < MAX_PRICE || // Cek jika slider digeser dari maks
+    selectedPrice < MAX_PRICE ||
     selectedFacilities.length > 0;
 
   return (
@@ -216,7 +205,7 @@ const HomePage = ({ navigation }: any) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}>
-        {/* Search Bar */}
+  
         <View style={styles.searchContainer}>
           <TextInput
             placeholder="Search Property"
@@ -224,7 +213,7 @@ const HomePage = ({ navigation }: any) => {
             value={searchText}
             onChangeText={setSearchText}
           />
-          {/* (MODIFIKASI 10: Tambahkan onPress ke tombol filter) */}
+         
           <TouchableOpacity
             style={styles.filterButton}
             onPress={toggleFilterModal}>
@@ -234,9 +223,8 @@ const HomePage = ({ navigation }: any) => {
 
         <Gap height={16} />
 
-        {/* (MODIFIKASI 11: DIPERBARUI - Logika Tampilan Utama) */}
         {searchText.length > 0 ? (
-          // --- TAMPILAN 1: SEARCH RESULTS ---
+         
           <View>
             <Text style={styles.sectionTitle}>
               {filteredData.length} Results Found
@@ -246,7 +234,7 @@ const HomePage = ({ navigation }: any) => {
             {filteredData.length === 0 ? (
               <Text style={{ color: '#666' }}>No results found</Text>
             ) : (
-              // Tampilkan hasil filter dari 'filteredData'
+            
               filteredData.map(item => (
                 <TouchableOpacity
                   key={item.id}
@@ -265,9 +253,9 @@ const HomePage = ({ navigation }: any) => {
             <Gap height={40} />
           </View>
         ) : (
-          // --- TAMPILAN 2: DEFAULT HOME (Banner, Recommended, Popular) ---
+         
           <>
-            {/* Banner */}
+          
             <ImageBackground
               source={require('../../assets/unklb.png')}
               resizeMode="cover"
@@ -284,17 +272,17 @@ const HomePage = ({ navigation }: any) => {
 
             <Gap height={24} />
 
-            {/* Recommended */}
+        
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>Recommended</Text>
                 <TouchableOpacity>
-                  <Text style={styles.seeAll}>See all</Text>
+                  <Text style={styles.seeAll}></Text>
                 </TouchableOpacity>
               </View>
               <Gap height={12} />
 
-              {/* Gunakan 'filteredRecommendedData' di sini */}
+        
               <View style={styles.recommendedGrid}>
                 {filteredRecommendedData.map(item => (
                   <TouchableOpacity
@@ -315,7 +303,7 @@ const HomePage = ({ navigation }: any) => {
                 ))}
               </View>
 
-              {/* Pesan jika filter tidak menemukan apa-apa */}
+             
               {filteredRecommendedData.length === 0 && filtersAreActive && (
                 <Text style={{ color: '#666', marginTop: 10 }}>
                   No recommended items match your filter.
@@ -325,17 +313,16 @@ const HomePage = ({ navigation }: any) => {
 
             <Gap height={24} />
 
-            {/* Popular */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>Popular for you</Text>
                 <TouchableOpacity>
-                  <Text style={styles.seeAll}>See all</Text>
+                  <Text style={styles.seeAll}></Text>
                 </TouchableOpacity>
               </View>
               <Gap height={12} />
 
-              {/* Gunakan 'filteredPopularData' di sini */}
+              
               {filteredPopularData.map(item => (
                 <TouchableOpacity
                   key={item.id}
@@ -351,7 +338,6 @@ const HomePage = ({ navigation }: any) => {
                 </TouchableOpacity>
               ))}
 
-              {/* Pesan jika filter tidak menemukan apa-apa */}
               {filteredPopularData.length === 0 && filtersAreActive && (
                 <Text style={{ color: '#666', marginTop: 10 }}>
                   No popular items match your filter.
@@ -364,7 +350,6 @@ const HomePage = ({ navigation }: any) => {
         )}
       </ScrollView>
 
-      {/* Gunakan komponen Filter yang sama seperti di Explore */}
       <Filter
         visible={isFilterVisible}
         onClose={toggleFilterModal}
@@ -379,8 +364,6 @@ const HomePage = ({ navigation }: any) => {
         onFacilitiesChange={setSelectedFacilities}
       />
 
-      {/* <BottomNav navigation={navigation} /> */}
-      {/* Jangan lupa render BottomNav jika Anda membutuhkannya di sini */}
     </View>
   );
 };
@@ -388,7 +371,7 @@ const HomePage = ({ navigation }: any) => {
 export default HomePage;
 
 const styles = StyleSheet.create({
-  // ... (Semua styles 'HomePage' Anda yang lama tetap di sini)
+  
   container: { flex: 1, backgroundColor: '#F9F9F9' },
   scrollView: { paddingHorizontal: 24 },
   searchContainer: {
@@ -508,7 +491,6 @@ const styles = StyleSheet.create({
   popularCardTitle: { fontSize: 14, fontWeight: '700', color: '#020202' },
   popularCardLocation: { fontSize: 10, color: '#666666' },
 
-  // (MODIFIKASI 13: Tambahkan Styles Modal dari ExplorePage)
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
@@ -583,7 +565,7 @@ const styles = StyleSheet.create({
   priceContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 8, // Beri jarak
+    paddingHorizontal: 8, 
   },
   priceText: {
     fontSize: 12,
@@ -615,7 +597,7 @@ const styles = StyleSheet.create({
     color: '#6F3E76',
   },
   applyButton: {
-    flex: 2, // Buat tombol Apply lebih besar
+    flex: 2,
     backgroundColor: '#6F3E76',
     padding: 16,
     borderRadius: 12,

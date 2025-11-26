@@ -93,10 +93,7 @@ const Profile = ({ navigation, onTabChange }) => {
         
         <View style={styles.avatarContainer}>
           <View style={styles.avatarWrapper}>
-            {/* PERHATIKAN DI SINI: 
-              Saya mengganti NullPhoto dengan URL dummy sementara.
-              Jika layar putih hilang, berarti masalahnya ada di import NullPhoto kamu sebelumnya.
-            */}
+            
             <Image 
               source={
                 profile.photo && profile.photo.length > 10 

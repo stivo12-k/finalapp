@@ -25,7 +25,7 @@ const SignUp = ({navigation}) => {
   const [agree, setAgree] = useState(true);
 
   const onSignUp = () => {
-    // 1. Validasi Input
+
     if (!email || !password || !username) {
       showMessage({
         message: "Data tidak lengkap",
@@ -36,7 +36,6 @@ const SignUp = ({navigation}) => {
       return;
     }
 
-    // 2. Proses Register
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -143,7 +142,6 @@ const SignUp = ({navigation}) => {
           </View>
           <Gap height={24} />
 
-          {/* Button Sign Up */}
           <Button 
             label="SIGN UP" 
             color="#643173" 
@@ -153,7 +151,6 @@ const SignUp = ({navigation}) => {
           
           <Gap height={32} />
 
-          {/* Or Divider */}
           <View style={styles.orContainer}>
             <View style={styles.orLine} />
             <Text style={styles.orText}>Or</Text>
@@ -161,7 +158,6 @@ const SignUp = ({navigation}) => {
           </View>
           <Gap height={32} />
 
-          {/* Social Buttons */}
           <View style={styles.socialContainer}>
             <TouchableOpacity style={styles.socialButton}>
               <Text style={styles.socialIconText}>f</Text>
@@ -172,7 +168,7 @@ const SignUp = ({navigation}) => {
           </View>
           <Gap height={40} />
 
-          {/* Footer */}
+
           <View style={styles.footerTextWrapper}>
             <Text style={styles.footerText}>Already have an account ? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>

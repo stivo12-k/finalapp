@@ -47,8 +47,8 @@ const EditProfile = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
-  
-  const [photo, setPhoto] = useState({uri: 'https://ui-avatars.com/api/?name=User&background=random'});
+
+  const [photo, setPhoto] = useState({ uri: 'https://ui-avatars.com/api/?name=User&background=random' });
   const [photoForDB, setPhotoForDB] = useState('');
 
   const auth = getAuth();
@@ -63,7 +63,7 @@ const EditProfile = ({ navigation }) => {
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       }
 
-     
+
       if (Platform.OS === 'android') {
         const grantedLegacy = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
@@ -78,7 +78,7 @@ const EditProfile = ({ navigation }) => {
     }
   };
 
- 
+
   useEffect(() => {
     if (user) {
       const userRef = ref(database, 'users/' + user.uid);
@@ -88,7 +88,7 @@ const EditProfile = ({ navigation }) => {
           setUsername(data.username);
           setEmail(data.email);
           setDateOfBirth(data.dateOfBirth || '');
-          
+
           if (data.photo) {
             setPhoto({ uri: data.photo });
           }
@@ -140,38 +140,39 @@ const EditProfile = ({ navigation }) => {
 
 
   const handleSave = () => {
-    if(user) {
-        const data = {
-            username: username,
-            dateOfBirth: dateOfBirth,
-        };
+    if (user) {
+      const data: any = {
+        username: username,
+        email: email,
+        dateOfBirth: dateOfBirth,
+      };
 
-        if (photoForDB) {
-            data.photo = photoForDB;
-        }
+      if (photoForDB) {
+        data.photo = photoForDB;
+      }
 
-        update(ref(database, `users/${user.uid}`), data)
+      update(ref(database, `users/${user.uid}`), data)
         .then(() => {
-            showMessage({
-                message: "Sukses",
-                description: "Profile berhasil diupdate",
-                type: "success",
-            });
-            navigation.goBack();
+          showMessage({
+            message: "Sukses",
+            description: "Profile berhasil diupdate",
+            type: "success",
+          });
+          navigation.goBack();
         })
         .catch((err) => {
-            showMessage({
-                message: "Gagal",
-                description: err.message,
-                type: "danger",
-            });
+          showMessage({
+            message: "Gagal",
+            description: err.message,
+            type: "danger",
+          });
         });
     } else {
-        showMessage({
-            message: "Error",
-            description: "User tidak ditemukan",
-            type: "danger",
-        });
+      showMessage({
+        message: "Error",
+        description: "User tidak ditemukan",
+        type: "danger",
+      });
     }
   };
 
@@ -183,13 +184,13 @@ const EditProfile = ({ navigation }) => {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
-        
+
         <View style={styles.avatarContainer}>
           <View style={styles.avatarWrapper}>
             <Image source={photo} style={styles.avatar} />
-            
-            <TouchableOpacity 
-              style={styles.cameraButton} 
+
+            <TouchableOpacity
+              style={styles.cameraButton}
               onPress={changePhoto}>
               <View style={styles.cameraIconContainer}>
                 <CameraIcon width={16} height={16} color="#FFFFFF" />
@@ -212,8 +213,7 @@ const EditProfile = ({ navigation }) => {
           label="Email"
           placeholder="Email"
           value={email}
-          editable={false}
-          selectTextOnFocus={false}
+          onChangeText={setEmail}
         />
         <Gap height={16} />
 
